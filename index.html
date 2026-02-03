@@ -1,0 +1,1231 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>KYKLE — Musculação</title>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --red: #e63946;
+  --red-dark: #9d0208;
+  --red-glow: rgba(230,57,70,0.45);
+  --black: #0a0a0a;
+  --gray: #1a1a1e;
+  --gray-light: #2a2a30;
+  --text: #eee;
+  --text-dim: #888;
+  --gold: #f4a261;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  font-family:'Rajdhani',sans-serif;
+  background:#0a0a0a;
+  color:var(--text);
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+/* ─── NOISE OVERLAY ─── */
+body::before {
+  content:'';
+  position:fixed; inset:0; z-index:999;
+  pointer-events:none;
+  opacity:.035;
+  background:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ═══════════ NAV ═══════════ */
+nav {
+  position:fixed; top:0; width:100%; z-index:100;
+  background:rgba(10,10,10,.85);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid rgba(230,57,70,.18);
+  padding:0 24px;
+  display:flex; align-items:center; justify-content:space-between;
+  height:62px;
+  transition:background .3s;
+}
+.logo-wrap { display:flex; flex-direction:column; }
+.logo-text {
+  font-family:'Oswald',sans-serif;
+  font-size:1.55rem; font-weight:700;
+  letter-spacing:6px; text-transform:uppercase;
+  background:linear-gradient(90deg,#ffffff 0%,#ffffff 25%,var(--red) 100%);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+  line-height:1.1;
+}
+.logo-sub { font-weight:400; letter-spacing:2px; font-size:.72rem; color:var(--text-dim); text-transform:uppercase; }
+.nav-links { display:flex; gap:6px; }
+.nav-links a {
+  color:var(--text-dim);
+  text-decoration:none;
+  font-weight:600; font-size:.88rem;
+  letter-spacing:1.5px; text-transform:uppercase;
+  padding:8px 14px; border-radius:6px;
+  transition:all .25s; position:relative;
+}
+.nav-links a:hover, .nav-links a.active {
+  color:#fff;
+  background:rgba(230,57,70,.12);
+}
+.nav-links a.active::after {
+  content:'';
+  position:absolute; bottom:2px; left:50%; transform:translateX(-50%);
+  width:22px; height:2px; border-radius:2px;
+  background:var(--red);
+}
+.hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; padding:6px; }
+.hamburger span { width:26px; height:2px; background:#fff; border-radius:2px; transition:.3s; }
+
+/* ═══════════ PAGES ═══════════ */
+.page { display:none; min-height:100vh; padding-top:62px; }
+.page.active { display:block; }
+
+/* ═══════════ HERO ═══════════ */
+.hero {
+  position:relative;
+  height:calc(100vh - 62px);
+  display:flex; align-items:center; justify-content:center;
+  overflow:hidden;
+  background:linear-gradient(160deg, #1a0a0a 0%, #0a0a0a 50%, #12000a 100%);
+}
+.hero-bg-glow {
+  position:absolute;
+  width:600px; height:600px;
+  border-radius:50%;
+  background:radial-gradient(circle, rgba(230,57,70,.22) 0%, transparent 70%);
+  top:-100px; right:-150px;
+  animation:pulse 6s ease-in-out infinite;
+}
+.hero-bg-glow2 {
+  position:absolute;
+  width:400px; height:400px;
+  border-radius:50%;
+  background:radial-gradient(circle, rgba(230,57,70,.14) 0%, transparent 70%);
+  bottom:-80px; left:-100px;
+  animation:pulse 8s ease-in-out infinite reverse;
+}
+@keyframes pulse { 0%,100%{transform:scale(1);opacity:1} 50%{transform:scale(1.15);opacity:.6} }
+.hero-content { position:relative; z-index:2; text-align:center; padding:0 20px; }
+.hero-badge {
+  display:inline-block;
+  background:rgba(230,57,70,.15);
+  border:1px solid rgba(230,57,70,.35);
+  color:var(--red);
+  font-size:.78rem; font-weight:600;
+  letter-spacing:3px; text-transform:uppercase;
+  padding:6px 18px; border-radius:30px;
+  margin-bottom:28px;
+  animation:fadeUp .8s .2s both;
+}
+.hero h1 {
+  font-family:'Oswald',sans-serif;
+  font-size:clamp(3rem,8vw,6.5rem);
+  font-weight:700;
+  line-height:1.02;
+  letter-spacing:-1px;
+  animation:fadeUp .8s .35s both;
+}
+.hero h1 .highlight {
+  background:linear-gradient(135deg,var(--red),#ff6b6b);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+.hero p {
+  color:var(--text-dim);
+  font-size:1.18rem; max-width:520px; margin:22px auto 0;
+  font-weight:500; line-height:1.6;
+  animation:fadeUp .8s .5s both;
+}
+.hero-btns {
+  margin-top:38px;
+  display:flex; gap:14px; justify-content:center; flex-wrap:wrap;
+  animation:fadeUp .8s .65s both;
+}
+.btn-primary {
+  background:linear-gradient(135deg,var(--red),var(--red-dark));
+  color:#fff; border:none;
+  padding:14px 34px; border-radius:8px;
+  font-family:'Oswald',sans-serif;
+  font-size:1rem; font-weight:600;
+  letter-spacing:2px; text-transform:uppercase;
+  cursor:pointer;
+  box-shadow:0 4px 24px var(--red-glow);
+  transition:transform .2s, box-shadow .2s;
+}
+.btn-primary:hover { transform:translateY(-2px); box-shadow:0 6px 32px var(--red-glow); }
+.btn-secondary {
+  background:transparent;
+  color:#fff; border:1px solid rgba(255,255,255,.2);
+  padding:14px 34px; border-radius:8px;
+  font-family:'Oswald',sans-serif;
+  font-size:1rem; font-weight:600;
+  letter-spacing:2px; text-transform:uppercase;
+  cursor:pointer;
+  transition:all .25s;
+}
+.btn-secondary:hover { border-color:var(--red); background:rgba(230,57,70,.08); }
+@keyframes fadeUp { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
+
+/* scroll arrow */
+.scroll-hint {
+  position:absolute; bottom:30px; left:50%; transform:translateX(-50%);
+  animation:bounce 2s infinite;
+  color:var(--text-dim);
+  font-size:1.6rem;
+}
+@keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(10px)} }
+
+/* ═══════════ SECTIONS ═══════════ */
+section { padding:80px 24px; }
+.section-title {
+  text-align:center; margin-bottom:50px;
+}
+.section-title h2 {
+  font-family:'Oswald',sans-serif;
+  font-size:clamp(1.7rem,4vw,2.6rem);
+  font-weight:700; letter-spacing:2px; text-transform:uppercase;
+}
+.section-title h2 .red { color:var(--red); }
+.section-title p { color:var(--text-dim); margin-top:10px; font-size:1.05rem; }
+.section-title .line {
+  width:50px; height:3px;
+  background:linear-gradient(90deg,var(--red),var(--red-dark));
+  margin:16px auto 0; border-radius:2px;
+}
+
+/* ═══════════ BIOTIPOS ═══════════ */
+.biotype-cards {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:20px;
+  max-width:1100px; margin:0 auto;
+}
+.biotype-card {
+  background:var(--gray);
+  border:1px solid rgba(255,255,255,.06);
+  border-radius:16px;
+  overflow:hidden;
+  transition:transform .3s, box-shadow .3s;
+  cursor:pointer;
+  position:relative;
+}
+.biotype-card:hover {
+  transform:translateY(-6px);
+  box-shadow:0 12px 40px rgba(230,57,70,.18);
+  border-color:rgba(230,57,70,.3);
+}
+.biotype-card .card-top {
+  padding:28px 24px 20px;
+  position:relative;
+}
+.biotype-card .card-icon {
+  width:56px; height:56px;
+  background:linear-gradient(135deg,var(--red),var(--red-dark));
+  border-radius:14px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.7rem; margin-bottom:16px;
+  box-shadow:0 4px 18px var(--red-glow);
+}
+.biotype-card h3 {
+  font-family:'Oswald',sans-serif;
+  font-size:1.35rem; font-weight:600;
+  letter-spacing:1px; text-transform:uppercase;
+}
+.biotype-card p { color:var(--text-dim); font-size:.95rem; margin-top:6px; line-height:1.5; }
+.biotype-card .card-tag {
+  display:inline-block;
+  background:rgba(230,57,70,.12);
+  color:var(--red);
+  font-size:.72rem; font-weight:700;
+  letter-spacing:1.5px; text-transform:uppercase;
+  padding:4px 10px; border-radius:20px;
+  margin-top:12px;
+}
+.card-expand {
+  max-height:0; overflow:hidden; transition:max-height .45s ease;
+  padding:0 24px;
+}
+.card-expand.open { max-height:400px; }
+.card-expand ul { list-style:none; padding-bottom:20px; }
+.card-expand ul li {
+  padding:8px 0;
+  border-bottom:1px solid rgba(255,255,255,.06);
+  font-size:.94rem; color:var(--text-dim);
+  display:flex; align-items:center; gap:10px;
+}
+.card-expand ul li:last-child { border:none; }
+.card-expand ul li .dot {
+  width:8px; height:8px; border-radius:50%;
+  background:var(--red); flex-shrink:0;
+  box-shadow:0 0 6px var(--red-glow);
+}
+
+/* ═══════════ TIMER SECTION ═══════════ */
+.timer-section {
+  background:linear-gradient(180deg,#0a0a0a,#111115,#0a0a0a);
+}
+.timer-wrap {
+  max-width:480px; margin:0 auto; text-align:center;
+}
+.timer-ring-wrap {
+  position:relative;
+  width:240px; height:240px;
+  margin:0 auto 30px;
+}
+.timer-ring-wrap svg { transform:rotate(-90deg); }
+.timer-ring-bg { fill:none; stroke:var(--gray-light); stroke-width:10; }
+.timer-ring-fg {
+  fill:none;
+  stroke:url(#ringGrad);
+  stroke-width:10;
+  stroke-linecap:round;
+  transition:stroke-dashoffset .5s linear;
+}
+.timer-display {
+  position:absolute; inset:0;
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+}
+.timer-display .time {
+  font-family:'Share Tech Mono',monospace;
+  font-size:2.8rem; font-weight:700;
+  letter-spacing:2px;
+  background:linear-gradient(135deg,#fff,var(--red));
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+.timer-display .label { font-size:.75rem; color:var(--text-dim); letter-spacing:2px; text-transform:uppercase; }
+.timer-controls { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+.timer-controls button {
+  background:var(--gray-light);
+  color:#fff; border:1px solid rgba(255,255,255,.1);
+  width:52px; height:52px; border-radius:12px;
+  font-size:1.3rem; cursor:pointer;
+  transition:all .2s;
+  display:flex; align-items:center; justify-content:center;
+}
+.timer-controls button:hover { background:rgba(230,57,70,.25); border-color:var(--red); }
+.timer-controls button.active-btn { background:linear-gradient(135deg,var(--red),var(--red-dark)); border-color:transparent; box-shadow:0 4px 18px var(--red-glow); }
+.timer-presets { display:flex; gap:8px; justify-content:center; margin-top:20px; flex-wrap:wrap; }
+.timer-presets button {
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.1);
+  color:var(--text-dim); border-radius:20px;
+  padding:5px 14px; font-size:.82rem;
+  font-weight:600; cursor:pointer; transition:.2s;
+  font-family:'Rajdhani',sans-serif;
+}
+.timer-presets button:hover { color:#fff; border-color:var(--red); background:rgba(230,57,70,.1); }
+
+/* ═══════════ WORKOUT PLANNER (page) ═══════════ */
+.planner-header {
+  background:linear-gradient(160deg,#1a0505,#0a0a0a 60%);
+  padding:80px 24px 50px;
+  text-align:center;
+}
+.planner-header h1 {
+  font-family:'Oswald',sans-serif;
+  font-size:clamp(2rem,5vw,3rem);
+  letter-spacing:3px; text-transform:uppercase;
+}
+.planner-header h1 .red { color:var(--red); }
+.planner-header p { color:var(--text-dim); margin-top:10px; }
+.filter-bar {
+  display:flex; gap:8px; justify-content:center; flex-wrap:wrap;
+  max-width:700px; margin:0 auto; padding:0 20px 40px;
+}
+.filter-btn {
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.1);
+  color:var(--text-dim); border-radius:22px;
+  padding:7px 18px; font-size:.85rem;
+  font-weight:600; cursor:pointer;
+  transition:.2s; font-family:'Rajdhani',sans-serif;
+  letter-spacing:.5px;
+}
+.filter-btn:hover, .filter-btn.active {
+  color:#fff; border-color:var(--red);
+  background:rgba(230,57,70,.15);
+}
+.workout-grid {
+  max-width:1100px; margin:0 auto; padding:0 20px 80px;
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(310px,1fr));
+  gap:18px;
+}
+.workout-card {
+  background:var(--gray);
+  border:1px solid rgba(255,255,255,.06);
+  border-radius:14px; overflow:hidden;
+  transition:transform .25s, box-shadow .25s;
+}
+.workout-card:hover { transform:translateY(-4px); box-shadow:0 8px 30px rgba(0,0,0,.4); }
+.workout-card .wc-header {
+  padding:20px 20px 14px;
+  display:flex; align-items:flex-start; justify-content:space-between;
+}
+.workout-card .wc-icon {
+  width:46px; height:46px;
+  background:linear-gradient(135deg,var(--red),var(--red-dark));
+  border-radius:12px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.4rem;
+}
+.workout-card .wc-badge {
+  font-size:.7rem; font-weight:700;
+  letter-spacing:1px; text-transform:uppercase;
+  padding:3px 9px; border-radius:12px;
+  background:rgba(244,162,97,.12); color:var(--gold);
+}
+.workout-card .wc-badge.hard { background:rgba(230,57,70,.15); color:var(--red); }
+.workout-card .wc-badge.easy { background:rgba(76,175,80,.15); color:#66bb6a; }
+.workout-card h4 {
+  font-family:'Oswald',sans-serif;
+  font-size:1.1rem; letter-spacing:1px; text-transform:uppercase;
+  margin-top:12px;
+}
+.workout-card p { color:var(--text-dim); font-size:.88rem; margin-top:4px; }
+.workout-card .wc-meta {
+  display:flex; gap:16px; padding:12px 20px;
+  border-top:1px solid rgba(255,255,255,.06);
+}
+.workout-card .wc-meta span { font-size:.78rem; color:var(--text-dim); }
+.workout-card .wc-meta span strong { color:var(--red); font-weight:700; }
+.workout-card .wc-exercises { padding:0 20px 18px; }
+.workout-card .wc-exercises .ex-item {
+  display:flex; align-items:center; gap:10px;
+  padding:7px 0;
+  border-bottom:1px solid rgba(255,255,255,.04);
+  font-size:.88rem; color:var(--text-dim);
+}
+.workout-card .wc-exercises .ex-item:last-child { border:none; }
+.workout-card .wc-exercises .ex-item .ex-num {
+  width:24px; height:24px; border-radius:6px;
+  background:rgba(230,57,70,.15); color:var(--red);
+  display:flex; align-items:center; justify-content:center;
+  font-size:.72rem; font-weight:700; flex-shrink:0;
+}
+
+/* ═══════════ DIET PAGE ═══════════ */
+.diet-header {
+  background:linear-gradient(160deg,#0a1a0a,#0a0a0a 60%);
+  padding:80px 24px 50px; text-align:center;
+}
+.diet-header h1 { font-family:'Oswald',sans-serif; font-size:clamp(2rem,5vw,3rem); letter-spacing:3px; text-transform:uppercase; }
+.diet-header h1 .red { color:var(--red); }
+.diet-header p { color:var(--text-dim); margin-top:10px; }
+.diet-grid {
+  max-width:1100px; margin:0 auto; padding:0 20px 80px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+  gap:20px;
+}
+.diet-card {
+  background:var(--gray); border:1px solid rgba(255,255,255,.06);
+  border-radius:16px; overflow:hidden;
+  transition:transform .25s;
+}
+.diet-card:hover { transform:translateY(-4px); }
+.diet-card .dc-header {
+  padding:24px 22px 16px;
+  display:flex; align-items:center; gap:16px;
+}
+.diet-card .dc-icon {
+  width:52px; height:52px; border-radius:14px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.6rem; flex-shrink:0;
+}
+.diet-card .dc-icon.green { background:rgba(76,175,80,.15); }
+.diet-card .dc-icon.orange { background:rgba(244,162,97,.15); }
+.diet-card .dc-icon.blue { background:rgba(66,133,244,.15); }
+.diet-card .dc-icon.red { background:rgba(230,57,70,.15); }
+.diet-card h3 { font-family:'Oswald',sans-serif; font-size:1.15rem; letter-spacing:1px; text-transform:uppercase; }
+.diet-card p { color:var(--text-dim); font-size:.88rem; margin-top:4px; }
+.diet-card .dc-body { padding:0 22px 20px; }
+.diet-card .dc-body ul { list-style:none; }
+.diet-card .dc-body ul li {
+  padding:9px 0; border-bottom:1px solid rgba(255,255,255,.05);
+  font-size:.9rem; color:var(--text-dim);
+  display:flex; gap:10px; align-items:flex-start;
+}
+.diet-card .dc-body ul li:last-child { border:none; }
+.diet-card .dc-body ul li .dc-dot {
+  width:8px; height:8px; border-radius:50%; flex-shrink:0; margin-top:6px;
+}
+.dc-dot.green { background:#66bb6a; }
+.dc-dot.orange { background:var(--gold); }
+.dc-dot.blue { background:#6fa8dc; }
+.dc-dot.red { background:var(--red); }
+
+/* macros bar */
+.macro-bar-wrap { max-width:700px; margin:0 auto 50px; padding:0 20px; }
+.macro-card {
+  background:var(--gray); border:1px solid rgba(255,255,255,.06);
+  border-radius:16px; padding:28px 24px;
+}
+.macro-card h3 { font-family:'Oswald',sans-serif; font-size:1.1rem; letter-spacing:1.5px; text-transform:uppercase; margin-bottom:20px; }
+.macro-row { display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:18px; }
+.macro-item { flex:1; min-width:80px; text-align:center; }
+.macro-item .macro-val { font-family:'Share Tech Mono',monospace; font-size:1.6rem; font-weight:700; }
+.macro-item .macro-lbl { font-size:.72rem; color:var(--text-dim); letter-spacing:1.5px; text-transform:uppercase; margin-top:2px; }
+.macro-item .macro-val.prot { color:#6fa8dc; }
+.macro-item .macro-val.carb { color:var(--gold); }
+.macro-item .macro-val.gord { color:var(--red); }
+.macro-bars { display:flex; height:18px; border-radius:9px; overflow:hidden; width:100%; }
+.macro-bars .bar { transition:width .6s ease; }
+.macro-bars .bar.prot { background:#6fa8dc; }
+.macro-bars .bar.carb { background:var(--gold); }
+.macro-bars .bar.gord { background:var(--red); }
+.macro-legend { display:flex; gap:18px; margin-top:12px; flex-wrap:wrap; justify-content:center; }
+.macro-legend span { font-size:.78rem; color:var(--text-dim); display:flex; align-items:center; gap:6px; }
+.macro-legend .legend-dot { width:10px; height:10px; border-radius:3px; }
+
+/* ═══════════ SUPORTE / MODAL ═══════════ */
+.support-fab {
+  position:fixed; bottom:28px; right:28px; z-index:90;
+  width:64px; height:64px; border-radius:50%;
+  background:linear-gradient(135deg,var(--red),var(--red-dark));
+  border:none; color:#fff;
+  font-size:1.8rem;
+  cursor:pointer;
+  box-shadow:0 6px 28px var(--red-glow);
+  transition:transform .25s, box-shadow .25s;
+  display:flex; align-items:center; justify-content:center;
+  animation:popIn .4s .8s both;
+}
+.support-fab:hover { transform:scale(1.1); box-shadow:0 8px 36px var(--red-glow); }
+@keyframes popIn { from{transform:scale(0);opacity:0} to{transform:scale(1);opacity:1} }
+.support-fab .pulse-ring {
+  position:absolute; inset:-4px; border-radius:50%;
+  border:2px solid var(--red);
+  animation:ringPulse 2s infinite;
+}
+@keyframes ringPulse { 0%{transform:scale(1);opacity:.6} 100%{transform:scale(1.4);opacity:0} }
+
+/* modal */
+.modal-overlay {
+  display:none;
+  position:fixed; inset:0; z-index:200;
+  background:rgba(0,0,0,.7);
+  backdrop-filter:blur(4px);
+  align-items:flex-end; justify-content:center;
+}
+.modal-overlay.open { display:flex; }
+@media(min-width:600px){.modal-overlay.open{align-items:center;}}
+.modal {
+  background:var(--gray);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:20px 20px 0 0;
+  width:100%; max-width:520px;
+  max-height:85vh; overflow-y:auto;
+  animation:slideUp .35s ease;
+}
+@media(min-width:600px){ .modal { border-radius:20px; } }
+@keyframes slideUp { from{transform:translateY(60px);opacity:0} to{transform:translateY(0);opacity:1} }
+.modal-header {
+  padding:24px 22px 16px;
+  display:flex; align-items:center; justify-content:space-between;
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
+.modal-header h3 { font-family:'Oswald',sans-serif; font-size:1.2rem; letter-spacing:2px; text-transform:uppercase; }
+.modal-header button { background:none; border:none; color:var(--text-dim); font-size:1.5rem; cursor:pointer; }
+.modal-header button:hover { color:#fff; }
+.modal-body { padding:22px; }
+.support-tabs { display:flex; gap:6px; margin-bottom:20px; }
+.support-tabs button {
+  flex:1; padding:8px 0; border-radius:8px;
+  background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.08);
+  color:var(--text-dim); font-size:.82rem; font-weight:600;
+  letter-spacing:1px; cursor:pointer; transition:.2s;
+  font-family:'Rajdhani',sans-serif;
+}
+.support-tabs button.active, .support-tabs button:hover { background:rgba(230,57,70,.15); color:#fff; border-color:var(--red); }
+.support-panel { display:none; }
+.support-panel.active { display:block; }
+.faq-item {
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(255,255,255,.06);
+  border-radius:10px; margin-bottom:8px; overflow:hidden;
+}
+.faq-q {
+  padding:14px 16px; cursor:pointer;
+  display:flex; justify-content:space-between; align-items:center;
+  font-weight:600; font-size:.93rem;
+  transition:background .2s;
+}
+.faq-q:hover { background:rgba(255,255,255,.04); }
+.faq-q .faq-arrow { transition:transform .3s; font-size:1rem; color:var(--red); }
+.faq-q .faq-arrow.open { transform:rotate(180deg); }
+.faq-a {
+  max-height:0; overflow:hidden; transition:max-height .35s ease;
+  padding:0 16px;
+}
+.faq-a.open { max-height:200px; padding-bottom:14px; }
+.faq-a p { color:var(--text-dim); font-size:.88rem; line-height:1.6; }
+
+/* chat area */
+.chat-wrap { display:flex; flex-direction:column; gap:10px; }
+.chat-input-row { display:flex; gap:8px; }
+.chat-input-row input {
+  flex:1; background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:10px; padding:10px 14px;
+  color:#fff; font-family:'Rajdhani',sans-serif; font-size:.92rem;
+  outline:none; transition:border .2s;
+}
+.chat-input-row input:focus { border-color:var(--red); }
+.chat-input-row button {
+  background:linear-gradient(135deg,var(--red),var(--red-dark));
+  border:none; border-radius:10px;
+  width:44px; color:#fff; font-size:1.2rem; cursor:pointer;
+  transition:transform .15s;
+}
+.chat-input-row button:hover { transform:scale(1.05); }
+.chat-msgs { display:flex; flex-direction:column; gap:8px; max-height:180px; overflow-y:auto; }
+.chat-msg { padding:10px 13px; border-radius:10px; font-size:.87rem; line-height:1.5; }
+.chat-msg.bot { background:rgba(230,57,70,.1); border:1px solid rgba(230,57,70,.2); color:var(--text); align-self:flex-start; }
+.chat-msg.user { background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.1); color:var(--text-dim); align-self:flex-end; }
+.quick-qs { display:flex; gap:6px; flex-wrap:wrap; }
+.quick-qs button {
+  background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.1);
+  border-radius:18px; padding:5px 12px;
+  color:var(--text-dim); font-size:.78rem; cursor:pointer;
+  transition:.2s; font-family:'Rajdhani',sans-serif; font-weight:600;
+}
+.quick-qs button:hover { border-color:var(--red); color:#fff; background:rgba(230,57,70,.1); }
+
+/* ═══════════ STATS STRIP ═══════════ */
+.stats-strip {
+  display:flex; justify-content:center; gap:40px; flex-wrap:wrap;
+  max-width:900px; margin:0 auto; padding:50px 20px;
+}
+.stat-item { text-align:center; }
+.stat-item .stat-num {
+  font-family:'Oswald',sans-serif;
+  font-size:2.2rem; font-weight:700;
+  background:linear-gradient(135deg,#fff,var(--red));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+}
+.stat-item .stat-lbl { color:var(--text-dim); font-size:.82rem; letter-spacing:1.5px; text-transform:uppercase; margin-top:4px; }
+
+/* ═══════════ FOOTER ═══════════ */
+footer {
+  background:#050505;
+  border-top:1px solid rgba(255,255,255,.05);
+  padding:40px 24px; text-align:center;
+}
+footer p { color:var(--text-dim); font-size:.82rem; }
+footer .footer-logo {
+  font-family:'Oswald',sans-serif;
+  font-size:1.2rem; letter-spacing:6px;
+  background:linear-gradient(90deg,#ffffff 0%,#ffffff 25%,var(--red) 100%);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  background-clip:text;
+  margin-bottom:10px;
+}
+
+/* ═══════════ MOBILE NAV ═══════════ */
+.mobile-nav {
+  display:none; position:fixed; top:62px; left:0; right:0; z-index:99;
+  background:rgba(10,10,10,.95); backdrop-filter:blur(16px);
+  border-bottom:1px solid rgba(230,57,70,.18);
+  flex-direction:column; gap:4px; padding:16px;
+}
+.mobile-nav.open { display:flex; }
+.mobile-nav a {
+  color:var(--text-dim); text-decoration:none;
+  font-weight:600; font-size:.9rem; letter-spacing:1.5px;
+  text-transform:uppercase; padding:10px 16px; border-radius:8px;
+  transition:.2s;
+}
+.mobile-nav a:hover, .mobile-nav a.active { background:rgba(230,57,70,.12); color:#fff; }
+
+/* ═══════════ RESPONSIVE ═══════════ */
+@media(max-width:680px){
+  .nav-links { display:none; }
+  .hamburger { display:flex; }
+  .hero { height:auto; min-height:calc(100vh - 62px); padding:60px 0 80px; }
+  .scroll-hint { display:none; }
+  section { padding:60px 18px; }
+  .stats-strip { gap:24px; }
+}
+
+/* scrollbar */
+::-webkit-scrollbar { width:6px; }
+::-webkit-scrollbar-track { background:transparent; }
+::-webkit-scrollbar-thumb { background:var(--gray-light); border-radius:3px; }
+::-webkit-scrollbar-thumb:hover { background:var(--red-dark); }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo-wrap"><div class="logo-text">KYKLE</div><div class="logo-sub">Performance Studio</div></div>
+  <div class="nav-links">
+    <a href="#" class="active" onclick="goPage('home',this)">Home</a>
+    <a href="#" onclick="goPage('treinos',this)">Treinos</a>
+    <a href="#" onclick="goPage('dieta',this)">Dieta</a>
+  </div>
+  <div class="hamburger" onclick="toggleMobileNav()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+<div class="mobile-nav" id="mobileNav">
+  <a href="#" class="active" onclick="goPage('home',this);closeMobile()">Home</a>
+  <a href="#" onclick="goPage('treinos',this);closeMobile()">Treinos</a>
+  <a href="#" onclick="goPage('dieta',this);closeMobile()">Dieta</a>
+</div>
+
+<!-- ══════ PAGE: HOME ══════ -->
+<div class="page active" id="page-home">
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-bg-glow"></div>
+    <div class="hero-bg-glow2"></div>
+    <div class="hero-content">
+      <div class="hero-badge">⚡ Seu corpo. Sua transformação.</div>
+      <h1>Forje sua<br/><span class="highlight">Força</span></h1>
+      <p>Treinos personalizados para cada biótipo, cronômetro integrado e nutrição otimizada — tudo que você precisa em um lugar.</p>
+      <div class="hero-btns">
+        <button class="btn-primary" onclick="goPage('treinos',document.querySelector('.nav-links a:nth-child(2)'))">Começar Agora</button>
+        <button class="btn-secondary" onclick="document.getElementById('biotipos').scrollIntoView({behavior:'smooth'})">Meus Biotipos</button>
+      </div>
+    </div>
+    <div class="scroll-hint">⌄</div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-strip">
+    <div class="stat-item"><div class="stat-num">3</div><div class="stat-lbl">Biotipos</div></div>
+    <div class="stat-item"><div class="stat-num">12+</div><div class="stat-lbl">Treinos</div></div>
+    <div class="stat-item"><div class="stat-num">24/7</div><div class="stat-lbl">Suporte IA</div></div>
+    <div class="stat-item"><div class="stat-num">100%</div><div class="stat-lbl">Grátis</div></div>
+  </div>
+
+  <!-- BIOTIPOS -->
+  <section id="biotipos" style="background:linear-gradient(180deg,#0a0a0a,#0e0e12);">
+    <div class="section-title">
+      <h2>Seu <span class="red">Biótipo</span></h2>
+      <p>Escolha seu tipo de corpo e veja os treinos ideal para você</p>
+      <div class="line"></div>
+    </div>
+    <div class="biotype-cards">
+      <!-- Ectomorfo -->
+      <div class="biotype-card" onclick="toggleCard(this)">
+        <div class="card-top">
+          <div class="card-icon">🔥</div>
+          <h3>Ectomorfo</h3>
+          <p>Corpo magro, metabolismo rápido e dificuldade de ganhar massa.</p>
+          <span class="card-tag">Ganho de Massa</span>
+        </div>
+        <div class="card-expand">
+          <ul>
+            <li><span class="dot"></span>Agachamento com carga — 4×8 reps</li>
+            <li><span class="dot"></span>Supino com halter — 4×10 reps</li>
+            <li><span class="dot"></span>Remada com cabo — 3×12 reps</li>
+            <li><span class="dot"></span>Elevação de panturrilha — 4×15 reps</li>
+            <li><span class="dot"></span>Flexão de cotovelo — 3×10 reps</li>
+          </ul>
+        </div>
+      </div>
+      <!-- Mesomorfo -->
+      <div class="biotype-card" onclick="toggleCard(this)">
+        <div class="card-top">
+          <div class="card-icon">⚡</div>
+          <h3>Mesomorfo</h3>
+          <p>Corpo atlético, proporcionado — responde bem aos treinos.</p>
+          <span class="card-tag">Definição + Força</span>
+        </div>
+        <div class="card-expand">
+          <ul>
+            <li><span class="dot"></span>Agachamento com barra — 4×6 reps</li>
+            <li><span class="dot"></span>Supino inclinado — 4×8 reps</li>
+            <li><span class="dot"></span>Pull-up — 3×10 reps</li>
+            <li><span class="dot"></span>Tricep dips — 3×12 reps</li>
+            <li><span class="dot"></span>Plank — 3×45 seg</li>
+          </ul>
+        </div>
+      </div>
+      <!-- Endomorfo -->
+      <div class="biotype-card" onclick="toggleCard(this)">
+        <div class="card-top">
+          <div class="card-icon">💎</div>
+          <h3>Endomorfo</h3>
+          <p>Quadro mais largo, tendência a acumular gordura — foco em queima.</p>
+          <span class="card-tag">Queima de Gordura</span>
+        </div>
+        <div class="card-expand">
+          <ul>
+            <li><span class="dot"></span>Burpees — 3×12 reps</li>
+            <li><span class="dot"></span>Lunges com halteres — 3×10 cada</li>
+            <li><span class="dot"></span>Mountain climbers — 3×30 seg</li>
+            <li><span class="dot"></span>Supino com halteres — 3×12 reps</li>
+            <li><span class="dot"></span>Agachamento sumo — 4×15 reps</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CRONÔMETRO -->
+  <section class="timer-section">
+    <div class="section-title">
+      <h2>Cronômetro <span class="red">Integrado</span></h2>
+      <p>Controle seu descanso e tempo de exercício com precisão</p>
+      <div class="line"></div>
+    </div>
+    <div class="timer-wrap">
+      <div class="timer-ring-wrap">
+        <svg width="240" height="240">
+          <defs>
+            <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#e63946"/>
+              <stop offset="100%" stop-color="#ff6b6b"/>
+            </linearGradient>
+          </defs>
+          <circle class="timer-ring-bg" cx="120" cy="120" r="104"/>
+          <circle class="timer-ring-fg" id="timerRing" cx="120" cy="120" r="104"
+                  stroke-dasharray="653.45" stroke-dashoffset="0"/>
+        </svg>
+        <div class="timer-display">
+          <div class="label" id="timerLabel">DESCANSO</div>
+          <div class="time" id="timerDisplay">01:30</div>
+        </div>
+      </div>
+      <div class="timer-controls">
+        <button onclick="timerStart()" id="btnPlay" class="active-btn" title="Play">▶</button>
+        <button onclick="timerPause()" id="btnPause" title="Pausar">⏸</button>
+        <button onclick="timerReset()" title="Resetar">↺</button>
+      </div>
+      <div class="timer-presets">
+        <button onclick="setPreset(30,'DESCANSO')">30s</button>
+        <button onclick="setPreset(60,'DESCANSO')">1 min</button>
+        <button onclick="setPreset(90,'DESCANSO')" id="preset90">1:30</button>
+        <button onclick="setPreset(120,'DESCANSO')">2 min</button>
+        <button onclick="setPreset(180,'EXERCÍCIO')">3 min</button>
+        <button onclick="setPreset(300,'EXERCÍCIO')">5 min</button>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-logo">KYKLE</div>
+    <p>© 2025 Kykle — Transforme seu corpo, transforme sua vida.</p>
+  </footer>
+</div>
+
+<!-- ══════ PAGE: TREINOS ══════ -->
+<div class="page" id="page-treinos">
+  <div class="planner-header">
+    <h1>Planner de <span class="red">Treinos</span></h1>
+    <p>Escolha seu objetivo e encontre o treino perfeito</p>
+  </div>
+  <div class="filter-bar">
+    <button class="filter-btn active" onclick="filterWorkouts('todos',this)">Todos</button>
+    <button class="filter-btn" onclick="filterWorkouts('peito',this)">Peito</button>
+    <button class="filter-btn" onclick="filterWorkouts('costas',this)">Costas</button>
+    <button class="filter-btn" onclick="filterWorkouts('pernas',this)">Pernas</button>
+    <button class="filter-btn" onclick="filterWorkouts('ombros',this)">Ombros</button>
+    <button class="filter-btn" onclick="filterWorkouts('abdominal',this)">Abdominal</button>
+    <button class="filter-btn" onclick="filterWorkouts('full',this)">Full Body</button>
+  </div>
+  <div class="workout-grid" id="workoutGrid"></div>
+  <footer>
+    <div class="footer-logo">KYKLE</div>
+    <p>© 2025 Kykle</p>
+  </footer>
+</div>
+
+<!-- ══════ PAGE: DIETA ══════ -->
+<div class="page" id="page-dieta">
+  <div class="diet-header">
+    <h1>Plano de <span class="red">Nutrição</span></h1>
+    <p>Alimentação que acelera seus resultados</p>
+  </div>
+  <!-- Macros -->
+  <div class="macro-bar-wrap">
+    <div class="macro-card">
+      <h3>📊 Distribuição de Macronutrientes (por dia)</h3>
+      <div class="macro-row">
+        <div class="macro-item"><div class="macro-val prot">180g</div><div class="macro-lbl">Proteína</div></div>
+        <div class="macro-item"><div class="macro-val carb">250g</div><div class="macro-lbl">Carboidratos</div></div>
+        <div class="macro-item"><div class="macro-val gord">65g</div><div class="macro-lbl">Gordura</div></div>
+      </div>
+      <div class="macro-bars">
+        <div class="bar prot" style="width:32%"></div>
+        <div class="bar carb" style="width:45%"></div>
+        <div class="bar gord" style="width:23%"></div>
+      </div>
+      <div class="macro-legend">
+        <span><span class="legend-dot" style="background:#6fa8dc"></span>Proteína 32%</span>
+        <span><span class="legend-dot" style="background:var(--gold)"></span>Carbo 45%</span>
+        <span><span class="legend-dot" style="background:var(--red)"></span>Gordura 23%</span>
+      </div>
+    </div>
+  </div>
+  <!-- Cards -->
+  <div class="diet-grid">
+    <!-- Proteinas -->
+    <div class="diet-card">
+      <div class="dc-header">
+        <div class="dc-icon green">🥩</div>
+        <div><h3>Proteínas</h3><p>Base da construção muscular</p></div>
+      </div>
+      <div class="dc-body"><ul>
+        <li><span class="dc-dot green"></span>Frango grelhado — 165g de proteína por 100g</li>
+        <li><span class="dc-dot green"></span>Peixe (tilápia) — leve e alto em proteína</li>
+        <li><span class="dc-dot green"></span>Ovo cozido — 6g de proteína por unidade</li>
+        <li><span class="dc-dot green"></span>Carne bovina magra — rica em ferro + proteína</li>
+        <li><span class="dc-dot green"></span>Iogurte natural — opção lanche saudável</li>
+      </ul></div>
+    </div>
+    <!-- Carbos -->
+    <div class="diet-card">
+      <div class="dc-header">
+        <div class="dc-icon orange">🍚</div>
+        <div><h3>Carboidratos</h3><p>Energia para seu treino</p></div>
+      </div>
+      <div class="dc-body"><ul>
+        <li><span class="dc-dot orange"></span>Arroz integral — absorção lenta e sustentada</li>
+        <li><span class="dc-dot orange"></span>Batata doce — rica em fibra e vitaminas</li>
+        <li><span class="dc-dot orange"></span>Aveia — ótimo para o café da manhã</li>
+        <li><span class="dc-dot orange"></span>Banana — potássio + energia rápida</li>
+        <li><span class="dc-dot orange"></span>Massa integral — boa fonte pré-treino</li>
+      </ul></div>
+    </div>
+    <!-- Gorduras -->
+    <div class="diet-card">
+      <div class="dc-header">
+        <div class="dc-icon red">🥑</div>
+        <div><h3>Gorduras Boas</h3><p>Hormônios e absorção</p></div>
+      </div>
+      <div class="dc-body"><ul>
+        <li><span class="dc-dot red"></span>Abacate — ácidos graxos saudáveis</li>
+        <li><span class="dc-dot red"></span>Azeite de oliva — anti-inflamatório</li>
+        <li><span class="dc-dot red"></span>Castanhas — gordura + minerais</li>
+        <li><span class="dc-dot red"></span>Salmão — omega-3 essencial</li>
+        <li><span class="dc-dot red"></span>Semente de chia — fibra e gordura saudável</li>
+      </ul></div>
+    </div>
+    <!-- Hidratação -->
+    <div class="diet-card">
+      <div class="dc-header">
+        <div class="dc-icon blue">💧</div>
+        <div><h3>Hidratação</h3><p>Fundamental para performance</p></div>
+      </div>
+      <div class="dc-body"><ul>
+        <li><span class="dc-dot blue"></span>Água com limão — vitamina C no início do dia</li>
+        <li><span class="dc-dot blue"></span>Água com melancia — leve e refrescante</li>
+        <li><span class="dc-dot blue"></span>Kokô water — eletrólitos naturais</li>
+        <li><span class="dc-dot blue"></span>Chá verde — antioxidante sem caloria</li>
+        <li><span class="dc-dot blue"></span>Mínimo 2.5L por dia durante exercícios</li>
+      </ul></div>
+    </div>
+    <!-- Suplementos -->
+    <div class="diet-card">
+      <div class="dc-header">
+        <div class="dc-icon green">💊</div>
+        <div><h3>Suplementos</h3><p>Complemento inteligente</p></div>
+      </div>
+      <div class="dc-body"><ul>
+        <li><span class="dc-dot green"></span>Whey Protein — pós-treino ideal</li>
+        <li><span class="dc-dot green"></span>Creatina — performance + força</li>
+        <li><span class="dc-dot green"></span>Vitamina D — saúde muscular</li>
+        <li><span class="dc-dot green"></span>Magnésio — recuperação muscular</li>
+        <li><span class="dc-dot green"></span>BCAA — aminoácidos essenciais</li>
+      </ul></div>
+    </div>
+    <!-- Lanches -->
+    <div class="diet-card">
+      <div class="dc-header">
+        <div class="dc-icon orange">🍎</div>
+        <div><h3>Lanches Saudáveis</h3><p>Entre as refeições</p></div>
+      </div>
+      <div class="dc-body"><ul>
+        <li><span class="dc-dot orange"></span>Maçã + manteiga de amendoim</li>
+        <li><span class="dc-dot orange"></span>Ovos cozidos + legumes</li>
+        <li><span class="dc-dot orange"></span>Iogurte natural + granola sem açúcar</li>
+        <li><span class="dc-dot orange"></span>Ricota com frutas</li>
+        <li><span class="dc-dot orange"></span>Nozes e amêndoas (porção pequena)</li>
+      </ul></div>
+    </div>
+  </div>
+  <footer>
+    <div class="footer-logo">KYKLE</div>
+    <p>© 2025 Kykle</p>
+  </footer>
+</div>
+
+<!-- ══════ SUPPORT FAB ══════ -->
+<button class="support-fab" onclick="openSupport()" title="Suporte">
+  <div class="pulse-ring"></div>
+  🤝
+</button>
+
+<!-- ══════ SUPPORT MODAL ══════ -->
+<div class="modal-overlay" id="supportOverlay" onclick="closeSupportOutside(event)">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>🤝 Centro de Suporte</h3>
+      <button onclick="closeSupport()">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="support-tabs">
+        <button class="active" onclick="switchTab('faq',this)">FAQ</button>
+        <button onclick="switchTab('chat',this)">Chat IA</button>
+      </div>
+      <!-- FAQ -->
+      <div class="support-panel active" id="panel-faq">
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)"><span>Como escolher meu biótipo?</span><span class="faq-arrow">▼</span></div>
+          <div class="faq-a"><p>Ectomorfo: corpo fino e magro. Mesomorfo: corpo atlético e proporcionado. Endomorfo: quadro mais largo com tendência a acumular gordura. Na dúvida, consulte um profissional de saúde.</p></div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)"><span>Qual a frequência ideal de treino?</span><span class="faq-arrow">▼</span></div>
+          <div class="faq-a"><p>Para iniciantes: 3x por semana com descanso entre os dias. Intermediários: 4-5x. Avançados: até 6x, sempre com pelo menos 1 dia de descanso semanal.</p></div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)"><span>Quanto tempo de descanso entre séries?</span><span class="faq-arrow">▼</span></div>
+          <div class="faq-a"><p>Exercícios de força (pesado, menos reps): 2-3 minutos. Exercícios de hipertrofia: 60-90 segundos. Exercícios de resistência/endurance: 30-45 segundos.</p></div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)"><span>Preciso fazer aquecimento antes?</span><span class="faq-arrow">▼</span></div>
+          <div class="faq-a"><p>Sim! 5-10 minutos de aquecimento (caminhada, pulando corda ou exercícios leves) são essenciais para evitar lesões e preparar o corpo.</p></div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)"><span>Como montar minha dieta?</span><span class="faq-arrow">▼</span></div>
+          <div class="faq-a"><p>Foque em proteínas magras, carboidratos complexos e gorduras saudáveis. Divida em 5-6 refeições menores ao longo do dia. Use a página de Dieta do app como guia base.</p></div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)"><span>O que é Progressive Overload?</span><span class="faq-arrow">▼</span></div>
+          <div class="faq-a"><p>É o princípio de aumentar gradualmente a carga, volume ou intensidade dos exercícios ao longo do tempo. Essencial para crescimento muscular contínuo.</p></div>
+        </div>
+      </div>
+      <!-- CHAT -->
+      <div class="support-panel" id="panel-chat">
+        <div class="chat-msgs" id="chatMsgs">
+          <div class="chat-msg bot">Olá! 👋 Sou o assistente do <strong>Kykle</strong>. Posso te ajudar com dúvidas sobre treino, dieta ou exercícios. Pergunte à vontade!</div>
+        </div>
+        <div class="quick-qs" style="margin:12px 0 10px">
+          <button onclick="sendQuick('Como queimar gordura mais rápido?')">Queima de gordura</button>
+          <button onclick="sendQuick('Qual exercício é melhor para peito?')">Melhores exercícios</button>
+          <button onclick="sendQuick('Como ganhar massa muscular?')">Ganho de massa</button>
+        </div>
+        <div class="chat-input-row">
+          <input type="text" id="chatInput" placeholder="Sua pergunta..." onkeydown="if(event.key==='Enter')sendChat()"/>
+          <button onclick="sendChat()">▶</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════ NAVIGATION ═══════
+function goPage(id, el){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  document.querySelectorAll('.nav-links a, .mobile-nav a').forEach(a=>a.classList.remove('active'));
+  if(el) el.classList.add('active');
+  // sync mobile nav
+  document.querySelectorAll('.mobile-nav a').forEach((a,i)=>{
+    a.classList.remove('active');
+  });
+  const idx = {home:0,treinos:1,dieta:2};
+  const mLinks = document.querySelectorAll('.mobile-nav a');
+  if(mLinks[idx[id]]) mLinks[idx[id]].classList.add('active');
+  // sync desktop
+  const dLinks = document.querySelectorAll('.nav-links a');
+  if(dLinks[idx[id]]) dLinks[idx[id]].classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function toggleMobileNav(){ document.getElementById('mobileNav').classList.toggle('open'); }
+function closeMobile(){ document.getElementById('mobileNav').classList.remove('open'); }
+
+// ═══════ BIOTYPE CARDS ═══════
+function toggleCard(card){
+  const exp = card.querySelector('.card-expand');
+  exp.classList.toggle('open');
+}
+
+// ═══════ TIMER ═══════
+let timerTotal=90, timerLeft=90, timerRunning=false, timerInterval=null, timerLabel='DESCANSO';
+const circumference = 2*Math.PI*104; // 653.45
+document.getElementById('timerRing').style.strokeDasharray=circumference;
+document.getElementById('timerRing').style.strokeDashoffset=0;
+
+function updateTimerUI(){
+  const m=Math.floor(timerLeft/60), s=timerLeft%60;
+  document.getElementById('timerDisplay').textContent=(m<10?'0':'')+m+':'+(s<10?'0':'')+s;
+  document.getElementById('timerLabel').textContent=timerLabel;
+  const pct=timerLeft/timerTotal;
+  document.getElementById('timerRing').style.strokeDashoffset=circumference*(1-pct);
+}
+function timerStart(){
+  if(timerRunning)return;
+  timerRunning=true;
+  document.getElementById('btnPlay').classList.add('active-btn');
+  document.getElementById('btnPause').classList.remove('active-btn');
+  timerInterval=setInterval(()=>{
+    timerLeft--;
+    if(timerLeft<=0){ timerLeft=0; updateTimerUI(); clearInterval(timerInterval); timerRunning=false; playBeep(); }
+    updateTimerUI();
+  },1000);
+}
+function timerPause(){
+  if(!timerRunning)return;
+  timerRunning=false;
+  clearInterval(timerInterval);
+  document.getElementById('btnPause').classList.add('active-btn');
+  document.getElementById('btnPlay').classList.remove('active-btn');
+}
+function timerReset(){
+  timerRunning=false;
+  clearInterval(timerInterval);
+  timerLeft=timerTotal;
+  document.getElementById('btnPlay').classList.add('active-btn');
+  document.getElementById('btnPause').classList.remove('active-btn');
+  updateTimerUI();
+}
+function setPreset(sec,lbl){
+  timerRunning=false;
+  clearInterval(timerInterval);
+  timerTotal=sec; timerLeft=sec; timerLabel=lbl;
+  document.getElementById('btnPlay').classList.add('active-btn');
+  document.getElementById('btnPause').classList.remove('active-btn');
+  updateTimerUI();
+}
+function playBeep(){
+  try{
+    const ctx=new(window.AudioContext||window.webkitAudioContext)();
+    const osc=ctx.createOscillator();
+    osc.type='sine'; osc.frequency.setValueAtTime(880,ctx.currentTime);
+    osc.connect(ctx.destination);
+    osc.start(); osc.stop(ctx.currentTime+0.45);
+  }catch(e){}
+}
+updateTimerUI();
+
+// ═══════ WORKOUTS DATA ═══════
+const workouts=[
+  {cat:'peito',name:'Peito Completo',icon:'🏋️',diff:'hard',bio:'Mesomorfo',time:'45 min',cal:'320 kcal',exercises:['Supino plano — 4×8','Supino inclinado — 3×10','Flexão de halteres — 3×12','Cross-over cabo — 3×15']},
+  {cat:'peito',name:'Peito Iniciante',icon:'💪',diff:'easy',bio:'Ectomorfo',time:'35 min',cal:'220 kcal',exercises:['Supino com halteres — 3×10','Flexão no chão — 3×12','Push-up inclinado — 3×15','Fly com cabo — 3×12']},
+  {cat:'costas',name:'Costas & Dorsal',icon:'🔽',diff:'hard',bio:'Mesomorfo',time:'50 min',cal:'380 kcal',exercises:['Pull-up — 4×8','Remada com cabo — 4×10','Lat pull-down — 3×12','Remada inclinada — 3×10']},
+  {cat:'costas',name:'Costas Funcional',icon:'🌀',diff:'easy',bio:'Endomorfo',time:'40 min',cal:'280 kcal',exercises:['Superman — 3×15','Remada com haltere — 3×12','Lat pull-down — 3×10','Alongamento — 3×30s']},
+  {cat:'pernas',name:'Dia de Pernas',icon:'🦵',diff:'hard',bio:'Todos',time:'55 min',cal:'450 kcal',exercises:['Agachamento — 4×8','Leg press — 4×10','Extensão de joelho — 3×12','Panturrilha — 4×15']},
+  {cat:'pernas',name:'Pernas Queima',icon:'🔥',diff:'easy',bio:'Endomorfo',time:'40 min',cal:'350 kcal',exercises:['Lunges — 3×12 cada','Squat sumo — 4×15','Step-up — 3×12','Calf raise — 3×20']},
+  {cat:'ombros',name:'Ombros Definidos',icon:'⬆️',diff:'hard',bio:'Mesomorfo',time:'40 min',cal:'290 kcal',exercises:['Press ombro — 4×8','Elevação lateral — 3×12','Elevação frontal — 3×12','Tração Arnold — 3×10']},
+  {cat:'ombros',name:'Ombros Leve',icon:'✨',diff:'easy',bio:'Ectomorfo',time:'30 min',cal:'180 kcal',exercises:['Elevação lateral — 3×12','Press dumbbell — 3×10','Lateral raise cabo — 3×15','Shrugs — 3×12']},
+  {cat:'abdominal',name:'Abdominal Intenso',icon:'🔻',diff:'hard',bio:'Todos',time:'25 min',cal:'200 kcal',exercises:['Plank — 3×60s','Crunches — 4×20','Leg raises — 3×15','Russian twist — 3×20']},
+  {cat:'abdominal',name:'Core Iniciante',icon:'⭕',diff:'easy',bio:'Ectomorfo',time:'20 min',cal:'120 kcal',exercises:['Plank — 3×30s','Crunches — 3×15','Bicycle — 3×20','Superman — 3×15']},
+  {cat:'full',name:'Full Body HIIT',icon:'⚡',diff:'hard',bio:'Endomorfo',time:'35 min',cal:'500 kcal',exercises:['Burpees — 3×10','Squat jump — 3×12','Push-up — 3×15','Mountain climber — 3×30s']},
+  {cat:'full',name:'Full Body Iniciante',icon:'🌟',diff:'easy',bio:'Todos',time:'45 min',cal:'260 kcal',exercises:['Agachamento — 3×12','Push-up joelhos — 3×10','Remada — 3×12','Plank — 3×30s']},
+];
+
+function renderWorkouts(filter='todos'){
+  const grid=document.getElementById('workoutGrid');
+  grid.innerHTML='';
+  workouts.filter(w=> filter==='todos' || w.cat===filter).forEach(w=>{
+    const exHtml=w.exercises.map((e,i)=>`<div class="ex-item"><span class="ex-num">${i+1}</span>${e}</div>`).join('');
+    grid.innerHTML+=`
+      <div class="workout-card">
+        <div class="wc-header">
+          <div class="wc-icon">${w.icon}</div>
+          <span class="wc-badge ${w.diff}">${w.diff==='hard'?'Avançado':w.diff==='easy'?'Iniciante':'Médio'}</span>
+        </div>
+        <div style="padding:0 20px 10px">
+          <h4>${w.name}</h4>
+          <p>${w.bio}</p>
+        </div>
+        <div class="wc-meta">
+          <span>⏱ <strong>${w.time}</strong></span>
+          <span>🔥 <strong>${w.cal}</strong></span>
+        </div>
+        <div class="wc-exercises">${exHtml}</div>
+      </div>`;
+  });
+}
+renderWorkouts();
+
+function filterWorkouts(cat,btn){
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderWorkouts(cat);
+}
+
+// ═══════ SUPPORT MODAL ═══════
+function openSupport(){ document.getElementById('supportOverlay').classList.add('open'); }
+function closeSupport(){ document.getElementById('supportOverlay').classList.remove('open'); }
+function closeSupportOutside(e){ if(e.target===document.getElementById('supportOverlay')) closeSupport(); }
+function switchTab(tab,btn){
+  document.querySelectorAll('.support-tabs button').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.support-panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('panel-'+tab).classList.add('active');
+}
+function toggleFaq(el){
+  const a=el.nextElementSibling;
+  const arr=el.querySelector('.faq-arrow');
+  a.classList.toggle('open');
+  arr.classList.toggle('open');
+}
+
+// ═══════ CHAT AI (simulated) ═══════
+const chatResponses = {
+  "como queimar gordura mais rápido?":[
+    "🔥 Para queimar gordura mais rápido, combine:",
+    "• Treinos HIIT 3x por semana (10-20 min intensos)",
+    "• Deficit calórico moderado (300-500 kcal abaixo do gasto)",
+    "• Priorize proteínas em cada refeição para manter massa muscular",
+    "• Mantenha-se hidratado — a água acelera o metabolismo!"
+  ].join("\n"),
+  "qual exercício é melhor para peito?":[
+    "💪 Os melhores para peito:",
+    "• Supino plano — o clássico, ativa toda a região",
+    "• Supino inclinado — foca na parte superior",
+    "• Flexões (push-ups) — sem equipamento e muito efetivo",
+    "• Fly com cabo — ótimo para definição"
+  ].join("\n"),
+  "como ganhar massa muscular?":[
+    "🏋️ Dicas para ganho de massa:",
+    "• Treine com cargas progressivas (progressive overload)",
+    "• Consuma 1.6-2.2g de proteína por kg do seu peso",
+    "• Durma pelo menos 7-8 horas por noite",
+    "• Mantenha um leve excesso calórico (200-300 kcal)"
+  ].join("\n"),
+  default:"Boa pergunta! 🤔 Para uma resposta mais precisa, te recomendo consultar um profissional de educação física ou nutricionista. Mas posso te ajudar com informações gerais sobre treino e alimentação!"
+};
+
+function sendChat(){
+  const input=document.getElementById('chatInput');
+  const msg=input.value.trim();
+  if(!msg)return;
+  input.value='';
+  addMsg(msg,'user');
+  // find response
+  setTimeout(()=>{
+    const key=Object.keys(chatResponses).find(k=> msg.toLowerCase().includes(k.toLowerCase().replace('?','').slice(0,15)));
+    addMsg(chatResponses[key]||chatResponses.default,'bot');
+  },600);
+}
+function sendQuick(q){
+  document.getElementById('chatInput').value=q;
+  sendChat();
+}
+function addMsg(text,type){
+  const div=document.createElement('div');
+  div.className='chat-msg '+type;
+  div.innerHTML=text.replace(/\n/g,'<br>');
+  const container=document.getElementById('chatMsgs');
+  container.appendChild(div);
+  container.scrollTop=container.scrollHeight;
+}
+</script>
+</body>
+</html>
