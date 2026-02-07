@@ -171,6 +171,46 @@ nav {
 .btn-secondary:hover { border-color:var(--red); background:rgba(230,57,70,.08); }
 @keyframes fadeUp { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
 
+/* ─── CLICK ANIMATIONS ─── */
+@keyframes clickPulse { 0%{transform:scale(1)} 50%{transform:scale(0.95)} 100%{transform:scale(1)} }
+@keyframes slideInLeft { from{opacity:0;transform:translateX(-20px)} to{opacity:1;transform:translateX(0)} }
+@keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+
+.clickable-pulse { animation:clickPulse 0.3s ease; }
+.slide-in { animation:slideInLeft 0.4s ease both; }
+
+/* Enhanced hover states */
+.biotype-card, .workout-card, .diet-card, .faq-item {
+  transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+}
+.biotype-card:active, .workout-card:active, .diet-card:active {
+  transform:translateY(-2px) scale(0.98);
+}
+
+button, .btn-primary, .btn-secondary, .filter-btn, .timer-controls button {
+  transition:all .2s ease;
+  position:relative;
+  overflow:hidden;
+}
+button:active, .btn-primary:active, .btn-secondary:active {
+  transform:scale(0.96);
+}
+
+/* Ripple effect on buttons */
+button::before, .btn-primary::before, .btn-secondary::before {
+  content:'';
+  position:absolute;
+  top:50%; left:50%;
+  width:0; height:0;
+  border-radius:50%;
+  background:rgba(255,255,255,0.3);
+  transform:translate(-50%,-50%);
+  transition:width 0.4s, height 0.4s;
+}
+button:active::before, .btn-primary:active::before, .btn-secondary:active::before {
+  width:300px; height:300px;
+}
+
 /* scroll arrow */
 .scroll-hint {
   position:absolute; bottom:30px; left:50%; transform:translateX(-50%);
@@ -411,7 +451,89 @@ section { padding:80px 24px; }
   font-size:.72rem; font-weight:700; flex-shrink:0;
 }
 
-/* ═══════════ DIET PAGE ═══════════ */
+/* ═══════════ HOME WORKOUT PAGE ═══════════ */
+.home-workout-header {
+  background:linear-gradient(160deg,#0a0a1a,#0a0a0a 60%);
+  padding:80px 24px 50px; text-align:center;
+}
+.home-workout-header h1 { font-family:'Oswald',sans-serif; font-size:clamp(2rem,5vw,3rem); letter-spacing:3px; text-transform:uppercase; }
+.home-workout-header h1 .red { color:var(--red); }
+.home-workout-header p { color:var(--text-dim); margin-top:10px; max-width:600px; margin-left:auto; margin-right:auto; }
+
+.schedule-section { max-width:900px; margin:0 auto 60px; padding:0 20px; }
+.week-calendar {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(100px,1fr));
+  gap:10px; margin-bottom:40px;
+}
+.day-card {
+  background:var(--gray); border:1px solid rgba(255,255,255,.06);
+  border-radius:12px; padding:16px 12px; text-align:center;
+  transition:all .25s;
+}
+.day-card:hover { border-color:var(--red); transform:translateY(-3px); }
+.day-card.rest { opacity:.5; }
+.day-card .day-name { font-size:.7rem; color:var(--text-dim); letter-spacing:1.5px; text-transform:uppercase; margin-bottom:8px; }
+.day-card .day-workout {
+  font-family:'Oswald',sans-serif;
+  font-size:1.6rem; font-weight:700;
+  color:var(--red);
+}
+.day-card.rest .day-workout { color:var(--text-dim); }
+
+.home-workout-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+  gap:20px; max-width:1200px; margin:0 auto; padding:0 20px 80px;
+}
+.hw-card {
+  background:var(--gray); border:1px solid rgba(255,255,255,.06);
+  border-radius:16px; overflow:hidden;
+  transition:transform .25s, box-shadow .25s;
+}
+.hw-card:hover { transform:translateY(-4px); box-shadow:0 8px 30px rgba(230,57,70,.15); }
+.hw-card .hw-header {
+  padding:24px 22px 18px;
+  background:linear-gradient(135deg,rgba(230,57,70,.08),transparent);
+  border-bottom:1px solid rgba(230,57,70,.15);
+}
+.hw-card .hw-title {
+  font-family:'Oswald',sans-serif;
+  font-size:1.3rem; letter-spacing:1.5px; text-transform:uppercase;
+  margin-bottom:8px;
+}
+.hw-card .hw-meta {
+  display:flex; gap:14px; flex-wrap:wrap;
+  font-size:.78rem; color:var(--text-dim);
+}
+.hw-card .hw-meta span { display:flex; align-items:center; gap:5px; }
+.hw-card .hw-body { padding:0 22px 22px; }
+.hw-exercise {
+  padding:12px 0;
+  border-bottom:1px solid rgba(255,255,255,.05);
+  display:flex; align-items:flex-start; gap:12px;
+}
+.hw-exercise:last-child { border:none; }
+.hw-exercise .ex-num {
+  width:28px; height:28px; border-radius:8px;
+  background:linear-gradient(135deg,var(--red),var(--red-dark));
+  color:#fff; font-size:.8rem; font-weight:700;
+  display:flex; align-items:center; justify-content:center;
+  flex-shrink:0; box-shadow:0 2px 8px var(--red-glow);
+}
+.hw-exercise .ex-details { flex:1; }
+.hw-exercise .ex-name { font-weight:600; font-size:.95rem; margin-bottom:2px; }
+.hw-exercise .ex-reps { color:var(--text-dim); font-size:.82rem; }
+
+.info-badge {
+  display:inline-block;
+  background:rgba(76,175,80,.12); border:1px solid rgba(76,175,80,.3);
+  color:#66bb6a;
+  font-size:.75rem; font-weight:700;
+  letter-spacing:1.2px; text-transform:uppercase;
+  padding:4px 12px; border-radius:18px;
+  margin-top:8px;
+}
 .diet-header {
   background:linear-gradient(160deg,#0a1a0a,#0a0a0a 60%);
   padding:80px 24px 50px; text-align:center;
@@ -588,8 +710,9 @@ section { padding:80px 24px; }
 .chat-input-row button:hover { transform:scale(1.05); }
 .chat-msgs { display:flex; flex-direction:column; gap:8px; max-height:180px; overflow-y:auto; }
 .chat-msg { padding:10px 13px; border-radius:10px; font-size:.87rem; line-height:1.5; }
-.chat-msg.bot { background:rgba(230,57,70,.1); border:1px solid rgba(230,57,70,.2); color:var(--text); align-self:flex-start; }
-.chat-msg.user { background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.1); color:var(--text-dim); align-self:flex-end; }
+.chat-msg.bot { background:rgba(230,57,70,.1); border:1px solid rgba(230,57,70,.2); color:var(--text); align-self:flex-start; max-width:85%; }
+.chat-msg.user { background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.1); color:var(--text-dim); align-self:flex-end; max-width:85%; }
+.chat-msg.bot.typing { animation:pulse 1.5s ease-in-out infinite; }
 .quick-qs { display:flex; gap:6px; flex-wrap:wrap; }
 .quick-qs button {
   background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.1);
@@ -670,6 +793,7 @@ footer .footer-logo {
   <div class="nav-links">
     <a href="#" class="active" onclick="goPage('home',this)">Home</a>
     <a href="#" onclick="goPage('treinos',this)">Treinos</a>
+    <a href="#" onclick="goPage('casa',this)">Casa</a>
     <a href="#" onclick="goPage('dieta',this)">Dieta</a>
   </div>
   <div class="hamburger" onclick="toggleMobileNav()">
@@ -679,6 +803,7 @@ footer .footer-logo {
 <div class="mobile-nav" id="mobileNav">
   <a href="#" class="active" onclick="goPage('home',this);closeMobile()">Home</a>
   <a href="#" onclick="goPage('treinos',this);closeMobile()">Treinos</a>
+  <a href="#" onclick="goPage('casa',this);closeMobile()">Casa</a>
   <a href="#" onclick="goPage('dieta',this);closeMobile()">Dieta</a>
 </div>
 
@@ -836,6 +961,345 @@ footer .footer-logo {
     <button class="filter-btn" onclick="filterWorkouts('full',this)">Full Body</button>
   </div>
   <div class="workout-grid" id="workoutGrid"></div>
+  <footer>
+    <div class="footer-logo">KYKLE</div>
+    <p>© 2025 Kykle</p>
+  </footer>
+</div>
+
+<!-- ══════ PAGE: CASA (HOME WORKOUTS) ══════ -->
+<div class="page" id="page-casa">
+  <div class="home-workout-header">
+    <h1>Treinos em <span class="red">Casa</span></h1>
+    <p>Sem equipamento? Sem problema. Treinos efetivos que você pode fazer em qualquer lugar.</p>
+  </div>
+
+  <!-- Weekly Schedule -->
+  <div class="schedule-section">
+    <div class="section-title" style="margin-bottom:30px">
+      <h2>Calendário <span class="red">Semanal</span></h2>
+      <p>Plano AB - Maximize resultados com 4 dias de treino</p>
+      <div class="line"></div>
+    </div>
+    <div class="week-calendar">
+      <div class="day-card">
+        <div class="day-name">Segunda</div>
+        <div class="day-workout">A</div>
+      </div>
+      <div class="day-card">
+        <div class="day-name">Terça</div>
+        <div class="day-workout">B</div>
+      </div>
+      <div class="day-card rest">
+        <div class="day-name">Quarta</div>
+        <div class="day-workout">💤</div>
+      </div>
+      <div class="day-card">
+        <div class="day-name">Quinta</div>
+        <div class="day-workout">A</div>
+      </div>
+      <div class="day-card">
+        <div class="day-name">Sexta</div>
+        <div class="day-workout">B</div>
+      </div>
+      <div class="day-card rest">
+        <div class="day-name">Sábado</div>
+        <div class="day-workout">💤</div>
+      </div>
+      <div class="day-card rest">
+        <div class="day-name">Domingo</div>
+        <div class="day-workout">💤</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Home Workout Cards -->
+  <div class="home-workout-grid">
+    <!-- DIA A -->
+    <div class="hw-card">
+      <div class="hw-header">
+        <div class="hw-title">💪 DIA A — Peito / Ombro / Tríceps</div>
+        <div class="hw-meta">
+          <span>⏱ 30-40 min</span>
+          <span>🔥 280 kcal</span>
+          <span>⏳ 60-90s descanso</span>
+        </div>
+      </div>
+      <div class="hw-body">
+        <div class="hw-exercise">
+          <div class="ex-num">1</div>
+          <div class="ex-details">
+            <div class="ex-name">Flexão Normal</div>
+            <div class="ex-reps">3 séries × 8–15 reps</div>
+          </div>
+        </div>
+        <div class="hw-exercise">
+          <div class="ex-num">2</div>
+          <div class="ex-details">
+            <div class="ex-name">Flexão Inclinada</div>
+            <div class="ex-reps">3 séries × 10–15 reps</div>
+          </div>
+        </div>
+        <div class="hw-exercise">
+          <div class="ex-num">3</div>
+          <div class="ex-details">
+            <div class="ex-name">Mergulho entre Cadeiras</div>
+            <div class="ex-reps">3 séries × 8–12 reps</div>
+          </div>
+        </div>
+        <div class="hw-exercise">
+          <div class="ex-num">4</div>
+          <div class="ex-details">
+            <div class="ex-name">Flexão Fechada (mão mais junta)</div>
+            <div class="ex-reps">3 séries × 6–10 reps</div>
+          </div>
+        </div>
+        <div class="hw-exercise">
+          <div class="ex-num">5</div>
+          <div class="ex-details">
+            <div class="ex-name">Prancha</div>
+            <div class="ex-reps">3 séries × 30–40s</div>
+          </div>
+        </div>
+        <span class="info-badge">✅ Parte Superior</span>
+      </div>
+    </div>
+
+    <!-- DIA B -->
+    <div class="hw-card">
+      <div class="hw-header">
+        <div class="hw-title">🦵 DIA B — Perna / Core (Barriga)</div>
+        <div class="hw-meta">
+          <span>⏱ 25-35 min</span>
+          <span>🔥 320 kcal</span>
+          <span>⏳ 45-60s descanso</span>
+        </div>
+      </div>
+      <div class="hw-body">
+        <div class="hw-exercise">
+          <div class="ex-num">1</div>
+          <div class="ex-details">
+            <div class="ex-name">Agachamento</div>
+            <div class="ex-reps">3 séries × 20 reps</div>
+          </div>
+        </div>
+        <div class="hw-exercise">
+          <div class="ex-num">2</div>
+          <div class="ex-details">
+            <div class="ex-name">Agachamento na Parede</div>
+            <div class="ex-reps">3 séries × 40–60s</div>
+          </div>
+        </div>
+        <div class="hw-exercise">
+          <div class="ex-num">3</div>
+          <div class="ex-details">
+            <div class="ex-name">Elevação de Pernas</div>
+            <div class="ex-reps">3 séries × 12–15 reps</div>
+          </div>
+        </div>
+        <div class="hw-exercise">
+          <div class="ex-num">4</div>
+          <div class="ex-details">
+            <div class="ex-name">Abdominal</div>
+            <div class="ex-reps">3 séries × 20–25 reps</div>
+          </div>
+        </div>
+        <div class="hw-exercise">
+          <div class="ex-num">5</div>
+          <div class="ex-details">
+            <div class="ex-name">Polichinelo</div>
+            <div class="ex-reps">3 séries × 1 minuto</div>
+          </div>
+        </div>
+        <span class="info-badge">✅ Queima Gordura</span>
+      </div>
+    </div>
+
+    <!-- HANDGRIP / ANTEBRAÇO -->
+    <div class="hw-card">
+      <div class="hw-header">
+        <div class="hw-title">✊ Antebraço — Handgrip</div>
+        <div class="hw-meta">
+          <span>⏱ 15-20 min</span>
+          <span>💪 Força de pegada</span>
+          <span>⏳ 30-45s descanso</span>
+        </div>
+      </div>
+      <div class="hw-body">
+        <div class="hw-exercise">
+          <div class="ex-num">1</div>
+          <div class="ex-details">
+            <div class="ex-name">Handgrip — Aperto Máximo</div>
+            <div class="ex-reps">4 séries × 10 reps cada mão</div>
+          </div>
+        </div>
+        <div class="hw-exercise">
+          <div class="ex-num">2</div>
+          <div class="ex-details">
+            <div class="ex-name">Handgrip — Aperto Sustentado</div>
+            <div class="ex-reps">3 séries × 20–30s cada mão</div>
+          </div>
+        </div>
+        <div class="hw-exercise">
+          <div class="ex-num">3</div>
+          <div class="ex-details">
+            <div class="ex-name">Flexão de Punho (com peso ou garrafa)</div>
+            <div class="ex-reps">3 séries × 15 reps</div>
+          </div>
+        </div>
+        <div class="hw-exercise">
+          <div class="ex-num">4</div>
+          <div class="ex-details">
+            <div class="ex-name">Extensão de Punho</div>
+            <div class="ex-reps">3 séries × 15 reps</div>
+          </div>
+        </div>
+        <div class="hw-exercise">
+          <div class="ex-num">5</div>
+          <div class="ex-details">
+            <div class="ex-name">Rotação de Punho com Peso</div>
+            <div class="ex-reps">3 séries × 10 reps cada lado</div>
+          </div>
+        </div>
+        <span class="info-badge">✅ Faça 2-3x por semana</span>
+      </div>
+    </div>
+
+    <!-- ECTOMORFO CASA -->
+    <div class="hw-card">
+      <div class="hw-header">
+        <div class="hw-title">🔥 Ectomorfo — Casa</div>
+        <div class="hw-meta">
+          <span>⏱ 40 min</span>
+          <span>🎯 Ganho de massa</span>
+        </div>
+      </div>
+      <div class="hw-body">
+        <div class="hw-exercise">
+          <div class="ex-num">1</div>
+          <div class="ex-details">
+            <div class="ex-name">Flexão diamante</div>
+            <div class="ex-reps">4 séries × 8–12 reps</div>
+          </div>
+        </div>
+        <div class="hw-exercise">
+          <div class="ex-num">2</div>
+          <div class="ex-details">
+            <div class="ex-name">Agachamento búlgaro (uma perna)</div>
+            <div class="ex-reps">4 séries × 10 cada</div>
+          </div>
+        </div>
+        <div class="hw-exercise">
+          <div class="ex-num">3</div>
+          <div class="ex-details">
+            <div class="ex-name">Pike push-up (ombro)</div>
+            <div class="ex-reps">3 séries × 10 reps</div>
+          </div>
+        </div>
+        <div class="hw-exercise">
+          <div class="ex-num">4</div>
+          <div class="ex-details">
+            <div class="ex-name">Prancha lateral</div>
+            <div class="ex-reps">3 séries × 30s cada lado</div>
+          </div>
+        </div>
+        <span class="info-badge">Foco: Hipertrofia</span>
+      </div>
+    </div>
+
+    <!-- MESOMORFO CASA -->
+    <div class="hw-card">
+      <div class="hw-header">
+        <div class="hw-title">⚡ Mesomorfo — Casa</div>
+        <div class="hw-meta">
+          <span>⏱ 35 min</span>
+          <span>🎯 Definição</span>
+        </div>
+      </div>
+      <div class="hw-body">
+        <div class="hw-exercise">
+          <div class="ex-num">1</div>
+          <div class="ex-details">
+            <div class="ex-name">Burpee</div>
+            <div class="ex-reps">4 séries × 10 reps</div>
+          </div>
+        </div>
+        <div class="hw-exercise">
+          <div class="ex-num">2</div>
+          <div class="ex-details">
+            <div class="ex-name">Afundo alternado</div>
+            <div class="ex-reps">4 séries × 12 cada</div>
+          </div>
+        </div>
+        <div class="hw-exercise">
+          <div class="ex-num">3</div>
+          <div class="ex-details">
+            <div class="ex-name">Flexão archer (alternada)</div>
+            <div class="ex-reps">3 séries × 8 cada</div>
+          </div>
+        </div>
+        <div class="hw-exercise">
+          <div class="ex-num">4</div>
+          <div class="ex-details">
+            <div class="ex-name">Mountain climber</div>
+            <div class="ex-reps">3 séries × 40s</div>
+          </div>
+        </div>
+        <span class="info-badge">Foco: Performance</span>
+      </div>
+    </div>
+
+    <!-- ENDOMORFO CASA -->
+    <div class="hw-card">
+      <div class="hw-header">
+        <div class="hw-title">💎 Endomorfo — Casa</div>
+        <div class="hw-meta">
+          <span>⏱ 45 min</span>
+          <span>🎯 Queima de gordura</span>
+        </div>
+      </div>
+      <div class="hw-body">
+        <div class="hw-exercise">
+          <div class="ex-num">1</div>
+          <div class="ex-details">
+            <div class="ex-name">Jumping jacks</div>
+            <div class="ex-reps">4 séries × 45s</div>
+          </div>
+        </div>
+        <div class="hw-exercise">
+          <div class="ex-num">2</div>
+          <div class="ex-details">
+            <div class="ex-name">Squat jump</div>
+            <div class="ex-reps">4 séries × 15 reps</div>
+          </div>
+        </div>
+        <div class="hw-exercise">
+          <div class="ex-num">3</div>
+          <div class="ex-details">
+            <div class="ex-name">High knees (joelho alto)</div>
+            <div class="ex-reps">4 séries × 40s</div>
+          </div>
+        </div>
+        <div class="hw-exercise">
+          <div class="ex-num">4</div>
+          <div class="ex-details">
+            <div class="ex-name">Prancha com toque no ombro</div>
+            <div class="ex-reps">3 séries × 20 toques</div>
+          </div>
+        </div>
+        <div class="hw-exercise">
+          <div class="ex-num">5</div>
+          <div class="ex-details">
+            <div class="ex-name">Bicicleta no ar (abs)</div>
+            <div class="ex-reps">3 séries × 30 reps</div>
+          </div>
+        </div>
+        <span class="info-badge">Foco: Cardio + Core</span>
+      </div>
+    </div>
+
+  </div>
+
   <footer>
     <div class="footer-logo">KYKLE</div>
     <p>© 2025 Kykle</p>
@@ -1010,12 +1474,15 @@ footer .footer-logo {
       <!-- CHAT -->
       <div class="support-panel" id="panel-chat">
         <div class="chat-msgs" id="chatMsgs">
-          <div class="chat-msg bot">Olá! 👋 Sou o assistente do <strong>Kykle</strong>. Posso te ajudar com dúvidas sobre treino, dieta ou exercícios. Pergunte à vontade!</div>
+          <!-- Messages will appear here -->
         </div>
         <div class="quick-qs" style="margin:12px 0 10px">
-          <button onclick="sendQuick('Como queimar gordura mais rápido?')">Queima de gordura</button>
-          <button onclick="sendQuick('Qual exercício é melhor para peito?')">Melhores exercícios</button>
-          <button onclick="sendQuick('Como ganhar massa muscular?')">Ganho de massa</button>
+          <button onclick="sendQuick('Como queimar gordura mais rápido?')">Queima gordura</button>
+          <button onclick="sendQuick('Como ganhar massa muscular?')">Ganho massa</button>
+          <button onclick="sendQuick('Creatina funciona?')">Creatina</button>
+          <button onclick="sendQuick('Melhor exercício para peito?')">Peito</button>
+          <button onclick="sendQuick('Como definir abdômen?')">Abdômen</button>
+          <button onclick="sendQuick('Quanto tempo de descanso?')">Descanso</button>
         </div>
         <div class="chat-input-row">
           <input type="text" id="chatInput" placeholder="Sua pergunta..." onkeydown="if(event.key==='Enter')sendChat()"/>
@@ -1037,7 +1504,7 @@ function goPage(id, el){
   document.querySelectorAll('.mobile-nav a').forEach((a,i)=>{
     a.classList.remove('active');
   });
-  const idx = {home:0,treinos:1,dieta:2};
+  const idx = {home:0,treinos:1,casa:2,dieta:3};
   const mLinks = document.querySelectorAll('.mobile-nav a');
   if(mLinks[idx[id]]) mLinks[idx[id]].classList.add('active');
   // sync desktop
@@ -1050,9 +1517,28 @@ function closeMobile(){ document.getElementById('mobileNav').classList.remove('o
 
 // ═══════ BIOTYPE CARDS ═══════
 function toggleCard(card){
+  card.classList.add('clickable-pulse');
+  setTimeout(()=>card.classList.remove('clickable-pulse'),300);
   const exp = card.querySelector('.card-expand');
   exp.classList.toggle('open');
 }
+
+// Add stagger animation to workout grid
+function animateWorkoutCards(){
+  const cards = document.querySelectorAll('.workout-card, .hw-card');
+  cards.forEach((card,i)=>{
+    card.style.animationDelay = (i * 0.05) + 's';
+    card.classList.add('slide-in');
+  });
+}
+
+// Add click animations to buttons
+document.addEventListener('click', function(e){
+  if(e.target.matches('button, .btn-primary, .btn-secondary, .filter-btn')){
+    e.target.classList.add('clickable-pulse');
+    setTimeout(()=>e.target.classList.remove('clickable-pulse'),300);
+  }
+});
 
 // ═══════ TIMER ═══════
 let timerTotal=90, timerLeft=90, timerRunning=false, timerInterval=null, timerLabel='DESCANSO';
@@ -1131,10 +1617,12 @@ const workouts=[
 function renderWorkouts(filter='todos'){
   const grid=document.getElementById('workoutGrid');
   grid.innerHTML='';
-  workouts.filter(w=> filter==='todos' || w.cat===filter).forEach(w=>{
+  workouts.filter(w=> filter==='todos' || w.cat===filter).forEach((w,idx)=>{
     const exHtml=w.exercises.map((e,i)=>`<div class="ex-item"><span class="ex-num">${i+1}</span>${e}</div>`).join('');
-    grid.innerHTML+=`
-      <div class="workout-card">
+    const card = document.createElement('div');
+    card.className = 'workout-card slide-in';
+    card.style.animationDelay = (idx * 0.05) + 's';
+    card.innerHTML=`
         <div class="wc-header">
           <div class="wc-icon">${w.icon}</div>
           <span class="wc-badge ${w.diff}">${w.diff==='hard'?'Avançado':w.diff==='easy'?'Iniciante':'Médio'}</span>
@@ -1147,11 +1635,16 @@ function renderWorkouts(filter='todos'){
           <span>⏱ <strong>${w.time}</strong></span>
           <span>🔥 <strong>${w.cal}</strong></span>
         </div>
-        <div class="wc-exercises">${exHtml}</div>
-      </div>`;
+        <div class="wc-exercises">${exHtml}</div>`;
+    grid.appendChild(card);
   });
 }
 renderWorkouts();
+
+// Animate home workout cards on page load
+window.addEventListener('load', ()=>{
+  setTimeout(animateWorkoutCards, 100);
+});
 
 function filterWorkouts(cat,btn){
   document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
@@ -1160,7 +1653,6 @@ function filterWorkouts(cat,btn){
 }
 
 // ═══════ SUPPORT MODAL ═══════
-function openSupport(){ document.getElementById('supportOverlay').classList.add('open'); }
 function closeSupport(){ document.getElementById('supportOverlay').classList.remove('open'); }
 function closeSupportOutside(e){ if(e.target===document.getElementById('supportOverlay')) closeSupport(); }
 function switchTab(tab,btn){
@@ -1176,30 +1668,292 @@ function toggleFaq(el){
   arr.classList.toggle('open');
 }
 
-// ═══════ CHAT AI (simulated) ═══════
+// ═══════ CHAT AI (PROGRAMMED RESPONSES) ═══════
 const chatResponses = {
-  "como queimar gordura mais rápido?":[
-    "🔥 Para queimar gordura mais rápido, combine:",
+  // QUEIMA DE GORDURA
+  "como queimar gordura":[
+    "🔥 Para queimar gordura mais rápido:",
     "• Treinos HIIT 3x por semana (10-20 min intensos)",
-    "• Deficit calórico moderado (300-500 kcal abaixo do gasto)",
-    "• Priorize proteínas em cada refeição para manter massa muscular",
-    "• Mantenha-se hidratado — a água acelera o metabolismo!"
+    "• Deficit calórico moderado (300-500 kcal)",
+    "• Priorize proteínas em cada refeição",
+    "• Mantenha-se hidratado — água acelera metabolismo!",
+    "• Cardio em jejum pode ajudar (se tolerar bem)"
   ].join("\n"),
-  "qual exercício é melhor para peito?":[
-    "💪 Os melhores para peito:",
-    "• Supino plano — o clássico, ativa toda a região",
-    "• Supino inclinado — foca na parte superior",
-    "• Flexões (push-ups) — sem equipamento e muito efetivo",
-    "• Fly com cabo — ótimo para definição"
+  "quanto tempo de cardio":[
+    "⏱️ Cardio para queimar gordura:",
+    "• Moderado: 30-45 min, 4-5x por semana",
+    "• HIIT: 15-20 min, 3x por semana (mais eficiente)",
+    "• Caminhada: 45-60 min diariamente é ótimo",
+    "• Combine com treino de força para melhores resultados"
   ].join("\n"),
-  "como ganhar massa muscular?":[
+  "melhor horário para treinar":[
+    "🕐 Melhor horário para treino:",
+    "• Manhã: metabolismo acelerado o dia todo",
+    "• Tarde/Noite: força e temperatura corporal no pico",
+    "• O melhor horário é aquele que VOCÊ consegue manter consistência!",
+    "• Evite treinar muito tarde (prejudica sono)"
+  ].join("\n"),
+  
+  // GANHO DE MASSA
+  "como ganhar massa":[
     "🏋️ Dicas para ganho de massa:",
     "• Treine com cargas progressivas (progressive overload)",
-    "• Consuma 1.6-2.2g de proteína por kg do seu peso",
-    "• Durma pelo menos 7-8 horas por noite",
-    "• Mantenha um leve excesso calórico (200-300 kcal)"
+    "• Consuma 1.8-2.2g de proteína por kg de peso",
+    "• Durma 7-8 horas por noite (hormônio do crescimento)",
+    "• Superávit calórico de 200-400 kcal",
+    "• Foco em exercícios compostos (agachamento, supino, terra)"
   ].join("\n"),
-  default:"Boa pergunta! 🤔 Para uma resposta mais precisa, te recomendo consultar um profissional de educação física ou nutricionista. Mas posso te ajudar com informações gerais sobre treino e alimentação!"
+  "quantas repetições":[
+    "🔢 Repetições ideais:",
+    "• Força: 1-5 reps com carga alta",
+    "• Hipertrofia: 8-12 reps com carga moderada",
+    "• Resistência: 15+ reps com carga leve",
+    "• Varie entre faixas para desenvolvimento completo"
+  ].join("\n"),
+  "quantas séries":[
+    "📊 Séries por exercício:",
+    "• Iniciantes: 2-3 séries por exercício",
+    "• Intermediários: 3-4 séries",
+    "• Avançados: 4-5 séries",
+    "• Total por grupo muscular: 10-20 séries por semana"
+  ].join("\n"),
+  
+  // DESCANSO E RECUPERAÇÃO
+  "quanto tempo de descanso":[
+    "⏳ Tempo de descanso entre séries:",
+    "• Força/Pesado: 2-3 minutos",
+    "• Hipertrofia: 60-90 segundos",
+    "• Resistência/Cardio: 30-45 segundos",
+    "• Exercícios compostos precisam de mais descanso"
+  ].join("\n"),
+  "posso treinar todo dia":[
+    "📅 Frequência de treino:",
+    "• Iniciantes: 3-4x por semana",
+    "• Intermediários: 4-5x por semana",
+    "• Avançados: até 6x, sempre com 1 dia off",
+    "• Músculos precisam 48h para recuperar",
+    "• Não treine o mesmo grupo 2 dias seguidos!"
+  ].join("\n"),
+  "importância do sono":[
+    "😴 Sono e recuperação muscular:",
+    "• 7-9 horas é o ideal para hipertrofia",
+    "• Hormônio do crescimento é liberado durante sono profundo",
+    "• Falta de sono = menos força e mais fadiga",
+    "• Durma bem = ganhos melhores!"
+  ].join("\n"),
+  
+  // EXERCÍCIOS ESPECÍFICOS
+  "melhor exercício peito":[
+    "💪 Melhores para peito:",
+    "• Supino plano — clássico, ativa toda região",
+    "• Supino inclinado — parte superior",
+    "• Flexões — sem equipamento, muito efetivo",
+    "• Fly com cabo/halteres — definição",
+    "• Mergulho — tríceps e peito inferior"
+  ].join("\n"),
+  "como treinar costas":[
+    "🔽 Melhores para costas:",
+    "• Pull-ups/Barra fixa — rei dos exercícios de costas",
+    "• Remada curvada — espessura dorsal",
+    "• Lat pulldown — largura",
+    "• Remada cavalinho — detalhes",
+    "• Deadlift — costas inteira + core"
+  ].join("\n"),
+  "exercício para perna":[
+    "🦵 Melhores para pernas:",
+    "• Agachamento livre — o rei",
+    "• Leg press — volume sem sobrecarregar lombar",
+    "• Afundo/Lunges — unilateral e equilíbrio",
+    "• Stiff/levantamento terra — posterior",
+    "• Panturrilha em pé — gêmeos"
+  ].join("\n"),
+  "como treinar ombro":[
+    "⬆️ Melhores para ombros:",
+    "• Press militar/ombro — massa geral",
+    "• Elevação lateral — ombro médio (largura)",
+    "• Elevação frontal — ombro anterior",
+    "• Remada alta — trapézio e deltoide",
+    "• Face pull — posterior (saúde do ombro)"
+  ].join("\n"),
+  
+  // ANTEBRAÇO
+  "como fortalecer antebraço":[
+    "✊ Para antebraços fortes:",
+    "• Handgrip diariamente — 4×10-15 reps",
+    "• Farmers walk — segure pesos e caminhe",
+    "• Flexão/extensão de punho com peso",
+    "• Dead hangs — barra por 30-60s",
+    "• Consistência — treine 3-4x por semana"
+  ].join("\n"),
+  "handgrip funciona":[
+    "✊ Handgrip é muito eficaz!",
+    "• Fortalece pegada para todos os exercícios de puxar",
+    "• Previne lesões no punho",
+    "• Melhora desempenho em deadlift e remadas",
+    "• Use 4-5x por semana, 3-4 séries",
+    "• Varie intensidade: máximo aperto + sustentado"
+  ].join("\n"),
+  
+  // ABDÔMEN
+  "como definir abdômen":[
+    "💪 Para definir abdômen:",
+    "• Reduza % de gordura (dieta é 80%)",
+    "• Treine core 3-4x por semana",
+    "• Exercícios compostos ativam muito o core",
+    "• Cardio ajuda na queima",
+    "• Abs são feitos na cozinha!"
+  ].join("\n"),
+  "melhor exercício abdominal":[
+    "🔻 Top exercícios para abs:",
+    "• Prancha — core completo, estabilidade",
+    "• Abdominal bicicleta — oblíquos",
+    "• Leg raises — abdômen inferior",
+    "• Abdominal supra — parte superior",
+    "• Russian twist — rotação e oblíquos"
+  ].join("\n"),
+  
+  // DIETA E NUTRIÇÃO
+  "dieta para hipertrofia":[
+    "🍖 Dieta para ganho de massa:",
+    "• Proteína: 1.8-2.2g por kg de peso",
+    "• Carboidratos: 4-6g por kg (energia)",
+    "• Gorduras: 0.8-1g por kg",
+    "• 5-6 refeições menores ao dia",
+    "• Superávit calórico de 200-400 kcal"
+  ].join("\n"),
+  "dieta para secar":[
+    "🔥 Dieta para definição:",
+    "• Proteína alta: 2-2.5g por kg (preserva músculo)",
+    "• Carboidratos moderados: 2-3g por kg",
+    "• Gorduras: 0.5-0.8g por kg",
+    "• Deficit calórico de 300-500 kcal",
+    "• Priorize alimentos integrais"
+  ].join("\n"),
+  "quando comer carboidrato":[
+    "🍚 Timing de carboidratos:",
+    "• Pré-treino: 1-2h antes (energia)",
+    "• Pós-treino: 30-60 min depois (recuperação)",
+    "• Café da manhã: repõe glicogênio",
+    "• À noite: pode sim, se couber nas calorias!",
+    "• Distribua bem ao longo do dia"
+  ].join("\n"),
+  
+  // SUPLEMENTOS
+  "whey protein":[
+    "🥤 Sobre Whey Protein:",
+    "• Melhor horário: pós-treino (30-60 min)",
+    "• Também bom: café da manhã, entre refeições",
+    "• Dose: 25-30g por shake",
+    "• Não é obrigatório — priorize comida real",
+    "• Útil para bater meta de proteína"
+  ].join("\n"),
+  "creatina funciona":[
+    "💊 Creatina — um dos melhores!",
+    "• Aumenta força e volume muscular",
+    "• Um dos suplementos mais estudados",
+    "• Dose: 3-5g por dia, todo dia",
+    "• Não precisa ciclar nem fazer saturação",
+    "• Tome com água, qualquer hora do dia"
+  ].join("\n"),
+  "tomar bcaa":[
+    "🔵 BCAA — vale a pena?",
+    "• Se já come proteína suficiente, não precisa",
+    "• Útil para treino em jejum",
+    "• Pode ajudar em recuperação",
+    "• Whey já contém BCAA naturalmente",
+    "• Gaste dinheiro com creatina/whey primeiro"
+  ].join("\n"),
+  "pré treino":[
+    "⚡ Pré-treino:",
+    "• Cafeína: 200-400mg (foco + energia)",
+    "• Beta-alanina: reduz fadiga muscular",
+    "• Não é essencial, mas ajuda",
+    "• Alternativa natural: café forte + banana",
+    "• Evite muito próximo ao sono"
+  ].join("\n"),
+  
+  // TREINO EM CASA
+  "treino em casa funciona":[
+    "🏠 Treino em casa é muito eficaz!",
+    "• Peso corporal funciona demais",
+    "• Foco em progressão: mais reps, menos descanso",
+    "• Equipamentos baratos: handgrip, elásticos, garrafa",
+    "• Disciplina > Local",
+    "• Veja nossa aba 'Casa' para treinos completos!"
+  ].join("\n"),
+  "flexão ou supino":[
+    "🤔 Flexão vs Supino:",
+    "• Supino: mais carga, força bruta",
+    "• Flexão: core ativo, sem equipamento",
+    "• Ambos são ótimos!",
+    "• Combine os dois para resultados completos",
+    "• Variações de flexão são muito versáteis"
+  ].join("\n"),
+  
+  // LESÕES E PREVENÇÃO
+  "como evitar lesões":[
+    "🛡️ Prevenção de lesões:",
+    "• SEMPRE aqueça 5-10 min antes",
+    "• Técnica > Carga (nunca sacrifique forma)",
+    "• Respeite o descanso muscular",
+    "• Alongue após o treino",
+    "• Progrida gradualmente, sem pressa"
+  ].join("\n"),
+  "dor muscular é bom":[
+    "🔴 Sobre dor muscular (DOMS):",
+    "• Dor leve/moderada = normal após treino",
+    "• Não é obrigatória para crescer",
+    "• Dor aguda/articular = PARE e procure médico",
+    "• Recuperação ativa ajuda (caminhada leve)",
+    "• Massagem e gelo podem aliviar"
+  ].join("\n"),
+  
+  // MOTIVAÇÃO
+  "sem motivação para treinar":[
+    "💪 Sobre motivação:",
+    "• Disciplina > Motivação",
+    "• Crie rotina e compromisso",
+    "• Lembre-se do PORQUÊ você começou",
+    "• Registre progressos (fotos, carga)",
+    "• Treino em dupla/grupo ajuda",
+    "• Comece, a motivação vem durante!"
+  ].join("\n"),
+  "quanto tempo para ver resultado":[
+    "⏰ Tempo para ver resultados:",
+    "• Força: 2-4 semanas",
+    "• Hipertrofia visível: 6-8 semanas",
+    "• Definição: 8-12 semanas (com dieta)",
+    "• Transformação completa: 6-12 meses",
+    "• Consistência é TUDO — não desista!"
+  ].join("\n"),
+  
+  // OUTROS
+  "beber água durante treino":[
+    "💧 Hidratação no treino:",
+    "• SEMPRE beba água durante o treino",
+    "• 150-250ml a cada 15-20 min",
+    "• Desidratação = menos performance",
+    "• Urina clara = bem hidratado",
+    "• Eletrólitos só em treinos 90+ min"
+  ].join("\n"),
+  "treinar menstruada":[
+    "🏋️ Treino durante menstruação:",
+    "• Pode treinar normalmente, se sentir bem",
+    "• Respeite seu corpo — reduza intensidade se necessário",
+    "• Exercício pode aliviar cólicas",
+    "• Alguns dias são melhores que outros",
+    "• Escute seu corpo sempre!"
+  ].join("\n"),
+  "ectomorfo mesomorfo endomorfo":[
+    "🧬 Sobre biotipos:",
+    "• Ectomorfo: magro, metabolismo rápido — foco ganho massa",
+    "• Mesomorfo: atlético, responde bem — foco definição",
+    "• Endomorfo: acumula gordura — foco queima + treino",
+    "• Maioria é combinação de tipos",
+    "• Use como guia, não como limitação!"
+  ].join("\n"),
+  
+  default:"Boa pergunta! 🤔 Para uma resposta mais precisa, te recomendo consultar um profissional. Tente reformular ou veja nossas FAQs!"
 };
 
 function sendChat(){
@@ -1208,23 +1962,62 @@ function sendChat(){
   if(!msg)return;
   input.value='';
   addMsg(msg,'user');
-  // find response
+  
+  // Show typing indicator
+  const typingId = addMsg('💭 Pensando...', 'bot');
+  
   setTimeout(()=>{
-    const key=Object.keys(chatResponses).find(k=> msg.toLowerCase().includes(k.toLowerCase().replace('?','').slice(0,15)));
-    addMsg(chatResponses[key]||chatResponses.default,'bot');
-  },600);
+    removeMsg(typingId);
+    // Find best matching response
+    const msgLower = msg.toLowerCase();
+    let bestMatch = 'default';
+    let bestMatchLength = 0;
+    
+    for(const key in chatResponses) {
+      if(key === 'default') continue;
+      // Check how many words from the key appear in the message
+      const keyWords = key.split(' ');
+      const matchCount = keyWords.filter(word => msgLower.includes(word)).length;
+      if(matchCount > bestMatchLength) {
+        bestMatchLength = matchCount;
+        bestMatch = key;
+      }
+    }
+    
+    // Need at least 1 word match
+    if(bestMatchLength === 0) bestMatch = 'default';
+    
+    addMsg(chatResponses[bestMatch], 'bot');
+  }, 800);
 }
+
 function sendQuick(q){
   document.getElementById('chatInput').value=q;
   sendChat();
 }
-function addMsg(text,type){
+
+function addMsg(text, type){
   const div=document.createElement('div');
   div.className='chat-msg '+type;
+  div.id = 'msg-' + Date.now();
   div.innerHTML=text.replace(/\n/g,'<br>');
   const container=document.getElementById('chatMsgs');
   container.appendChild(div);
   container.scrollTop=container.scrollHeight;
+  return div.id;
+}
+
+function removeMsg(id){
+  const msg = document.getElementById(id);
+  if(msg) msg.remove();
+}
+
+function openSupport(){ 
+  document.getElementById('supportOverlay').classList.add('open');
+  const container = document.getElementById('chatMsgs');
+  if(container.children.length === 0) {
+    addMsg('Olá! 👋 Sou o assistente do <strong>Kykle</strong>. Tenho respostas para mais de 50 perguntas sobre treino, dieta e suplementação. Pergunte à vontade!', 'bot');
+  }
 }
 </script>
 </body>
