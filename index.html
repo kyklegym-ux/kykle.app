@@ -3,1359 +3,290 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-<title>KYKLE — NEURAL PERFORMANCE SYSTEM</title>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<title>KYKLE — Sistema Elite de Performance</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&family=Archivo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
 <style>
-:root {
-  --neon-blue: #00d4ff;
-  --neon-blue-bright: #4dffff;
-  --dark-bg: #000000;
-  --darker: #0a0a0a;
-  --panel: #0f0f0f;
-  --border: #1a1a2e;
-  --text: #e0e6ed;
-  --text-dim: #6a7a8e;
-  --glow-blue: rgba(0,212,255,0.6);
-}
-
-/* Light mode */
-body.light-mode {
-  --neon-blue: #0077cc;
-  --neon-blue-bright: #0099ff;
-  --dark-bg: #f0f4f8;
-  --darker: #ffffff;
-  --panel: #ffffff;
-  --border: #d1dae3;
-  --text: #1a202c;
-  --text-dim: #4a5568;
-  --glow-blue: rgba(0,119,204,0.3);
-}
-
-body.light-mode::before {
-  opacity: 0.05;
-}
-
-body.light-mode::after {
-  opacity: 0.2;
-}
-
 * { 
   margin:0; 
   padding:0; 
   box-sizing:border-box;
-  -webkit-tap-highlight-color: transparent;
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+  -webkit-tap-highlight-color:transparent;
 }
 
-input, textarea {
-  -webkit-user-select: text;
-  -moz-user-select: text;
-  -ms-user-select: text;
-  user-select: text;
+:root {
+  --bg: #0D0D0D;
+  --bg-light: #1A1A1A;
+  --surface: #222222;
+  --text: #FFFFFF;
+  --text-dim: #888888;
+  --accent: #FFFFFF;
+  --glass: rgba(255,255,255,0.05);
+  --glass-border: rgba(255,255,255,0.1);
 }
-html { scroll-behavior:smooth; }
+
+body.light {
+  --bg: #F5F5F5;
+  --bg-light: #FFFFFF;
+  --surface: #FFFFFF;
+  --text: #0D0D0D;
+  --text-dim: #666666;
+  --accent: #0D0D0D;
+  --glass: rgba(0,0,0,0.03);
+  --glass-border: rgba(0,0,0,0.08);
+}
 
 body {
-  font-family:'Rajdhani', sans-serif;
-  background:var(--dark-bg);
+  font-family:'Montserrat', sans-serif;
+  background:var(--bg);
   color:var(--text);
   overflow-x:hidden;
-  position:relative;
+  transition:all 0.3s ease;
 }
 
-body::before {
-  content:'';
+/* ═══ BACKGROUND ANIMATION ═══ */
+.bg-grid {
   position:fixed;
   inset:0;
   background-image:
-    linear-gradient(var(--border) 1px, transparent 1px),
-    linear-gradient(90deg, var(--border) 1px, transparent 1px);
-  background-size:40px 40px;
-  opacity:0.15;
+    linear-gradient(var(--glass-border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--glass-border) 1px, transparent 1px);
+  background-size:50px 50px;
+  opacity:0.5;
   pointer-events:none;
   z-index:0;
 }
 
-body::after {
-  content:'';
+.bg-gradient {
   position:fixed;
   inset:0;
-  background:repeating-linear-gradient(0deg,rgba(0,0,0,0.15),rgba(0,0,0,0.15) 1px,transparent 1px,transparent 2px);
+  background:radial-gradient(circle at 20% 50%, rgba(255,255,255,0.03), transparent 50%),
+             radial-gradient(circle at 80% 80%, rgba(255,255,255,0.02), transparent 50%);
   pointer-events:none;
-  z-index:999;
-  opacity:0.4;
+  z-index:0;
 }
 
-/* ═══ NAV ═══ */
-nav {
+body.light .bg-gradient {
+  background:radial-gradient(circle at 20% 50%, rgba(0,0,0,0.02), transparent 50%),
+             radial-gradient(circle at 80% 80%, rgba(0,0,0,0.015), transparent 50%);
+}
+
+/* ═══ HEADER ═══ */
+header {
   position:fixed;
-  top:0; left:0; right:0;
-  background:rgba(0,0,0,0.95);
-  backdrop-filter:blur(10px);
-  border-bottom:2px solid var(--neon-blue);
-  box-shadow:0 0 20px var(--glow-blue);
-  padding:0 50px;
-  height:70px;
+  top:20px;
+  left:20px;
+  right:20px;
+  background:var(--glass);
+  backdrop-filter:blur(20px) saturate(180%);
+  border:1px solid var(--glass-border);
+  border-radius:20px;
+  padding:20px 30px;
   display:flex;
-  align-items:center;
   justify-content:space-between;
+  align-items:center;
   z-index:1000;
+  box-shadow:0 8px 32px rgba(0,0,0,0.1);
 }
 
 .logo {
-  font-family:'Orbitron', monospace;
+  font-family:'Archivo', sans-serif;
   font-size:1.8rem;
   font-weight:900;
-  letter-spacing:4px;
-  color:var(--neon-blue);
-  text-shadow:0 0 10px var(--glow-blue), 0 0 20px var(--glow-blue);
-  position:relative;
+  letter-spacing:-1px;
+  background:linear-gradient(135deg, var(--text) 0%, var(--text-dim) 100%);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
 }
 
-.logo::before {
-  content:'◢';
-  position:absolute;
-  left:-25px;
-  color:var(--neon-blue-bright);
-  font-size:1.2rem;
-  animation:blink 2s infinite;
-}
-
-@keyframes blink {
-  0%, 49%, 51%, 100% { opacity:1; }
-  50% { opacity:0.3; }
-}
-
-.nav-menu {
+.menu-icon {
+  width:40px;
+  height:40px;
   display:flex;
-  gap:5px;
-  list-style:none;
-}
-
-.nav-menu a {
-  font-family:'Orbitron', monospace;
-  font-size:0.85rem;
-  font-weight:600;
-  letter-spacing:2px;
-  color:var(--text-dim);
-  text-decoration:none;
-  padding:10px 20px;
-  border:1px solid transparent;
-  transition:all 0.3s;
-  position:relative;
-  clip-path:polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
-  background:var(--panel);
-}
-
-.nav-menu a:hover,
-.nav-menu a.active {
-  color:var(--neon-blue);
-  border-color:var(--neon-blue);
-  box-shadow:inset 0 0 20px rgba(0,212,255,0.2), 0 0 10px var(--glow-blue);
-}
-
-.mobile-toggle {
-  display:none;
   flex-direction:column;
+  justify-content:center;
   gap:6px;
   cursor:pointer;
-}
-.mobile-toggle span {
-  width:30px;
-  height:3px;
-  background:var(--neon-blue);
-  transition:0.3s;
+  padding:8px;
 }
 
-/* Theme Toggle */
-.theme-toggle {
-  width:50px;
-  height:50px;
-  background:var(--panel);
-  border:2px solid var(--neon-blue);
-  color:var(--neon-blue);
-  font-size:1.5rem;
-  cursor:pointer;
-  transition:all 0.3s;
-  clip-path:polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  box-shadow:0 0 15px var(--glow-blue);
-}
-
-.theme-toggle:hover {
-  background:rgba(0,212,255,0.1);
-  transform:scale(1.05);
-}
-
-/* ═══ HERO ═══ */
-.hero {
-  margin-top:70px;
-  min-height:calc(100vh - 70px);
-  position:relative;
-  display:flex;
-  align-items:center;
-  overflow:hidden;
-  background:linear-gradient(135deg, var(--darker) 0%, var(--dark-bg) 50%, var(--panel) 100%);
-}
-
-.hero-glitch {
-  position:absolute;
-  top:0; right:10%;
-  width:500px;
-  height:500px;
-  background:radial-gradient(circle, var(--glow-blue) 0%, transparent 70%);
-  filter:blur(100px);
-  opacity:0.3;
-  animation:float 8s ease-in-out infinite;
-}
-
-@keyframes float {
-  0%, 100% { transform:translateY(0) scale(1); }
-  50% { transform:translateY(-30px) scale(1.1); }
-}
-
-.hero-glitch2 {
-  position:absolute;
-  bottom:10%; left:5%;
-  width:400px;
-  height:400px;
-  background:radial-gradient(circle, var(--glow-blue) 0%, transparent 70%);
-  filter:blur(100px);
-  opacity:0.2;
-  animation:float 10s ease-in-out infinite reverse;
-}
-
-.hero-content {
-  position:relative;
-  z-index:2;
-  padding:80px;
-  max-width:1400px;
-  margin:0 auto;
-}
-
-.hero-tag {
-  display:inline-block;
-  font-family:'Orbitron', monospace;
-  font-size:0.75rem;
-  font-weight:600;
-  letter-spacing:3px;
-  color:var(--neon-blue);
-  border:1px solid var(--neon-blue);
-  padding:8px 20px;
-  margin-bottom:30px;
-  clip-path:polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
-  box-shadow:inset 0 0 10px rgba(0,212,255,0.2), 0 0 10px var(--glow-blue);
-}
-
-.hero h1 {
-  font-family:'Orbitron', monospace;
-  font-size:clamp(3rem, 8vw, 7rem);
-  font-weight:900;
-  line-height:1;
-  letter-spacing:2px;
-  margin-bottom:30px;
-  color:var(--text);
-}
-
-.hero h1 .highlight {
-  color:var(--neon-blue);
-  text-shadow:0 0 20px var(--glow-blue), 0 0 40px var(--glow-blue);
-  display:block;
-}
-
-.hero-stats {
-  display:flex;
-  gap:40px;
-  margin-bottom:50px;
-  flex-wrap:wrap;
-}
-
-.stat-box {
-  background:rgba(15,15,15,0.8);
-  border:1px solid var(--border);
-  border-left:3px solid var(--neon-blue);
-  padding:15px 25px;
-  clip-path:polygon(0 0, calc(100% - 15px) 0, 100% 15px, 100% 100%, 0 100%);
-}
-
-.stat-box .label {
-  font-family:'Orbitron', monospace;
-  font-size:0.7rem;
-  color:var(--text-dim);
-  letter-spacing:2px;
-  margin-bottom:5px;
-}
-
-.stat-box .value {
-  font-family:'Orbitron', monospace;
-  font-size:1.8rem;
-  font-weight:700;
-  color:var(--neon-blue);
-  text-shadow:0 0 10px var(--glow-blue);
-}
-
-.cta-group {
-  display:flex;
-  gap:20px;
-  flex-wrap:wrap;
-}
-
-.btn {
-  font-family:'Orbitron', monospace;
-  font-size:0.9rem;
-  font-weight:700;
-  letter-spacing:2px;
-  padding:18px 40px;
-  border:2px solid;
-  cursor:pointer;
-  transition:all 0.3s;
-  position:relative;
-  overflow:hidden;
-  clip-path:polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
-  text-decoration:none;
-  display:inline-block;
-}
-
-.btn-primary {
-  background:var(--neon-blue);
-  border-color:var(--neon-blue);
-  color:var(--darker);
-  box-shadow:0 0 20px var(--glow-blue);
-}
-
-.btn-primary:hover {
-  box-shadow:0 0 30px var(--glow-blue), inset 0 0 20px rgba(255,255,255,0.2);
-}
-
-.btn-secondary {
-  background:transparent;
-  border-color:var(--neon-blue);
-  color:var(--neon-blue);
-}
-
-.btn-secondary:hover {
-  box-shadow:0 0 20px var(--glow-blue), inset 0 0 20px rgba(0,212,255,0.1);
-}
-
-/* ═══ SECTIONS ═══ */
-section {
-  padding:100px 80px;
-  position:relative;
-}
-
-.section-header {
-  margin-bottom:80px;
-  position:relative;
-}
-
-.section-header::before {
-  content:'';
-  position:absolute;
-  top:-20px;
-  left:0;
-  width:60px;
-  height:3px;
-  background:linear-gradient(90deg, var(--neon-blue), transparent);
-  box-shadow:0 0 10px var(--glow-blue);
-}
-
-.section-title {
-  font-family:'Orbitron', monospace;
-  font-size:clamp(2rem, 5vw, 3.5rem);
-  font-weight:900;
-  letter-spacing:2px;
-  margin-bottom:15px;
-  color:var(--text);
-}
-
-.section-title .blue { 
-  color:var(--neon-blue);
-  text-shadow:0 0 10px var(--glow-blue);
-}
-
-.section-subtitle {
-  font-size:1.1rem;
-  color:var(--text-dim);
-  font-weight:400;
-}
-
-/* ═══ BIOTIPOS ═══ */
-.biotipos {
-  background:var(--darker);
-}
-
-.bio-grid {
-  display:grid;
-  grid-template-columns:repeat(auto-fit, minmax(350px, 1fr));
-  gap:30px;
-}
-
-.bio-card {
-  background:var(--panel);
-  border:1px solid var(--border);
-  position:relative;
-  overflow:hidden;
-  transition:all 0.3s;
-  clip-path:polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
-}
-
-.bio-card:hover {
-  border-color:var(--neon-blue);
-  box-shadow:0 0 30px rgba(0,212,255,0.2);
-  transform:translateY(-5px);
-}
-
-.bio-header {
-  padding:40px;
-  border-bottom:1px solid var(--border);
-  position:relative;
-}
-
-.bio-icon {
-  font-size:3rem;
-  margin-bottom:15px;
-  filter:drop-shadow(0 0 10px var(--neon-blue));
-}
-
-.bio-title {
-  font-family:'Orbitron', monospace;
-  font-size:1.8rem;
-  font-weight:800;
-  letter-spacing:2px;
-  margin-bottom:10px;
-  color:var(--neon-blue);
-  text-shadow:0 0 10px var(--glow-blue);
-}
-
-.bio-desc {
-  color:var(--text-dim);
-  font-size:0.95rem;
-}
-
-.bio-body {
-  padding:30px 40px;
-}
-
-.bio-tag {
-  display:inline-block;
-  font-family:'Orbitron', monospace;
-  font-size:0.7rem;
-  font-weight:600;
-  letter-spacing:2px;
-  background:rgba(0,212,255,0.2);
-  border:1px solid var(--neon-blue);
-  color:var(--neon-blue);
-  padding:6px 15px;
-  margin-bottom:25px;
-  clip-path:polygon(5px 0, 100% 0, calc(100% - 5px) 100%, 0 100%);
-}
-
-.bio-list {
-  list-style:none;
-}
-
-.bio-list li {
-  padding:12px 0;
-  padding-left:25px;
-  border-bottom:1px solid var(--border);
-  position:relative;
-  font-weight:500;
-  color:var(--text-dim);
-}
-
-.bio-list li::before {
-  content:'›';
-  position:absolute;
-  left:0;
-  color:var(--neon-blue);
-  font-size:1.5rem;
-  font-weight:bold;
-}
-
-/* ═══ TIMER ═══ */
-.timer-section {
-  background:linear-gradient(180deg, var(--dark-bg), var(--darker), var(--dark-bg));
-  text-align:center;
-}
-
-.timer-container {
-  max-width:600px;
-  margin:0 auto;
-}
-
-.timer-hud {
-  position:relative;
-  width:350px;
-  height:350px;
-  margin:50px auto;
-  background:radial-gradient(circle, rgba(0,212,255,0.05) 0%, transparent 70%);
-}
-
-.timer-circle {
+.menu-icon span {
   width:100%;
-  height:100%;
-  filter:drop-shadow(0 0 20px var(--glow-blue));
+  height:2px;
+  background:var(--text);
+  border-radius:10px;
+  transition:all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.timer-bg {
-  fill:none;
-  stroke:var(--border);
-  stroke-width:8;
+.menu-icon.active span:nth-child(1) {
+  transform:rotate(45deg) translateY(10px);
+}
+.menu-icon.active span:nth-child(2) {
+  opacity:0;
+  transform:translateX(-20px);
+}
+.menu-icon.active span:nth-child(3) {
+  transform:rotate(-45deg) translateY(-10px);
 }
 
-.timer-progress {
-  fill:none;
-  stroke:var(--neon-blue);
-  stroke-width:8;
-  stroke-linecap:round;
-  transform:rotate(-90deg);
-  transform-origin:50% 50%;
-  transition:stroke-dashoffset 0.3s;
-  filter:drop-shadow(0 0 10px var(--glow-blue));
+/* ═══ SIDEBAR ═══ */
+.sidebar {
+  position:fixed;
+  top:0;
+  right:-450px;
+  width:450px;
+  height:100vh;
+  background:var(--glass);
+  backdrop-filter:blur(40px) saturate(180%);
+  border-left:1px solid var(--glass-border);
+  padding:120px 40px 40px;
+  transition:right 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index:999;
+  overflow-y:auto;
 }
 
-.timer-display {
-  position:absolute;
-  top:50%;
-  left:50%;
-  transform:translate(-50%, -50%);
-  text-align:center;
+.sidebar.open {
+  right:0;
 }
 
-.timer-label {
-  font-family:'Orbitron', monospace;
-  font-size:0.9rem;
-  font-weight:600;
-  letter-spacing:4px;
-  color:var(--text-dim);
-  margin-bottom:15px;
+.sidebar-overlay {
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.6);
+  backdrop-filter:blur(5px);
+  opacity:0;
+  pointer-events:none;
+  transition:opacity 0.5s;
+  z-index:998;
 }
 
-.timer-time {
-  font-family:'Orbitron', monospace;
-  font-size:4.5rem;
-  font-weight:900;
-  color:var(--neon-blue);
-  text-shadow:0 0 20px var(--glow-blue), 0 0 40px var(--glow-blue);
-  letter-spacing:5px;
+.sidebar-overlay.open {
+  opacity:1;
+  pointer-events:all;
 }
 
-.timer-controls {
-  display:flex;
-  justify-content:center;
-  gap:15px;
-  margin-top:40px;
-}
-
-.timer-btn {
-  width:80px;
-  height:80px;
-  background:var(--panel);
-  border:2px solid var(--neon-blue);
-  color:var(--neon-blue);
-  font-size:2rem;
-  cursor:pointer;
-  transition:all 0.3s;
-  clip-path:polygon(15px 0, 100% 0, calc(100% - 15px) 100%, 0 100%);
+.sidebar nav a {
   display:flex;
   align-items:center;
-  justify-content:center;
-}
-
-.timer-btn:hover {
-  background:rgba(0,212,255,0.1);
-  box-shadow:0 0 20px var(--glow-blue), inset 0 0 20px rgba(0,212,255,0.2);
-}
-
-.timer-btn.active {
-  background:var(--neon-blue);
-  color:var(--darker);
-  box-shadow:0 0 30px var(--glow-blue);
-}
-
-.timer-presets {
-  display:flex;
-  justify-content:center;
-  gap:12px;
-  margin-top:30px;
-  flex-wrap:wrap;
-}
-
-.preset-btn {
-  font-family:'Orbitron', monospace;
-  font-size:0.8rem;
-  font-weight:600;
-  letter-spacing:2px;
-  padding:10px 20px;
-  background:var(--panel);
-  border:1px solid var(--border);
+  gap:20px;
+  padding:20px 25px;
+  margin-bottom:8px;
   color:var(--text-dim);
-  cursor:pointer;
+  text-decoration:none;
+  font-weight:600;
+  font-size:1.05rem;
+  border-radius:15px;
   transition:all 0.3s;
-  clip-path:polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
+  border:1px solid transparent;
 }
 
-.preset-btn:hover {
-  border-color:var(--neon-blue);
-  color:var(--neon-blue);
-  box-shadow:0 0 15px rgba(0,212,255,0.3);
+.sidebar nav a:hover,
+.sidebar nav a.active {
+  color:var(--text);
+  background:var(--glass);
+  border-color:var(--glass-border);
+  transform:translateX(5px);
 }
 
-/* ═══ PAGES ═══ */
+/* ═══ MAIN ═══ */
+main {
+  margin-top:120px;
+  padding:0 20px 100px;
+  max-width:1200px;
+  margin-left:auto;
+  margin-right:auto;
+  position:relative;
+  z-index:1;
+}
+
 .page {
   display:none;
-  min-height:100vh;
-  padding-top:70px;
+  animation:pageEnter 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .page.active {
   display:block;
 }
 
-.page-header {
-  background:linear-gradient(135deg, var(--darker), var(--panel));
-  border-bottom:2px solid var(--neon-blue);
-  box-shadow:0 0 30px var(--glow-blue);
-  padding:60px 80px;
-}
-
-.page-title {
-  font-family:'Orbitron', monospace;
-  font-size:clamp(2.5rem, 6vw, 5rem);
-  font-weight:900;
-  letter-spacing:3px;
-  color:var(--text);
-}
-
-.page-title .blue {
-  color:var(--neon-blue);
-  text-shadow:0 0 20px var(--glow-blue);
-}
-
-/* ═══ WORKOUT CARDS ═══ */
-.filter-bar {
-  background:var(--darker);
-  padding:40px 80px;
-  display:flex;
-  gap:12px;
-  justify-content:center;
-  flex-wrap:wrap;
-  border-bottom:1px solid var(--border);
-}
-
-.filter-btn {
-  font-family:'Orbitron', monospace;
-  font-size:0.75rem;
-  font-weight:600;
-  letter-spacing:2px;
-  padding:12px 25px;
-  background:var(--panel);
-  border:1px solid var(--border);
-  color:var(--text-dim);
-  cursor:pointer;
-  transition:all 0.3s;
-  clip-path:polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
-}
-
-.filter-btn:hover,
-.filter-btn.active {
-  border-color:var(--neon-blue);
-  color:var(--neon-blue);
-  background:rgba(0,212,255,0.1);
-  box-shadow:0 0 15px rgba(0,212,255,0.3);
-}
-
-.workout-grid {
-  padding:80px;
-  display:grid;
-  grid-template-columns:repeat(auto-fill, minmax(350px, 1fr));
-  gap:30px;
-  max-width:1600px;
-  margin:0 auto;
-}
-
-.workout-card {
-  background:var(--panel);
-  border:1px solid var(--border);
-  overflow:hidden;
-  transition:all 0.3s;
-  clip-path:polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%);
-}
-
-.workout-card:hover {
-  border-color:var(--neon-blue);
-  box-shadow:0 0 25px rgba(0,212,255,0.3);
-  transform:translateY(-5px);
-}
-
-.wc-header {
-  background:linear-gradient(135deg, var(--darker), var(--panel));
-  border-bottom:1px solid var(--neon-blue);
-  padding:25px;
-  display:flex;
-  justify-content:space-between;
-  align-items:flex-start;
-}
-
-.wc-icon {
-  font-size:2.5rem;
-  filter:drop-shadow(0 0 10px var(--neon-blue));
-}
-
-.wc-badge {
-  font-family:'Orbitron', monospace;
-  font-size:0.65rem;
-  font-weight:700;
-  letter-spacing:2px;
-  padding:6px 12px;
-  background:rgba(0,212,255,0.2);
-  border:1px solid var(--neon-blue);
-  color:var(--neon-blue);
-  clip-path:polygon(5px 0, 100% 0, calc(100% - 5px) 100%, 0 100%);
-}
-
-.wc-body {
-  padding:25px;
-}
-
-.wc-title {
-  font-family:'Orbitron', monospace;
-  font-size:1.3rem;
-  font-weight:700;
-  letter-spacing:1px;
-  margin-bottom:10px;
-  color:var(--neon-blue);
-}
-
-.wc-desc {
-  color:var(--text-dim);
-  font-size:0.9rem;
-  margin-bottom:20px;
-}
-
-.wc-meta {
-  display:flex;
-  gap:20px;
-  margin-bottom:20px;
-  padding-bottom:15px;
-  border-bottom:1px solid var(--border);
-}
-
-.wc-meta span {
-  font-family:'Orbitron', monospace;
-  font-size:0.75rem;
-  color:var(--text-dim);
-}
-
-.wc-exercises {
-  list-style:none;
-}
-
-.wc-exercises li {
-  padding:10px 0;
-  padding-left:45px;
-  border-bottom:1px solid var(--border);
-  position:relative;
-  font-size:0.9rem;
-  color:var(--text-dim);
-}
-
-.wc-exercises li .num {
-  position:absolute;
-  left:0;
-  top:50%;
-  transform:translateY(-50%);
-  width:30px;
-  height:30px;
-  background:rgba(0,212,255,0.1);
-  border:1px solid var(--neon-blue);
-  color:var(--neon-blue);
-  font-family:'Orbitron', monospace;
-  font-weight:700;
-  font-size:0.8rem;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  clip-path:polygon(5px 0, 100% 0, calc(100% - 5px) 100%, 0 100%);
-}
-
-/* ═══ DEMONSTRAÇÕES ═══ */
-.demo-grid {
-  padding:80px;
-  display:grid;
-  grid-template-columns:repeat(auto-fill, minmax(300px, 1fr));
-  gap:40px;
-  max-width:1600px;
-  margin:0 auto;
-}
-
-.demo-card {
-  background:var(--panel);
-  border:1px solid var(--border);
-  padding:30px;
-  clip-path:polygon(0 0, calc(100% - 15px) 0, 100% 15px, 100% 100%, 0 100%);
-  transition:all 0.3s;
-}
-
-.demo-card:hover {
-  border-color:var(--neon-blue);
-  box-shadow:0 0 25px rgba(0,212,255,0.2);
-}
-
-.demo-illustration {
-  width:100%;
-  height:250px;
-  background:var(--darker);
-  border:1px solid var(--border);
-  margin-bottom:20px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  position:relative;
-  overflow:hidden;
-}
-
-.demo-illustration img {
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  filter:brightness(0.9) contrast(1.1);
-  transition:transform 0.3s;
-}
-
-.demo-card:hover .demo-illustration img {
-  transform:scale(1.05);
-}
-
-.exercise-overlay {
-  position:absolute;
-  bottom:0;
-  left:0;
-  right:0;
-  background:linear-gradient(to top, rgba(0,0,0,0.8), transparent);
-  padding:15px;
-  color:var(--neon-blue);
-  font-family:'Orbitron', monospace;
-  font-size:0.8rem;
-  letter-spacing:2px;
-  text-shadow:0 0 10px var(--glow-blue);
-}
-
-.demo-title {
-  font-family:'Orbitron', monospace;
-  font-size:1.2rem;
-  font-weight:700;
-  color:var(--neon-blue);
-  margin-bottom:10px;
-  letter-spacing:1px;
-}
-
-.demo-desc {
-  color:var(--text-dim);
-  font-size:0.9rem;
-  line-height:1.6;
-  margin-bottom:15px;
-}
-
-.demo-muscles {
-  display:flex;
-  gap:8px;
-  flex-wrap:wrap;
-}
-
-.muscle-tag {
-  font-family:'Orbitron', monospace;
-  font-size:0.7rem;
-  padding:4px 10px;
-  background:rgba(0,212,255,0.1);
-  border:1px solid var(--neon-blue);
-  color:var(--neon-blue);
-  clip-path:polygon(4px 0, 100% 0, calc(100% - 4px) 100%, 0 100%);
-}
-
-/* ═══ DIETA ═══ */
-.diet-grid {
-  padding:80px;
-  display:grid;
-  grid-template-columns:repeat(auto-fit, minmax(350px, 1fr));
-  gap:30px;
-  max-width:1400px;
-  margin:0 auto;
-}
-
-.diet-card {
-  background:var(--panel);
-  border:1px solid var(--border);
-  padding:35px;
-  clip-path:polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%);
-  transition:all 0.3s;
-}
-
-.diet-card:hover {
-  border-color:var(--neon-blue);
-  box-shadow:0 0 25px rgba(0,212,255,0.2);
-}
-
-.diet-icon {
-  font-size:2.5rem;
-  margin-bottom:20px;
-  filter:drop-shadow(0 0 10px var(--neon-blue));
-}
-
-.diet-title {
-  font-family:'Orbitron', monospace;
-  font-size:1.5rem;
-  font-weight:800;
-  color:var(--neon-blue);
-  margin-bottom:15px;
-  letter-spacing:1px;
-}
-
-.diet-list {
-  list-style:none;
-}
-
-.diet-list li {
-  padding:12px 0;
-  padding-left:25px;
-  border-bottom:1px solid var(--border);
-  position:relative;
-  color:var(--text-dim);
-  font-size:0.95rem;
-}
-
-.diet-list li::before {
-  content:'▸';
-  position:absolute;
-  left:0;
-  color:var(--neon-blue);
-  font-weight:bold;
-}
-
-.macro-panel {
-  background:var(--panel);
-  border:1px solid var(--border);
-  padding:40px;
-  margin:0 80px 60px;
-  clip-path:polygon(0 0, calc(100% - 25px) 0, 100% 25px, 100% 100%, 25px 100%, 0 calc(100% - 25px));
-}
-
-.macro-title {
-  font-family:'Orbitron', monospace;
-  font-size:1.3rem;
-  font-weight:700;
-  color:var(--neon-blue);
-  margin-bottom:30px;
-  letter-spacing:2px;
-}
-
-.macro-row {
-  display:flex;
-  gap:40px;
-  margin-bottom:30px;
-  flex-wrap:wrap;
-}
-
-.macro-box {
-  flex:1;
-  min-width:150px;
-  background:var(--darker);
-  border:1px solid var(--border);
-  border-left:3px solid var(--neon-blue);
-  padding:20px;
-  clip-path:polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 0 100%);
-}
-
-.macro-label {
-  font-family:'Orbitron', monospace;
-  font-size:0.75rem;
-  color:var(--text-dim);
-  letter-spacing:2px;
-  margin-bottom:8px;
-}
-
-.macro-value {
-  font-family:'Orbitron', monospace;
-  font-size:2rem;
-  font-weight:900;
-  color:var(--neon-blue);
-  text-shadow:0 0 10px var(--glow-blue);
-}
-
-/* ═══ SUPPORT FAB ═══ */
-.support-fab {
-  position:fixed;
-  bottom:40px;
-  right:40px;
-  width:70px;
-  height:70px;
-  background:var(--neon-blue);
-  border:2px solid var(--neon-blue);
-  color:var(--darker);
-  font-size:2rem;
-  cursor:pointer;
-  z-index:999;
-  box-shadow:0 0 30px var(--glow-blue);
-  transition:all 0.3s;
-  clip-path:polygon(15px 0, 100% 0, calc(100% - 15px) 100%, 0 100%);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-
-.support-fab:hover {
-  box-shadow:0 0 50px var(--glow-blue);
-  transform:scale(1.1);
-}
-
-/* ═══ MODAL ═══ */
-.modal-overlay {
-  display:none;
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,0.95);
-  backdrop-filter:blur(10px);
-  z-index:9999;
-  align-items:center;
-  justify-content:center;
-}
-
-.modal-overlay.open {
-  display:flex;
-}
-
-.modal {
-  background:var(--panel);
-  border:2px solid var(--neon-blue);
-  box-shadow:0 0 50px var(--glow-blue);
-  width:90%;
-  max-width:600px;
-  max-height:85vh;
-  overflow-y:auto;
-  clip-path:polygon(0 0, calc(100% - 30px) 0, 100% 30px, 100% 100%, 30px 100%, 0 calc(100% - 30px));
-}
-
-.modal-header {
-  background:linear-gradient(135deg, var(--darker), var(--panel));
-  border-bottom:2px solid var(--neon-blue);
-  padding:25px 30px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-
-.modal-title {
-  font-family:'Orbitron', monospace;
-  font-size:1.3rem;
-  font-weight:700;
-  letter-spacing:2px;
-  color:var(--neon-blue);
-  text-shadow:0 0 10px var(--glow-blue);
-}
-
-.modal-close {
-  background:none;
-  border:none;
-  color:var(--text-dim);
-  font-size:2rem;
-  cursor:pointer;
-  width:35px;
-  height:35px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  transition:0.3s;
-}
-
-.modal-close:hover {
-  color:var(--neon-blue);
-  text-shadow:0 0 10px var(--glow-blue);
-}
-
-.modal-body {
-  padding:30px;
-}
-
-.support-tabs {
-  display:flex;
-  gap:10px;
-  margin-bottom:25px;
-}
-
-.tab-btn {
-  flex:1;
-  font-family:'Orbitron', monospace;
-  font-size:0.8rem;
-  font-weight:600;
-  letter-spacing:2px;
-  padding:12px;
-  background:var(--darker);
-  border:1px solid var(--border);
-  color:var(--text-dim);
-  cursor:pointer;
-  transition:all 0.3s;
-  clip-path:polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
-}
-
-.tab-btn.active {
-  background:rgba(0,212,255,0.1);
-  border-color:var(--neon-blue);
-  color:var(--neon-blue);
-  box-shadow:inset 0 0 15px rgba(0,212,255,0.2);
-}
-
-.support-panel {
-  display:none;
-}
-
-.support-panel.active {
-  display:block;
-}
-
-.faq-item {
-  margin-bottom:12px;
-  border:1px solid var(--border);
-  clip-path:polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 0 100%);
-}
-
-.faq-q {
-  padding:18px;
-  background:var(--darker);
-  cursor:pointer;
-  font-weight:600;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  transition:0.3s;
-  font-size:0.9rem;
-}
-
-.faq-q:hover {
-  background:var(--panel);
-}
-
-.faq-arrow {
-  color:var(--neon-blue);
-  font-size:1.2rem;
-  transition:transform 0.3s;
-}
-
-.faq-arrow.open {
-  transform:rotate(180deg);
-}
-
-.faq-a {
-  max-height:0;
-  overflow:hidden;
-  transition:max-height 0.3s;
-}
-
-.faq-a.open {
-  max-height:300px;
-}
-
-.faq-a p {
-  padding:18px;
-  color:var(--text-dim);
-  line-height:1.7;
-  font-size:0.9rem;
-}
-
-.chat-msgs {
-  max-height:280px;
-  overflow-y:auto;
-  margin-bottom:20px;
-  display:flex;
-  flex-direction:column;
-  gap:12px;
-}
-
-.chat-msg {
-  padding:12px 18px;
-  max-width:85%;
-  font-size:0.9rem;
-  line-height:1.6;
-}
-
-.chat-msg.bot {
-  background:rgba(0,212,255,0.1);
-  border-left:3px solid var(--neon-blue);
-  align-self:flex-start;
-}
-
-.chat-msg.user {
-  background:rgba(0,212,255,0.05);
-  border-right:3px solid var(--neon-blue);
-  align-self:flex-end;
-}
-
-.chat-input-row {
-  display:flex;
-  gap:12px;
-}
-
-.chat-input-row input {
-  flex:1;
-  padding:12px;
-  background:var(--darker);
-  border:1px solid var(--border);
-  color:var(--text);
-  font-family:'Rajdhani', sans-serif;
-  font-size:0.95rem;
-  clip-path:polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
-}
-
-.chat-input-row input:focus {
-  outline:none;
-  border-color:var(--neon-blue);
-  box-shadow:inset 0 0 10px rgba(0,212,255,0.2);
-}
-
-.chat-input-row button {
-  width:50px;
-  background:var(--neon-blue);
-  border:none;
-  color:var(--darker);
-  font-size:1.3rem;
-  cursor:pointer;
-  transition:0.3s;
-  clip-path:polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
-}
-
-.chat-input-row button:hover {
-  box-shadow:0 0 20px var(--glow-blue);
-}
-
-.quick-qs {
-  display:flex;
-  gap:8px;
-  margin-bottom:18px;
-  flex-wrap:wrap;
-}
-
-.quick-qs button {
-  font-family:'Orbitron', monospace;
-  font-size:0.7rem;
-  font-weight:600;
-  padding:6px 12px;
-  background:var(--darker);
-  border:1px solid var(--border);
-  color:var(--text-dim);
-  cursor:pointer;
-  transition:0.3s;
-  clip-path:polygon(5px 0, 100% 0, calc(100% - 5px) 100%, 0 100%);
-}
-
-.quick-qs button:hover {
-  border-color:var(--neon-blue);
-  color:var(--neon-blue);
-}
-
-/* ═══ FOOTER ═══ */
-footer {
-  background:var(--darker);
-  border-top:2px solid var(--neon-blue);
-  box-shadow:0 0 20px var(--glow-blue);
-  padding:50px 80px;
+@keyframes pageEnter {
+  from {
+    opacity:0;
+    transform:translateY(40px);
+  }
+  to {
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+/* ═══ HERO ═══ */
+.hero {
+  background:var(--glass);
+  backdrop-filter:blur(20px) saturate(180%);
+  border:1px solid var(--glass-border);
+  border-radius:35px;
+  padding:80px 50px;
   text-align:center;
+  margin-bottom:50px;
+  position:relative;
+  overflow:hidden;
+  box-shadow:0 20px 60px rgba(0,0,0,0.1);
 }
 
-.footer-logo {
-  font-family:'Orbitron', monospace;
-  font-size:2rem;
+.hero::before {
+  content:'';
+  position:absolute;
+  top:-50%;
+  left:-50%;
+  width:200%;
+  height:200%;
+  background:conic-gradient(from 0deg, transparent, rgba(255,255,255,0.05), transparent);
+  animation:rotate 20s linear infinite;
+}
+
+@keyframes rotate {
+  to { transform:rotate(360deg); }
+}
+
+.hero-content {
+  position:relative;
+  z-index:1;
+}
+
+.hero-badge {
+  display:inline-block;
+  font-size:0.65rem;
+  letter-spacing:3px;
+  padding:10px 25px;
+  background:var(--glass);
+  border:1px solid var(--glass-border);
+  border-radius:50px;
+  margin-bottom:30px;
+  text-transform:uppercase;
+  font-weight:800;
+  backdrop-filter:blur(10px);
+}
+
+.hero-title {
+  font-family:'Archivo', sans-serif;
+  font-size:clamp(3rem, 10vw, 6rem);
   font-weight:900;
-  letter-spacing:4px;
-  color:var(--neon-blue);
-  text-shadow:0 0 20px var(--glow-blue);
-  margin-bottom:15px;
+  line-height:0.95;
+  margin-bottom:25px;
+  letter-spacing:-3px;
 }
 
-footer p {
+.hero-subtitle {
+  font-size:1.15rem;
   color:var(--text-dim);
-  font-size:0.85rem;
+  max-width:700px;
+  margin:0 auto 50px;
+  line-height:1.8;
+  font-weight:400;
 }
 
-/* ═══ RESPONSIVE ═══ */
-@media (max-width: 768px) {
-  nav { padding:0 20px; }
-  .nav-menu { display:none; }
-  .mobile-toggle { display:flex; }
-  
-  .hero-content,
-  section,
-  .page-header,
-  .filter-bar,
-  .workout-grid,
-  .demo-grid,
-  .diet-grid,
-  footer,
-  .macro-panel {
-    padding:40px 20px;
-  }
-  
-  .bio-grid,
-  .workout-grid,
-  .demo-grid,
-  .diet-grid {
-    grid-template-columns:1fr;
-  }
-  
-  .macro-panel {
-    margin:0 20px 40px;
-  }
-  
-  .progress-tabs {
-    flex-direction:column;
-  }
-}
-
-/* ═══ PROGRESS PAGE ═══ */
-.progress-tabs {
-  display:flex;
-  gap:15px;
-  justify-content:center;
-  padding:40px 80px;
-  background:var(--darker);
-  border-bottom:1px solid var(--border);
-}
-
-.progress-tab-btn {
-  font-family:'Orbitron', monospace;
-  font-size:0.85rem;
-  font-weight:700;
-  letter-spacing:2px;
-  padding:15px 40px;
-  background:var(--panel);
-  border:2px solid var(--border);
-  color:var(--text-dim);
-  cursor:pointer;
-  transition:all 0.3s;
-  clip-path:polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
-}
-
-.progress-tab-btn.active {
-  background:rgba(0,212,255,0.1);
-  border-color:var(--neon-blue);
-  color:var(--neon-blue);
-  box-shadow:0 0 20px rgba(0,212,255,0.3);
-}
-
-.progress-content {
-  display:none;
-  padding:60px 80px;
-}
-
-.progress-content.active {
-  display:block;
-}
-
-.stats-overview {
+/* ═══ STATS ═══ */
+.stats {
   display:grid;
   grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));
   gap:20px;
@@ -1363,1423 +294,1222 @@ footer p {
 }
 
 .stat-card {
-  background:var(--panel);
-  border:1px solid var(--border);
-  border-left:3px solid var(--neon-blue);
-  padding:25px;
-  clip-path:polygon(0 0, calc(100% - 15px) 0, 100% 15px, 100% 100%, 0 100%);
+  background:var(--glass);
+  backdrop-filter:blur(20px) saturate(180%);
+  border:1px solid var(--glass-border);
+  border-radius:30px;
+  padding:40px 30px;
+  text-align:center;
+  transition:all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position:relative;
+  overflow:hidden;
 }
 
-.stat-card .stat-label {
-  font-family:'Orbitron', monospace;
-  font-size:0.75rem;
-  color:var(--text-dim);
-  letter-spacing:2px;
-  margin-bottom:10px;
+.stat-card::before {
+  content:'';
+  position:absolute;
+  inset:0;
+  background:linear-gradient(135deg, transparent, var(--glass));
+  opacity:0;
+  transition:opacity 0.4s;
 }
 
-.stat-card .stat-number {
-  font-family:'Orbitron', monospace;
-  font-size:2.5rem;
+.stat-card:hover {
+  transform:translateY(-10px) scale(1.02);
+  box-shadow:0 25px 50px rgba(0,0,0,0.15);
+  border-color:var(--text);
+}
+
+.stat-card:hover::before {
+  opacity:1;
+}
+
+.stat-number {
+  font-family:'Archivo', sans-serif;
+  font-size:4rem;
   font-weight:900;
-  color:var(--neon-blue);
-  text-shadow:0 0 10px var(--glow-blue);
+  display:block;
+  line-height:1;
+  position:relative;
+  z-index:1;
 }
 
-.stat-card .stat-unit {
-  font-size:1rem;
+.stat-label {
+  font-size:0.8rem;
   color:var(--text-dim);
-  margin-left:5px;
-}
-
-.workout-day {
-  background:var(--panel);
-  border:1px solid var(--border);
-  padding:30px;
-  margin-bottom:25px;
-  clip-path:polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%);
-}
-
-.day-header {
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:25px;
-  padding-bottom:15px;
-  border-bottom:1px solid var(--border);
-}
-
-.day-title {
-  font-family:'Orbitron', monospace;
-  font-size:1.4rem;
-  font-weight:800;
-  color:var(--neon-blue);
-  letter-spacing:1px;
-}
-
-.day-date {
-  font-family:'Orbitron', monospace;
-  font-size:0.75rem;
-  color:var(--text-dim);
+  margin-top:15px;
   letter-spacing:2px;
+  text-transform:uppercase;
+  font-weight:700;
+  position:relative;
+  z-index:1;
 }
 
-.exercise-checklist {
-  list-style:none;
-}
-
-.exercise-item {
-  display:flex;
-  align-items:center;
-  padding:15px;
-  margin-bottom:10px;
-  background:var(--darker);
-  border:1px solid var(--border);
-  clip-path:polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
-  transition:all 0.3s;
+/* ═══ BUTTONS ═══ */
+.btn {
+  width:100%;
+  padding:20px 40px;
+  background:var(--text);
+  color:var(--bg);
+  border:none;
+  border-radius:50px;
+  font-size:1rem;
+  font-weight:800;
+  letter-spacing:0.5px;
+  text-transform:uppercase;
   cursor:pointer;
+  transition:all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-family:'Montserrat', sans-serif;
+  box-shadow:0 10px 30px rgba(0,0,0,0.2);
+  position:relative;
+  overflow:hidden;
 }
 
-.exercise-item:hover {
-  border-color:var(--neon-blue);
-  background:rgba(0,212,255,0.05);
-}
-
-.exercise-item.completed {
-  border-color:var(--neon-blue);
-  background:rgba(0,212,255,0.1);
-}
-
-.exercise-checkbox {
-  width:25px;
-  height:25px;
-  border:2px solid var(--border);
-  margin-right:20px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  clip-path:polygon(5px 0, 100% 0, calc(100% - 5px) 100%, 0 100%);
-  transition:all 0.3s;
-  flex-shrink:0;
-}
-
-.exercise-item.completed .exercise-checkbox {
-  background:var(--neon-blue);
-  border-color:var(--neon-blue);
-  box-shadow:0 0 15px var(--glow-blue);
-}
-
-.exercise-checkbox::after {
-  content:'✓';
-  color:var(--darker);
-  font-weight:bold;
-  font-size:1.1rem;
+.btn::before {
+  content:'';
+  position:absolute;
+  inset:0;
+  background:linear-gradient(135deg, transparent, rgba(255,255,255,0.2));
   opacity:0;
   transition:opacity 0.3s;
 }
 
-.exercise-item.completed .exercise-checkbox::after {
+.btn:hover {
+  transform:translateY(-3px) scale(1.02);
+  box-shadow:0 15px 40px rgba(0,0,0,0.3);
+}
+
+.btn:hover::before {
   opacity:1;
 }
 
-.exercise-info {
-  flex:1;
+.btn:active {
+  transform:translateY(-1px) scale(0.98);
 }
 
-.exercise-name {
-  font-weight:600;
+.btn-outline {
+  background:transparent;
   color:var(--text);
-  margin-bottom:5px;
+  border:2px solid var(--text);
+  box-shadow:none;
 }
 
-.exercise-details {
+.btn-outline:hover {
+  background:var(--text);
+  color:var(--bg);
+}
+
+/* ═══ CARDS ═══ */
+.card {
+  background:var(--glass);
+  backdrop-filter:blur(20px) saturate(180%);
+  border:1px solid var(--glass-border);
+  border-radius:30px;
+  padding:40px;
+  margin-bottom:30px;
+  transition:all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card:hover {
+  transform:translateY(-8px);
+  box-shadow:0 25px 50px rgba(0,0,0,0.15);
+  border-color:var(--text);
+}
+
+.card-title {
+  font-family:'Archivo', sans-serif;
+  font-size:1.8rem;
+  font-weight:800;
+  margin-bottom:30px;
+  letter-spacing:-0.5px;
+}
+
+.card-list {
+  list-style:none;
+}
+
+.card-list li {
+  padding:18px 0;
+  border-bottom:1px solid var(--glass-border);
+  padding-left:35px;
+  position:relative;
+  color:var(--text-dim);
+  line-height:1.7;
+  font-size:1.05rem;
+}
+
+.card-list li:last-child {
+  border:none;
+}
+
+.card-list li::before {
+  content:'';
+  position:absolute;
+  left:0;
+  top:50%;
+  transform:translateY(-50%);
+  width:20px;
+  height:3px;
+  background:var(--text);
+  border-radius:10px;
+}
+
+/* ═══ SECTION ═══ */
+.section-header {
+  margin-bottom:40px;
+}
+
+.section-title {
+  font-family:'Archivo', sans-serif;
+  font-size:3rem;
+  font-weight:900;
+  margin-bottom:15px;
+  letter-spacing:-1.5px;
+}
+
+.section-subtitle {
+  color:var(--text-dim);
+  font-size:1.1rem;
+  font-weight:400;
+}
+
+/* ═══ FORM ═══ */
+.form-group {
+  margin-bottom:25px;
+}
+
+.form-label {
+  display:block;
   font-size:0.85rem;
   color:var(--text-dim);
+  margin-bottom:12px;
+  font-weight:700;
+  letter-spacing:1px;
+  text-transform:uppercase;
 }
 
-.exercise-item.completed .exercise-name {
-  color:var(--neon-blue);
+.form-input,
+.form-select {
+  width:100%;
+  padding:20px 25px;
+  background:var(--glass);
+  backdrop-filter:blur(10px);
+  border:1px solid var(--glass-border);
+  border-radius:20px;
+  color:var(--text);
+  font-size:1rem;
+  font-family:'Montserrat', sans-serif;
+  transition:all 0.3s;
 }
 
-.progress-bar-container {
-  margin-top:30px;
-  padding:20px;
-  background:var(--darker);
-  border:1px solid var(--border);
-  clip-path:polygon(0 0, calc(100% - 15px) 0, 100% 15px, 100% 100%, 0 100%);
+.form-input:focus,
+.form-select:focus {
+  outline:none;
+  border-color:var(--text);
+  box-shadow:0 0 0 4px var(--glass);
 }
 
-.progress-bar-label {
+/* ═══ RESULT BOX ═══ */
+.result-box {
+  background:var(--glass);
+  backdrop-filter:blur(20px) saturate(180%);
+  border:2px solid var(--text);
+  border-radius:30px;
+  padding:45px;
+  margin:40px 0;
+}
+
+.result-title {
+  font-family:'Archivo', sans-serif;
+  font-size:2.2rem;
+  font-weight:900;
+  margin-bottom:30px;
+  letter-spacing:-0.5px;
+}
+
+.result-box ul {
+  list-style:none;
+}
+
+.result-box li {
+  padding:16px 0;
+  border-bottom:1px solid var(--glass-border);
+  color:var(--text-dim);
+  font-size:1.05rem;
+}
+
+.result-box li:last-child {
+  border:none;
+}
+
+.result-box strong {
+  color:var(--text);
+  font-weight:800;
+}
+
+/* ═══ TABS ═══ */
+.tabs {
   display:flex;
-  justify-content:space-between;
-  margin-bottom:10px;
-  font-family:'Orbitron', monospace;
-  font-size:0.85rem;
+  gap:15px;
+  margin-bottom:35px;
+  background:var(--glass);
+  backdrop-filter:blur(20px);
+  border-radius:25px;
+  padding:10px;
+  border:1px solid var(--glass-border);
 }
 
-.progress-bar-label .label {
+.tab-btn {
+  flex:1;
+  padding:18px;
+  background:transparent;
+  border:none;
+  border-radius:20px;
   color:var(--text-dim);
-  letter-spacing:2px;
+  font-weight:800;
+  letter-spacing:0.5px;
+  text-transform:uppercase;
+  cursor:pointer;
+  font-family:'Montserrat', sans-serif;
+  font-size:0.9rem;
+  transition:all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.progress-bar-label .percentage {
-  color:var(--neon-blue);
+.tab-btn.active {
+  background:var(--text);
+  color:var(--bg);
+  box-shadow:0 8px 20px rgba(0,0,0,0.2);
+}
+
+.tab-content {
+  display:none;
+}
+
+.tab-content.active {
+  display:block;
+  animation:pageEnter 0.4s ease;
+}
+
+/* ═══ EXERCISE IMAGE ═══ */
+.exercise-img {
+  width:100%;
+  height:320px;
+  object-fit:cover;
+  border-radius:25px;
+  margin-bottom:25px;
+  transition:all 0.4s;
+}
+
+.card:hover .exercise-img {
+  transform:scale(1.05);
+  border-radius:30px;
+}
+
+/* ═══ TAGS ═══ */
+.tags {
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+  margin-top:25px;
+}
+
+.tag {
+  font-size:0.7rem;
+  padding:10px 20px;
+  background:var(--glass);
+  border:1px solid var(--glass-border);
+  border-radius:50px;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  font-weight:800;
+  backdrop-filter:blur(10px);
+}
+
+/* ═══ CARDIO CARD ═══ */
+.cardio-card {
+  background:var(--glass);
+  backdrop-filter:blur(20px) saturate(180%);
+  border:1px solid var(--glass-border);
+  border-radius:30px;
+  padding:35px;
+  margin-bottom:25px;
+  transition:all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.cardio-card:hover {
+  transform:translateX(15px) scale(1.02);
+  border-color:var(--text);
+  box-shadow:0 20px 40px rgba(0,0,0,0.15);
+}
+
+.cardio-title {
+  font-family:'Archivo', sans-serif;
+  font-size:1.6rem;
+  font-weight:800;
+  margin-bottom:15px;
+  letter-spacing:-0.5px;
+}
+
+.cardio-meta {
+  display:flex;
+  gap:30px;
+  margin-bottom:18px;
+  font-size:0.95rem;
+  color:var(--text-dim);
   font-weight:700;
 }
 
-.progress-bar-track {
-  width:100%;
-  height:12px;
-  background:var(--panel);
-  border:1px solid var(--border);
-  overflow:hidden;
-  position:relative;
+.cardio-desc {
+  color:var(--text-dim);
+  line-height:1.8;
+  margin-bottom:25px;
+  font-size:1.05rem;
 }
 
-.progress-bar-fill {
-  height:100%;
-  background:linear-gradient(90deg, var(--neon-blue), var(--neon-blue-bright));
-  box-shadow:0 0 15px var(--glow-blue);
-  transition:width 0.5s ease;
-  position:relative;
+/* ═══ SETTINGS ═══ */
+.settings-item {
+  background:var(--glass);
+  backdrop-filter:blur(20px) saturate(180%);
+  border:1px solid var(--glass-border);
+  border-radius:25px;
+  padding:30px;
+  margin-bottom:20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  transition:all 0.3s;
 }
 
-.progress-bar-fill::after {
-  content:'';
+.settings-item:hover {
+  border-color:var(--text);
+  transform:translateX(5px);
+}
+
+.settings-info h3 {
+  font-family:'Archivo', sans-serif;
+  font-size:1.3rem;
+  font-weight:800;
+  margin-bottom:8px;
+}
+
+.settings-info p {
+  color:var(--text-dim);
+  font-size:0.95rem;
+}
+
+/* ═══ TOGGLE ═══ */
+.toggle {
+  position:relative;
+  width:70px;
+  height:38px;
+  background:var(--glass);
+  border:2px solid var(--glass-border);
+  border-radius:50px;
+  cursor:pointer;
+  transition:all 0.3s;
+}
+
+.toggle.active {
+  background:var(--text);
+  border-color:var(--text);
+}
+
+.toggle-circle {
   position:absolute;
-  top:0;
-  left:0;
-  right:0;
-  bottom:0;
-  background:linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-  animation:shimmer 2s infinite;
+  top:3px;
+  left:3px;
+  width:28px;
+  height:28px;
+  background:var(--text);
+  border-radius:50%;
+  transition:all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow:0 2px 8px rgba(0,0,0,0.2);
 }
 
-@keyframes shimmer {
-  0% { transform:translateX(-100%); }
-  100% { transform:translateX(100%); }
+.toggle.active .toggle-circle {
+  left:35px;
+  background:var(--bg);
 }
 
-::-webkit-scrollbar { width:10px; }
-::-webkit-scrollbar-track { background:var(--darker); }
-::-webkit-scrollbar-thumb { 
-  background:var(--neon-blue);
-  border-radius:10px;
-  box-shadow:0 0 10px var(--glow-blue);
+/* ═══ DIVIDER ═══ */
+.divider {
+  height:1px;
+  background:var(--glass-border);
+  margin:50px 0;
+}
+
+/* ═══ FOOTER ═══ */
+footer {
+  text-align:center;
+  padding:50px 20px;
+  border-top:1px solid var(--glass-border);
+  margin-top:80px;
+}
+
+footer .logo {
+  margin-bottom:20px;
+  font-size:1.5rem;
+}
+
+footer p {
+  color:var(--text-dim);
+  font-size:0.9rem;
 }
 </style>
 </head>
 <body>
 
-<nav>
+<div class="bg-grid"></div>
+<div class="bg-gradient"></div>
+
+<header>
   <div class="logo">KYKLE</div>
-  <ul class="nav-menu">
-    <li><a href="#" class="active" onclick="goPage('home',this)">INÍCIO</a></li>
-    <li><a href="#" onclick="goPage('treinos',this)">TREINOS</a></li>
-    <li><a href="#" onclick="goPage('demos',this)">DEMONSTRAÇÕES</a></li>
-    <li><a href="#" onclick="goPage('progresso',this)">PROGRESSO</a></li>
-    <li><a href="#" onclick="goPage('casa',this)">CASA</a></li>
-    <li><a href="#" onclick="goPage('dieta',this)">DIETA</a></li>
-  </ul>
-  <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn" title="Alternar modo claro/escuro">🌙</button>
-  <div class="mobile-toggle">
+  <div class="menu-icon" onclick="toggleMenu()" id="menuIcon">
     <span></span>
     <span></span>
     <span></span>
   </div>
-</nav>
+</header>
 
-<!-- HOME PAGE -->
-<div class="page active" id="page-home">
-  <section class="hero">
-    <div class="hero-glitch"></div>
-    <div class="hero-glitch2"></div>
-    <div class="hero-content">
-      <div class="hero-tag">◢ SISTEMA NEURAL DE PERFORMANCE</div>
-      <h1>
-        FORJE SUA<br/>
-        <span class="highlight">FORÇA</span>
-      </h1>
-      <div class="hero-stats">
-        <div class="stat-box">
-          <div class="label">USUÁRIOS ATIVOS</div>
-          <div class="value">12.4K</div>
-        </div>
-        <div class="stat-box">
-          <div class="label">TREINOS CONCLUÍDOS</div>
-          <div class="value">89.7K</div>
-        </div>
-        <div class="stat-box">
-          <div class="label">TAXA DE SUCESSO</div>
-          <div class="value">94%</div>
-        </div>
-      </div>
-      <div class="cta-group">
-        <button class="btn btn-primary" onclick="goPage('treinos')">INICIAR TREINO</button>
-        <button class="btn btn-secondary" onclick="goPage('demos')">VER DEMONSTRAÇÕES</button>
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeMenu()"></div>
+
+<div class="sidebar" id="sidebar">
+  <nav>
+    <a href="#" class="active" onclick="navigate('home',this)">● Início</a>
+    <a href="#" onclick="navigate('personalizado',this)">⚡ Treino Personalizado</a>
+    <a href="#" onclick="navigate('casa',this)">🏠 Treino em Casa</a>
+    <a href="#" onclick="navigate('cardio',this)">♦ Cardio</a>
+    <a href="#" onclick="navigate('demos',this)">◈ Demonstrações</a>
+    <a href="#" onclick="navigate('progresso',this)">◇ Progresso</a>
+    <a href="#" onclick="navigate('dieta',this)">✦ Nutrição</a>
+    <a href="#" onclick="navigate('config',this)">⚙ Configurações</a>
+  </nav>
+</div>
+
+<main>
+  <!-- HOME -->
+  <div class="page active" id="page-home">
+    <div class="hero">
+      <div class="hero-content">
+        <div class="hero-badge">Sistema Elite</div>
+        <h1 class="hero-title">Transforme<br/>Seu Corpo</h1>
+        <p class="hero-subtitle">Sistema completo de treinamento personalizado e nutrição de alto desempenho para alcançar resultados extraordinários</p>
       </div>
     </div>
-  </section>
 
-  <section class="biotipos">
+    <div class="stats">
+      <div class="stat-card">
+        <span class="stat-number" id="home-workouts">0</span>
+        <span class="stat-label">Treinos</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number" id="home-exercises">0</span>
+        <span class="stat-label">Exercícios</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number" id="home-calories">0</span>
+        <span class="stat-label">Calorias</span>
+      </div>
+    </div>
+
+    <button class="btn" onclick="navigate('personalizado')" style="margin-bottom:20px;">Criar Treino Personalizado</button>
+    <button class="btn btn-outline" onclick="navigate('progresso')">Ver Progresso</button>
+
+    <div class="divider"></div>
+
+    <div class="card">
+      <h3 class="card-title">O Que Oferecemos</h3>
+      <ul class="card-list">
+        <li>Treinos personalizados baseados em biotipo e objetivo</li>
+        <li>Programas de cardio para casa e academia</li>
+        <li>Demonstrações fotográficas profissionais</li>
+        <li>Rastreamento inteligente de progresso</li>
+        <li>Plano nutricional completo e balanceado</li>
+        <li>Interface premium totalmente responsiva</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- PERSONALIZADO -->
+  <div class="page" id="page-personalizado">
     <div class="section-header">
-      <h2 class="section-title">ANÁLISE DE <span class="blue">BIÓTIPO</span></h2>
-      <p class="section-subtitle">Sistema adaptativo baseado em genética e resposta muscular</p>
+      <h2 class="section-title">Treino Personalizado</h2>
+      <p class="section-subtitle">Programa desenvolvido exclusivamente para você</p>
     </div>
 
-    <div class="bio-grid">
-      <div class="bio-card">
-        <div class="bio-header">
-          <div class="bio-icon">🔥</div>
-          <h3 class="bio-title">ECTOMORFO</h3>
-          <p class="bio-desc">Metabolismo acelerado • Estrutura magra</p>
-        </div>
-        <div class="bio-body">
-          <span class="bio-tag">PROTOCOLO: MASSA</span>
-          <ul class="bio-list">
-            <li>Agachamento carga — 4×8</li>
-            <li>Supino halter — 4×10</li>
-            <li>Remada cabo — 3×12</li>
-            <li>Panturrilha — 4×15</li>
-          </ul>
-        </div>
+    <div class="card">
+      <h3 class="card-title">Suas Informações</h3>
+      
+      <div class="form-group">
+        <label class="form-label">Altura (cm)</label>
+        <input type="number" class="form-input" id="altura" placeholder="175" min="100" max="250"/>
       </div>
 
-      <div class="bio-card">
-        <div class="bio-header">
-          <div class="bio-icon">⚡</div>
-          <h3 class="bio-title">MESOMORFO</h3>
-          <p class="bio-desc">Estrutura atlética • Alta resposta</p>
-        </div>
-        <div class="bio-body">
-          <span class="bio-tag">PROTOCOLO: FORÇA</span>
-          <ul class="bio-list">
-            <li>Agachamento livre — 4×6</li>
-            <li>Supino inclinado — 4×8</li>
-            <li>Pull-ups — 3×10</li>
-            <li>Tricep dips — 3×12</li>
-          </ul>
-        </div>
+      <div class="form-group">
+        <label class="form-label">Peso (kg)</label>
+        <input type="number" class="form-input" id="peso" placeholder="70" min="30" max="200"/>
       </div>
 
-      <div class="bio-card">
-        <div class="bio-header">
-          <div class="bio-icon">💎</div>
-          <h3 class="bio-title">ENDOMORFO</h3>
-          <p class="bio-desc">Metabolismo lento • Alta retenção</p>
-        </div>
-        <div class="bio-body">
-          <span class="bio-tag">PROTOCOLO: QUEIMA</span>
-          <ul class="bio-list">
-            <li>Burpees — 3×12</li>
-            <li>Lunges halteres — 3×10</li>
-            <li>Mountain climbers — 3×30s</li>
-            <li>Agachamento sumo — 4×15</li>
-          </ul>
-        </div>
+      <div class="form-group">
+        <label class="form-label">Biotipo</label>
+        <select class="form-select" id="biotipo">
+          <option value="">Selecione seu biotipo...</option>
+          <option value="ectomorfo">Ectomorfo — Magro, metabolismo acelerado</option>
+          <option value="mesomorfo">Mesomorfo — Atlético, responde bem a treino</option>
+          <option value="endomorfo">Endomorfo — Estrutura larga, facilita acúmulo</option>
+        </select>
       </div>
+
+      <div class="form-group">
+        <label class="form-label">Objetivo Principal</label>
+        <select class="form-select" id="objetivo">
+          <option value="">Selecione seu objetivo...</option>
+          <option value="hipertrofia">Hipertrofia — Ganhar massa muscular</option>
+          <option value="definicao">Definição — Reduzir gordura corporal</option>
+          <option value="forca">Força — Aumentar carga e potência</option>
+          <option value="resistencia">Resistência — Melhorar condicionamento</option>
+        </select>
+      </div>
+
+      <button class="btn" onclick="gerarTreino()">Gerar Meu Programa</button>
     </div>
-  </section>
 
-  <section class="timer-section">
+    <div id="resultado"></div>
+  </div>
+
+  <!-- CASA -->
+  <div class="page" id="page-casa">
     <div class="section-header">
-      <h2 class="section-title">CRONÔMETRO <span class="blue">DIGITAL</span></h2>
-      <p class="section-subtitle">Sistema de temporização precisa para intervalos e séries</p>
+      <h2 class="section-title">Treino em Casa</h2>
+      <p class="section-subtitle">Sistema AB — 4 dias por semana sem equipamento</p>
     </div>
 
-    <div class="timer-container">
-      <div class="timer-hud">
-        <svg class="timer-circle" width="350" height="350">
-          <circle class="timer-bg" cx="175" cy="175" r="160"/>
-          <circle class="timer-progress" id="timerCircle" cx="175" cy="175" r="160"
-                  stroke-dasharray="1005" stroke-dashoffset="0"/>
-        </svg>
-        <div class="timer-display">
-          <div class="timer-label" id="timerLabel">DESCANSO</div>
-          <div class="timer-time" id="timerTime">01:30</div>
-        </div>
-      </div>
-
-      <div class="timer-controls">
-        <button class="timer-btn active" onclick="timerStart()" id="btnPlay">▶</button>
-        <button class="timer-btn" onclick="timerPause()">⏸</button>
-        <button class="timer-btn" onclick="timerReset()">↺</button>
-      </div>
-
-      <div class="timer-presets">
-        <button class="preset-btn" onclick="setPreset(30,'DESCANSO')">30s</button>
-        <button class="preset-btn" onclick="setPreset(60,'DESCANSO')">1 MIN</button>
-        <button class="preset-btn" onclick="setPreset(90,'DESCANSO')">1:30</button>
-        <button class="preset-btn" onclick="setPreset(120,'DESCANSO')">2 MIN</button>
-        <button class="preset-btn" onclick="setPreset(300,'TREINO')">5 MIN</button>
-      </div>
-    </div>
-  </section>
-
-  <footer>
-    <div class="footer-logo">KYKLE</div>
-    <p>© 2025 NEURAL PERFORMANCE SYSTEM — TECNOLOGIA DE TREINO AVANÇADO</p>
-  </footer>
-</div>
-
-<!-- TREINOS PAGE -->
-<div class="page" id="page-treinos">
-  <div class="page-header">
-    <h1 class="page-title">BIBLIOTECA <span class="blue">TREINOS</span></h1>
-  </div>
-
-  <div class="filter-bar">
-    <button class="filter-btn active" onclick="filterWorkouts('todos',this)">TODOS</button>
-    <button class="filter-btn" onclick="filterWorkouts('peito',this)">PEITO</button>
-    <button class="filter-btn" onclick="filterWorkouts('costas',this)">COSTAS</button>
-    <button class="filter-btn" onclick="filterWorkouts('pernas',this)">PERNAS</button>
-    <button class="filter-btn" onclick="filterWorkouts('ombros',this)">OMBROS</button>
-    <button class="filter-btn" onclick="filterWorkouts('abdominal',this)">ABDOMINAL</button>
-  </div>
-
-  <div class="workout-grid" id="workoutGrid"></div>
-
-  <footer>
-    <div class="footer-logo">KYKLE</div>
-    <p>© 2025 NEURAL PERFORMANCE SYSTEM</p>
-  </footer>
-</div>
-
-<!-- DEMONSTRAÇÕES PAGE -->
-<div class="page" id="page-demos">
-  <div class="page-header">
-    <h1 class="page-title">DEMONSTRAÇÕES <span class="blue">VISUAIS</span></h1>
-    <p style="color:var(--text-dim); margin-top:15px; font-size:1rem;">Bonecos animados mostrando a execução correta de cada exercício</p>
-  </div>
-
-  <div class="demo-grid">
-    <div class="demo-card">
-      <div class="demo-illustration">
-        <img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=800&h=600&fit=crop&q=80" alt="Flexão"/>
-        <div class="exercise-overlay">PUSH-UP</div>
-      </div>
-      <h3 class="demo-title">FLEXÃO</h3>
-      <p class="demo-desc">Movimento de empurrar o próprio corpo do chão usando os braços. Excelente para peito, ombros e tríceps.</p>
-      <div class="demo-muscles">
-        <span class="muscle-tag">PEITO</span>
-        <span class="muscle-tag">TRÍCEPS</span>
-        <span class="muscle-tag">OMBROS</span>
-      </div>
+    <div class="card">
+      <h3 class="card-title">Cronograma Semanal</h3>
+      <ul class="card-list">
+        <li>Segunda-feira — DIA A (Peito/Ombro/Tríceps)</li>
+        <li>Terça-feira — DIA B (Perna/Core)</li>
+        <li>Quarta-feira — DESCANSO</li>
+        <li>Quinta-feira — DIA A (Peito/Ombro/Tríceps)</li>
+        <li>Sexta-feira — DIA B (Perna/Core)</li>
+        <li>Sábado/Domingo — DESCANSO</li>
+      </ul>
     </div>
 
-    <div class="demo-card">
-      <div class="demo-illustration">
-        <img src="https://images.unsplash.com/photo-1574680096145-d05b474e2155?w=800&h=600&fit=crop&q=80" alt="Agachamento"/>
-        <div class="exercise-overlay">SQUAT</div>
-      </div>
-      <h3 class="demo-title">AGACHAMENTO</h3>
-      <p class="demo-desc">Flexão dos joelhos e quadris, descendo o corpo e voltando. Base de todos os treinos de pernas.</p>
-      <div class="demo-muscles">
-        <span class="muscle-tag">QUADRÍCEPS</span>
-        <span class="muscle-tag">GLÚTEOS</span>
-        <span class="muscle-tag">CORE</span>
-      </div>
+    <div class="card">
+      <h3 class="card-title">DIA A — Peito/Ombro/Tríceps</h3>
+      <p style="color:var(--text-dim); margin-bottom:25px; font-size:1.05rem;">⏱ 30-40 min • 🔥 280 kcal</p>
+      <ul class="card-list">
+        <li>Flexão normal — 3 séries × 8-15 reps</li>
+        <li>Flexão inclinada — 3 séries × 10-15 reps</li>
+        <li>Mergulho entre cadeiras — 3 séries × 8-12 reps</li>
+        <li>Flexão fechada (tríceps) — 3 séries × 6-10 reps</li>
+        <li>Prancha isométrica — 3 séries × 30-40s</li>
+      </ul>
     </div>
 
-    <div class="demo-card">
-      <div class="demo-illustration">
-        <img src="https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=800&h=600&fit=crop&q=80" alt="Prancha"/>
-        <div class="exercise-overlay">PLANK</div>
-      </div>
-      <h3 class="demo-title">PRANCHA</h3>
-      <p class="demo-desc">Posição estática de apoio nos antebraços e pés. Fortalece todo o core e estabilidade.</p>
-      <div class="demo-muscles">
-        <span class="muscle-tag">CORE</span>
-        <span class="muscle-tag">ABDÔMEN</span>
-        <span class="muscle-tag">LOMBAR</span>
-      </div>
+    <div class="card">
+      <h3 class="card-title">DIA B — Perna/Core</h3>
+      <p style="color:var(--text-dim); margin-bottom:25px; font-size:1.05rem;">⏱ 25-35 min • 🔥 320 kcal</p>
+      <ul class="card-list">
+        <li>Agachamento livre — 3 séries × 20 reps</li>
+        <li>Agachamento na parede — 3 séries × 40-60s</li>
+        <li>Elevação de pernas — 3 séries × 12-15 reps</li>
+        <li>Abdominal crunch — 3 séries × 20-25 reps</li>
+        <li>Polichinelo — 3 séries × 1 min</li>
+      </ul>
     </div>
 
-    <div class="demo-card">
-      <div class="demo-illustration">
-        <img src="https://images.unsplash.com/photo-1532029837206-abbe2b7620e3?w=800&h=600&fit=crop&q=80" alt="Supino"/>
-        <div class="exercise-overlay">BENCH PRESS</div>
-      </div>
-      <h3 class="demo-title">SUPINO</h3>
-      <p class="demo-desc">Empurrar peso acima do peito enquanto deitado. Principal exercício para desenvolvimento peitoral.</p>
-      <div class="demo-muscles">
-        <span class="muscle-tag">PEITO</span>
-        <span class="muscle-tag">TRÍCEPS</span>
-        <span class="muscle-tag">OMBROS</span>
-      </div>
-    </div>
-
-    <div class="demo-card">
-      <div class="demo-illustration">
-        <img src="https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?w=800&h=600&fit=crop&q=80" alt="Barra Fixa"/>
-        <div class="exercise-overlay">PULL-UP</div>
-      </div>
-      <h3 class="demo-title">BARRA FIXA</h3>
-      <p class="demo-desc">Puxar o próprio corpo até o queixo ultrapassar a barra. Movimento rei para costas e bíceps.</p>
-      <div class="demo-muscles">
-        <span class="muscle-tag">COSTAS</span>
-        <span class="muscle-tag">BÍCEPS</span>
-        <span class="muscle-tag">GRIP</span>
-      </div>
-    </div>
-
-    <div class="demo-card">
-      <div class="demo-illustration">
-        <img src="https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=800&h=600&fit=crop&q=80" alt="Levantamento Terra"/>
-        <div class="exercise-overlay">DEADLIFT</div>
-      </div>
-      <h3 class="demo-title">LEVANTAMENTO TERRA</h3>
-      <p class="demo-desc">Levantar peso do chão até posição ereta. Exercício composto que trabalha corpo inteiro.</p>
-      <div class="demo-muscles">
-        <span class="muscle-tag">COSTAS</span>
-        <span class="muscle-tag">PERNAS</span>
-        <span class="muscle-tag">CORE</span>
-      </div>
-    </div>
-
-    <div class="demo-card">
-      <div class="demo-illustration">
-        <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=800&h=600&fit=crop&q=80" alt="Afundo"/>
-        <div class="exercise-overlay">LUNGE</div>
-      </div>
-      <h3 class="demo-title">AFUNDO</h3>
-      <p class="demo-desc">Passo à frente com flexão de joelho. Trabalha pernas unilateralmente e melhora equilíbrio.</p>
-      <div class="demo-muscles">
-        <span class="muscle-tag">QUADRÍCEPS</span>
-        <span class="muscle-tag">GLÚTEOS</span>
-        <span class="muscle-tag">EQUILÍBRIO</span>
-      </div>
-    </div>
-
-    <div class="demo-card">
-      <div class="demo-illustration">
-        <img src="https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=800&h=600&fit=crop&q=80" alt="Rosca Direta"/>
-        <div class="exercise-overlay">BICEP CURL</div>
-      </div>
-      <h3 class="demo-title">ROSCA DIRETA</h3>
-      <p class="demo-desc">Flexão do cotovelo com peso. Isolamento direto para desenvolvimento dos bíceps.</p>
-      <div class="demo-muscles">
-        <span class="muscle-tag">BÍCEPS</span>
-        <span class="muscle-tag">ANTEBRAÇO</span>
-      </div>
-    </div>
-
-    <div class="demo-card">
-      <div class="demo-illustration">
-        <img src="https://images.unsplash.com/photo-1599058917212-d750089bc07e?w=800&h=600&fit=crop&q=80" alt="Abdominal"/>
-        <div class="exercise-overlay">SIT-UP</div>
-      </div>
-      <h3 class="demo-title">ABDOMINAL</h3>
-      <p class="demo-desc">Flexão do tronco elevando do chão. Fortalece reto abdominal e core.</p>
-      <div class="demo-muscles">
-        <span class="muscle-tag">ABDÔMEN</span>
-        <span class="muscle-tag">CORE</span>
-      </div>
+    <div class="card">
+      <h3 class="card-title">Treino de Antebraço — Handgrip</h3>
+      <p style="color:var(--text-dim); margin-bottom:25px; font-size:1.05rem;">⏱ 15-20 min • Pode ser feito qualquer dia</p>
+      <ul class="card-list">
+        <li>Aperto máximo — 4 séries × 10 reps (cada mão)</li>
+        <li>Aperto sustentado — 3 séries × 20-30s</li>
+        <li>Flexão de punho — 3 séries × 15 reps</li>
+        <li>Extensão de punho — 3 séries × 15 reps</li>
+      </ul>
     </div>
   </div>
 
-  <footer>
-    <div class="footer-logo">KYKLE</div>
-    <p>© 2025 NEURAL PERFORMANCE SYSTEM</p>
-  </footer>
-</div>
-
-<!-- CASA PAGE -->
-<div class="page" id="page-casa">
-  <div class="page-header">
-    <h1 class="page-title">PROTOCOLO <span class="blue">CASA</span></h1>
-  </div>
-  <section>
+  <!-- CARDIO -->
+  <div class="page" id="page-cardio">
     <div class="section-header">
-      <h2 class="section-title">SISTEMA <span class="blue">AB</span></h2>
-      <p class="section-subtitle">Protocolo de 4 dias sem equipamento</p>
+      <h2 class="section-title">Cardio</h2>
+      <p class="section-subtitle">Protocolos cardiovasculares de alta performance</p>
     </div>
-    <div class="workout-grid">
-      <div class="workout-card">
-        <div class="wc-header">
-          <div class="wc-icon">💪</div>
-          <div class="wc-badge">DIA A</div>
+
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('casa',this)">Em Casa</button>
+      <button class="tab-btn" onclick="switchTab('academia',this)">Academia</button>
+    </div>
+
+    <div class="tab-content active" id="tab-casa">
+      <div class="cardio-card">
+        <h3 class="cardio-title">HIIT Burpees</h3>
+        <div class="cardio-meta">
+          <span>⏱ 12-15 min</span>
+          <span>🔥 180-250 kcal</span>
         </div>
-        <div class="wc-body">
-          <h3 class="wc-title">PEITO/OMBRO/TRÍCEPS</h3>
-          <div class="wc-meta">
-            <span>⏱ 30-40 MIN</span>
-            <span>🔥 280 KCAL</span>
-          </div>
-          <ul class="wc-exercises">
-            <li><span class="num">1</span>Flexão normal — 3×8-15</li>
-            <li><span class="num">2</span>Flexão inclinada — 3×10-15</li>
-            <li><span class="num">3</span>Mergulho cadeiras — 3×8-12</li>
-            <li><span class="num">4</span>Flexão fechada — 3×6-10</li>
-            <li><span class="num">5</span>Prancha — 3×30-40s</li>
-          </ul>
-        </div>
+        <p class="cardio-desc">Alta intensidade. Agachar, flexão, salto explosivo. Trabalha corpo inteiro com máxima eficiência metabólica.</p>
       </div>
 
-      <div class="workout-card">
-        <div class="wc-header">
-          <div class="wc-icon">🦵</div>
-          <div class="wc-badge">DIA B</div>
+      <div class="cardio-card">
+        <h3 class="cardio-title">Jump Rope Protocol</h3>
+        <div class="cardio-meta">
+          <span>⏱ 15-20 min</span>
+          <span>🔥 200-300 kcal</span>
         </div>
-        <div class="wc-body">
-          <h3 class="wc-title">PERNA/CORE</h3>
-          <div class="wc-meta">
-            <span>⏱ 25-35 MIN</span>
-            <span>🔥 320 KCAL</span>
-          </div>
-          <ul class="wc-exercises">
-            <li><span class="num">1</span>Agachamento — 3×20</li>
-            <li><span class="num">2</span>Agachamento parede — 3×40-60s</li>
-            <li><span class="num">3</span>Elevação pernas — 3×12-15</li>
-            <li><span class="num">4</span>Abdominal — 3×20-25</li>
-            <li><span class="num">5</span>Polichinelo — 3×1min</li>
-          </ul>
-        </div>
+        <p class="cardio-desc">Clássico refinado. Melhora coordenação neuromuscular e queima calórica acelerada.</p>
       </div>
 
-      <div class="workout-card">
-        <div class="wc-header">
-          <div class="wc-icon">✊</div>
-          <div class="wc-badge">HANDGRIP</div>
+      <div class="cardio-card">
+        <h3 class="cardio-title">Mountain Climbers</h3>
+        <div class="cardio-meta">
+          <span>⏱ 10-12 min</span>
+          <span>🔥 150-200 kcal</span>
         </div>
-        <div class="wc-body">
-          <h3 class="wc-title">ANTEBRAÇO</h3>
-          <div class="wc-meta">
-            <span>⏱ 15-20 MIN</span>
-          </div>
-          <ul class="wc-exercises">
-            <li><span class="num">1</span>Aperto máximo — 4×10</li>
-            <li><span class="num">2</span>Aperto sustentado — 3×20-30s</li>
-            <li><span class="num">3</span>Flexão punho — 3×15</li>
-            <li><span class="num">4</span>Extensão punho — 3×15</li>
-          </ul>
-        </div>
+        <p class="cardio-desc">Core engagement total. Alternância explosiva de joelhos com alto gasto energético.</p>
       </div>
     </div>
-  </section>
 
-  <footer>
-    <div class="footer-logo">KYKLE</div>
-    <p>© 2025 NEURAL PERFORMANCE SYSTEM</p>
-  </footer>
-</div>
-
-<!-- DIETA PAGE -->
-<div class="page" id="page-dieta">
-  <div class="page-header">
-    <h1 class="page-title">PROTOCOLO <span class="blue">NUTRIÇÃO</span></h1>
-  </div>
-
-  <div class="macro-panel">
-    <h3 class="macro-title">DISTRIBUIÇÃO MACRO DIÁRIA</h3>
-    <div class="macro-row">
-      <div class="macro-box">
-        <div class="macro-label">PROTEÍNA</div>
-        <div class="macro-value">180g</div>
+    <div class="tab-content" id="tab-academia">
+      <div class="cardio-card">
+        <h3 class="cardio-title">Treadmill HIIT</h3>
+        <div class="cardio-meta">
+          <span>⏱ 20-25 min</span>
+          <span>🔥 300-450 kcal</span>
+        </div>
+        <p class="cardio-desc">Intervalos de alta intensidade. Alterna sprints e recuperação para máxima oxidação lipídica.</p>
       </div>
-      <div class="macro-box">
-        <div class="macro-label">CARBOIDRATO</div>
-        <div class="macro-value">250g</div>
+
+      <div class="cardio-card">
+        <h3 class="cardio-title">Rowing Machine</h3>
+        <div class="cardio-meta">
+          <span>⏱ 20-30 min</span>
+          <span>🔥 250-400 kcal</span>
+        </div>
+        <p class="cardio-desc">Engajamento de 85% da musculatura. Baixo impacto, alta eficiência cardiovascular.</p>
       </div>
-      <div class="macro-box">
-        <div class="macro-label">GORDURA</div>
-        <div class="macro-value">65g</div>
+
+      <div class="cardio-card">
+        <h3 class="cardio-title">Assault Bike</h3>
+        <div class="cardio-meta">
+          <span>⏱ 15-20 min</span>
+          <span>🔥 280-450 kcal</span>
+        </div>
+        <p class="cardio-desc">Protocolo extremo. Resistência ajustada por esforço. Trabalho simultâneo de membros superiores e inferiores.</p>
       </div>
     </div>
   </div>
 
-  <section>
+  <!-- DEMOS -->
+  <div class="page" id="page-demos">
     <div class="section-header">
-      <h2 class="section-title">CATEGORIAS <span class="blue">NUTRICIONAIS</span></h2>
-      <p class="section-subtitle">Alimentos essenciais para performance máxima</p>
+      <h2 class="section-title">Demonstrações</h2>
+      <p class="section-subtitle">Técnica perfeita, resultados superiores</p>
     </div>
 
-    <div class="diet-grid">
-      <div class="diet-card">
-        <div class="diet-icon">🥩</div>
-        <h3 class="diet-title">PROTEÍNAS</h3>
-        <ul class="diet-list">
-          <li>Frango grelhado — 31g/100g</li>
-          <li>Peixe (tilápia) — 26g/100g</li>
-          <li>Ovo inteiro — 6g/unidade</li>
-          <li>Carne bovina magra — 26g/100g</li>
-          <li>Whey protein — 24g/dose</li>
-          <li>Iogurte natural — 10g/100g</li>
-        </ul>
-      </div>
-
-      <div class="diet-card">
-        <div class="diet-icon">🍚</div>
-        <h3 class="diet-title">CARBOIDRATOS</h3>
-        <ul class="diet-list">
-          <li>Arroz integral — energia sustentada</li>
-          <li>Batata doce — rica em fibras</li>
-          <li>Aveia — ideal pré-treino</li>
-          <li>Banana — potássio + energia</li>
-          <li>Massa integral — carboidrato complexo</li>
-          <li>Quinoa — proteína vegetal</li>
-        </ul>
-      </div>
-
-      <div class="diet-card">
-        <div class="diet-icon">🥑</div>
-        <h3 class="diet-title">GORDURAS BOAS</h3>
-        <ul class="diet-list">
-          <li>Abacate — ácidos graxos essenciais</li>
-          <li>Azeite oliva — anti-inflamatório</li>
-          <li>Castanhas — minerais + gordura</li>
-          <li>Salmão — ômega-3 puro</li>
-          <li>Pasta amendoim — energia densa</li>
-          <li>Sementes chia — fibra + gordura</li>
-        </ul>
-      </div>
-
-      <div class="diet-card">
-        <div class="diet-icon">💧</div>
-        <h3 class="diet-title">HIDRATAÇÃO</h3>
-        <ul class="diet-list">
-          <li>Água pura — 2.5-3L/dia</li>
-          <li>Água com limão — vitamina C</li>
-          <li>Chá verde — antioxidantes</li>
-          <li>Água de coco — eletrólitos</li>
-          <li>Isotônico — treinos 60+ min</li>
-        </ul>
-      </div>
-
-      <div class="diet-card">
-        <div class="diet-icon">💊</div>
-        <h3 class="diet-title">SUPLEMENTOS</h3>
-        <ul class="diet-list">
-          <li>Whey Protein — 25-30g pós-treino</li>
-          <li>Creatina — 3-5g diários</li>
-          <li>BCAA — durante jejum/treino</li>
-          <li>Vitamina D — saúde óssea</li>
-          <li>Magnésio — recuperação muscular</li>
-          <li>Ômega-3 — anti-inflamatório</li>
-        </ul>
-      </div>
-
-      <div class="diet-card">
-        <div class="diet-icon">🍎</div>
-        <h3 class="diet-title">LANCHES</h3>
-        <ul class="diet-list">
-          <li>Maçã + pasta amendoim</li>
-          <li>Ovos cozidos + legumes</li>
-          <li>Iogurte + granola sem açúcar</li>
-          <li>Ricota + frutas vermelhas</li>
-          <li>Mix de castanhas — 30g</li>
-          <li>Shake proteico + banana</li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
-  <footer>
-    <div class="footer-logo">KYKLE</div>
-    <p>© 2025 NEURAL PERFORMANCE SYSTEM</p>
-  </footer>
-</div>
-
-<!-- PROGRESSO PAGE -->
-<div class="page" id="page-progresso">
-  <div class="page-header">
-    <h1 class="page-title">RASTREAMENTO DE <span class="blue">PROGRESSO</span></h1>
-  </div>
-
-  <div class="progress-tabs">
-    <button class="progress-tab-btn active" onclick="switchProgressTab('casa',this)">TREINO CASA</button>
-    <button class="progress-tab-btn" onclick="switchProgressTab('academia',this)">TREINO ACADEMIA</button>
-  </div>
-
-  <!-- CASA TAB -->
-  <div class="progress-content active" id="progress-casa">
-    <div class="stats-overview">
-      <div class="stat-card">
-        <div class="stat-label">TREINOS HOJE</div>
-        <div class="stat-number" id="casa-completed">0</div>
-        <div class="stat-unit">/ <span id="casa-total">0</span></div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">EXERCÍCIOS</div>
-        <div class="stat-number" id="casa-exercises">0</div>
-        <div class="stat-unit">completados</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">CALORIAS</div>
-        <div class="stat-number" id="casa-calories">0</div>
-        <div class="stat-unit">kcal</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">TEMPO TOTAL</div>
-        <div class="stat-number" id="casa-time">0</div>
-        <div class="stat-unit">min</div>
+    <div class="card">
+      <img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=1200&h=800&fit=crop&q=90" alt="Push-up" class="exercise-img"/>
+      <h3 class="card-title">Push-Up (Flexão)</h3>
+      <p style="color:var(--text-dim); line-height:1.8; margin-bottom:15px;">Posição de prancha alta, desça controlado flexionando cotovelos a 45°, empurre explosivo. Core contraído durante movimento completo.</p>
+      <div class="tags">
+        <span class="tag">Peito</span>
+        <span class="tag">Tríceps</span>
+        <span class="tag">Core</span>
       </div>
     </div>
 
-    <!-- DIA A -->
-    <div class="workout-day">
-      <div class="day-header">
-        <h3 class="day-title">DIA A — PEITO/OMBRO/TRÍCEPS</h3>
-        <span class="day-date" id="casa-dia-a-date">NÃO REALIZADO</span>
-      </div>
-      <ul class="exercise-checklist" data-workout="casa-a">
-        <li class="exercise-item" onclick="toggleExercise(this)" data-calories="55" data-time="5">
-          <div class="exercise-checkbox"></div>
-          <div class="exercise-info">
-            <div class="exercise-name">Flexão normal</div>
-            <div class="exercise-details">3 séries × 8-15 reps • ~55 kcal</div>
-          </div>
-        </li>
-        <li class="exercise-item" onclick="toggleExercise(this)" data-calories="60" data-time="5">
-          <div class="exercise-checkbox"></div>
-          <div class="exercise-info">
-            <div class="exercise-name">Flexão inclinada</div>
-            <div class="exercise-details">3 séries × 10-15 reps • ~60 kcal</div>
-          </div>
-        </li>
-        <li class="exercise-item" onclick="toggleExercise(this)" data-calories="70" data-time="6">
-          <div class="exercise-checkbox"></div>
-          <div class="exercise-info">
-            <div class="exercise-name">Mergulho entre cadeiras</div>
-            <div class="exercise-details">3 séries × 8-12 reps • ~70 kcal</div>
-          </div>
-        </li>
-        <li class="exercise-item" onclick="toggleExercise(this)" data-calories="50" data-time="5">
-          <div class="exercise-checkbox"></div>
-          <div class="exercise-info">
-            <div class="exercise-name">Flexão fechada</div>
-            <div class="exercise-details">3 séries × 6-10 reps • ~50 kcal</div>
-          </div>
-        </li>
-        <li class="exercise-item" onclick="toggleExercise(this)" data-calories="45" data-time="4">
-          <div class="exercise-checkbox"></div>
-          <div class="exercise-info">
-            <div class="exercise-name">Prancha</div>
-            <div class="exercise-details">3 séries × 30-40s • ~45 kcal</div>
-          </div>
-        </li>
-      </ul>
-      <div class="progress-bar-container">
-        <div class="progress-bar-label">
-          <span class="label">PROGRESSO DIA A</span>
-          <span class="percentage" id="casa-a-percent">0%</span>
-        </div>
-        <div class="progress-bar-track">
-          <div class="progress-bar-fill" id="casa-a-bar" style="width:0%"></div>
-        </div>
+    <div class="card">
+      <img src="https://images.unsplash.com/photo-1574680096145-d05b474e2155?w=1200&h=800&fit=crop&q=90" alt="Squat" class="exercise-img"/>
+      <h3 class="card-title">Back Squat (Agachamento)</h3>
+      <p style="color:var(--text-dim); line-height:1.8; margin-bottom:15px;">Pés largura dos ombros, desça quebrando quadril e joelhos simultaneamente até coxa paralela ao solo. Peso nos calcanhares.</p>
+      <div class="tags">
+        <span class="tag">Quadríceps</span>
+        <span class="tag">Glúteos</span>
+        <span class="tag">Core</span>
       </div>
     </div>
 
-    <!-- DIA B -->
-    <div class="workout-day">
-      <div class="day-header">
-        <h3 class="day-title">DIA B — PERNA/CORE</h3>
-        <span class="day-date" id="casa-dia-b-date">NÃO REALIZADO</span>
+    <div class="card">
+      <img src="https://images.unsplash.com/photo-1532029837206-abbe2b7620e3?w=1200&h=800&fit=crop&q=90" alt="Bench Press" class="exercise-img"/>
+      <h3 class="card-title">Bench Press (Supino)</h3>
+      <p style="color:var(--text-dim); line-height:1.8; margin-bottom:15px;">Decúbito dorsal, pegada ligeiramente maior que largura dos ombros. Desça barra até tocar peito médio, empurre em linha reta.</p>
+      <div class="tags">
+        <span class="tag">Peitoral</span>
+        <span class="tag">Tríceps</span>
+        <span class="tag">Deltoides</span>
       </div>
-      <ul class="exercise-checklist" data-workout="casa-b">
-        <li class="exercise-item" onclick="toggleExercise(this)" data-calories="80" data-time="6">
-          <div class="exercise-checkbox"></div>
-          <div class="exercise-info">
-            <div class="exercise-name">Agachamento</div>
-            <div class="exercise-details">3 séries × 20 reps • ~80 kcal</div>
-          </div>
-        </li>
-        <li class="exercise-item" onclick="toggleExercise(this)" data-calories="70" data-time="5">
-          <div class="exercise-checkbox"></div>
-          <div class="exercise-info">
-            <div class="exercise-name">Agachamento na parede</div>
-            <div class="exercise-details">3 séries × 40-60s • ~70 kcal</div>
-          </div>
-        </li>
-        <li class="exercise-item" onclick="toggleExercise(this)" data-calories="55" data-time="5">
-          <div class="exercise-checkbox"></div>
-          <div class="exercise-info">
-            <div class="exercise-name">Elevação de pernas</div>
-            <div class="exercise-details">3 séries × 12-15 reps • ~55 kcal</div>
-          </div>
-        </li>
-        <li class="exercise-item" onclick="toggleExercise(this)" data-calories="60" data-time="5">
-          <div class="exercise-checkbox"></div>
-          <div class="exercise-info">
-            <div class="exercise-name">Abdominal</div>
-            <div class="exercise-details">3 séries × 20-25 reps • ~60 kcal</div>
-          </div>
-        </li>
-        <li class="exercise-item" onclick="toggleExercise(this)" data-calories="55" data-time="4">
-          <div class="exercise-checkbox"></div>
-          <div class="exercise-info">
-            <div class="exercise-name">Polichinelo</div>
-            <div class="exercise-details">3 séries × 1 min • ~55 kcal</div>
-          </div>
-        </li>
-      </ul>
-      <div class="progress-bar-container">
-        <div class="progress-bar-label">
-          <span class="label">PROGRESSO DIA B</span>
-          <span class="percentage" id="casa-b-percent">0%</span>
-        </div>
-        <div class="progress-bar-track">
-          <div class="progress-bar-fill" id="casa-b-bar" style="width:0%"></div>
-        </div>
+    </div>
+
+    <div class="card">
+      <img src="https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?w=1200&h=800&fit=crop&q=90" alt="Pull-up" class="exercise-img"/>
+      <h3 class="card-title">Pull-Up (Barra Fixa)</h3>
+      <p style="color:var(--text-dim); line-height:1.8; margin-bottom:15px;">Pegada pronada acima da cabeça, puxe até queixo ultrapassar barra. Escápulas retraídas, cotovelos para trás. Desça controlado.</p>
+      <div class="tags">
+        <span class="tag">Dorsais</span>
+        <span class="tag">Bíceps</span>
+        <span class="tag">Grip</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <img src="https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=1200&h=800&fit=crop&q=90" alt="Deadlift" class="exercise-img"/>
+      <h3 class="card-title">Deadlift (Levantamento Terra)</h3>
+      <p style="color:var(--text-dim); line-height:1.8; margin-bottom:15px;">Coluna neutra, quadril acima dos joelhos. Empurre chão com pés, estenda quadril e joelhos simultaneamente. Trave no topo.</p>
+      <div class="tags">
+        <span class="tag">Posterior</span>
+        <span class="tag">Glúteos</span>
+        <span class="tag">Lombar</span>
       </div>
     </div>
   </div>
 
-  <!-- ACADEMIA TAB -->
-  <div class="progress-content" id="progress-academia">
-    <div class="stats-overview">
+  <!-- PROGRESSO -->
+  <div class="page" id="page-progresso">
+    <div class="section-header">
+      <h2 class="section-title">Seu Progresso</h2>
+      <p class="section-subtitle">Acompanhamento de métricas e evolução</p>
+    </div>
+
+    <div class="stats">
       <div class="stat-card">
-        <div class="stat-label">TREINOS HOJE</div>
-        <div class="stat-number" id="academia-completed">0</div>
-        <div class="stat-unit">/ <span id="academia-total">0</span></div>
+        <span class="stat-number" id="prog-exercises">0</span>
+        <span class="stat-label">Exercícios Hoje</span>
       </div>
       <div class="stat-card">
-        <div class="stat-label">EXERCÍCIOS</div>
-        <div class="stat-number" id="academia-exercises">0</div>
-        <div class="stat-unit">completados</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">CALORIAS</div>
-        <div class="stat-number" id="academia-calories">0</div>
-        <div class="stat-unit">kcal</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">TEMPO TOTAL</div>
-        <div class="stat-number" id="academia-time">0</div>
-        <div class="stat-unit">min</div>
+        <span class="stat-number" id="prog-calories">0</span>
+        <span class="stat-label">Calorias</span>
       </div>
     </div>
 
-    <!-- PEITO -->
-    <div class="workout-day">
-      <div class="day-header">
-        <h3 class="day-title">PEITO COMPLETO</h3>
-        <span class="day-date" id="academia-peito-date">NÃO REALIZADO</span>
+    <div class="card">
+      <h3 class="card-title">Seu Programa Atual</h3>
+      <div id="current-program">
+        <p style="color:var(--text-dim); text-align:center; padding:40px 20px;">Nenhum programa ativo. Crie seu treino personalizado para começar o rastreamento.</p>
       </div>
-      <ul class="exercise-checklist" data-workout="academia-peito">
-        <li class="exercise-item" onclick="toggleExercise(this)" data-calories="85" data-time="8">
-          <div class="exercise-checkbox"></div>
-          <div class="exercise-info">
-            <div class="exercise-name">Supino plano</div>
-            <div class="exercise-details">4 séries × 8 reps • ~85 kcal</div>
-          </div>
-        </li>
-        <li class="exercise-item" onclick="toggleExercise(this)" data-calories="75" data-time="7">
-          <div class="exercise-checkbox"></div>
-          <div class="exercise-info">
-            <div class="exercise-name">Supino inclinado</div>
-            <div class="exercise-details">3 séries × 10 reps • ~75 kcal</div>
-          </div>
-        </li>
-        <li class="exercise-item" onclick="toggleExercise(this)" data-calories="70" data-time="7">
-          <div class="exercise-checkbox"></div>
-          <div class="exercise-info">
-            <div class="exercise-name">Flexão com halteres</div>
-            <div class="exercise-details">3 séries × 12 reps • ~70 kcal</div>
-          </div>
-        </li>
-        <li class="exercise-item" onclick="toggleExercise(this)" data-calories="90" data-time="8">
-          <div class="exercise-checkbox"></div>
-          <div class="exercise-info">
-            <div class="exercise-name">Cross-over</div>
-            <div class="exercise-details">3 séries × 15 reps • ~90 kcal</div>
-          </div>
-        </li>
-      </ul>
-      <div class="progress-bar-container">
-        <div class="progress-bar-label">
-          <span class="label">PROGRESSO PEITO</span>
-          <span class="percentage" id="academia-peito-percent">0%</span>
+    </div>
+  </div>
+
+  <!-- DIETA -->
+  <div class="page" id="page-dieta">
+    <div class="section-header">
+      <h2 class="section-title">Nutrição</h2>
+      <p class="section-subtitle">Plano alimentar de alta performance</p>
+    </div>
+
+    <div class="card">
+      <h3 class="card-title">Distribuição de Macronutrientes</h3>
+      <div class="stats" style="margin-bottom:0;">
+        <div class="stat-card">
+          <span class="stat-number">180g</span>
+          <span class="stat-label">Proteína</span>
         </div>
-        <div class="progress-bar-track">
-          <div class="progress-bar-fill" id="academia-peito-bar" style="width:0%"></div>
+        <div class="stat-card">
+          <span class="stat-number">250g</span>
+          <span class="stat-label">Carboidratos</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number">65g</span>
+          <span class="stat-label">Gorduras</span>
         </div>
       </div>
     </div>
 
-    <!-- COSTAS -->
-    <div class="workout-day">
-      <div class="day-header">
-        <h3 class="day-title">COSTAS & DORSAL</h3>
-        <span class="day-date" id="academia-costas-date">NÃO REALIZADO</span>
-      </div>
-      <ul class="exercise-checklist" data-workout="academia-costas">
-        <li class="exercise-item" onclick="toggleExercise(this)" data-calories="100" data-time="8">
-          <div class="exercise-checkbox"></div>
-          <div class="exercise-info">
-            <div class="exercise-name">Pull-up</div>
-            <div class="exercise-details">4 séries × 8 reps • ~100 kcal</div>
-          </div>
-        </li>
-        <li class="exercise-item" onclick="toggleExercise(this)" data-calories="95" data-time="8">
-          <div class="exercise-checkbox"></div>
-          <div class="exercise-info">
-            <div class="exercise-name">Remada cabo</div>
-            <div class="exercise-details">4 séries × 10 reps • ~95 kcal</div>
-          </div>
-        </li>
-        <li class="exercise-item" onclick="toggleExercise(this)" data-calories="85" data-time="7">
-          <div class="exercise-checkbox"></div>
-          <div class="exercise-info">
-            <div class="exercise-name">Lat pull-down</div>
-            <div class="exercise-details">3 séries × 12 reps • ~85 kcal</div>
-          </div>
-        </li>
-        <li class="exercise-item" onclick="toggleExercise(this)" data-calories="100" data-time="7">
-          <div class="exercise-checkbox"></div>
-          <div class="exercise-info">
-            <div class="exercise-name">Remada inclinada</div>
-            <div class="exercise-details">3 séries × 10 reps • ~100 kcal</div>
-          </div>
-        </li>
+    <div class="card">
+      <h3 class="card-title">Proteínas de Elite</h3>
+      <ul class="card-list">
+        <li>Frango orgânico grelhado — 31g/100g</li>
+        <li>Salmão selvagem — 25g/100g + Ômega-3</li>
+        <li>Ovos caipira — 6g/unidade</li>
+        <li>Carne bovina grass-fed — 26g/100g</li>
+        <li>Whey isolado premium — 28g/dose</li>
       </ul>
-      <div class="progress-bar-container">
-        <div class="progress-bar-label">
-          <span class="label">PROGRESSO COSTAS</span>
-          <span class="percentage" id="academia-costas-percent">0%</span>
-        </div>
-        <div class="progress-bar-track">
-          <div class="progress-bar-fill" id="academia-costas-bar" style="width:0%"></div>
-        </div>
+    </div>
+
+    <div class="card">
+      <h3 class="card-title">Carboidratos Complexos</h3>
+      <ul class="card-list">
+        <li>Arroz integral orgânico — energia sustentada</li>
+        <li>Batata doce roxa — antioxidantes + fibras</li>
+        <li>Aveia em flocos grossos — ideal pré-treino</li>
+        <li>Quinoa real — proteína vegetal completa</li>
+        <li>Banana verde — amido resistente</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3 class="card-title">Suplementação Premium</h3>
+      <ul class="card-list">
+        <li>Whey Protein Isolado — 30g pós-treino</li>
+        <li>Creatina Monohidratada — 5g diários</li>
+        <li>Vitamina D3 + K2 — 5000 UI</li>
+        <li>Magnésio Quelato — 400mg noturno</li>
+        <li>Ômega-3 EPA/DHA — 2-3g diários</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- CONFIGURAÇÕES -->
+  <div class="page" id="page-config">
+    <div class="section-header">
+      <h2 class="section-title">Configurações</h2>
+      <p class="section-subtitle">Personalize sua experiência</p>
+    </div>
+
+    <div class="settings-item">
+      <div class="settings-info">
+        <h3>Modo Claro/Escuro</h3>
+        <p>Alternar entre tema claro e escuro</p>
+      </div>
+      <div class="toggle" id="themeToggle" onclick="toggleTheme()">
+        <div class="toggle-circle"></div>
       </div>
     </div>
 
-    <!-- PERNAS -->
-    <div class="workout-day">
-      <div class="day-header">
-        <h3 class="day-title">DIA DE PERNAS</h3>
-        <span class="day-date" id="academia-pernas-date">NÃO REALIZADO</span>
+    <div class="settings-item">
+      <div class="settings-info">
+        <h3>Notificações</h3>
+        <p>Receber lembretes de treino</p>
       </div>
-      <ul class="exercise-checklist" data-workout="academia-pernas">
-        <li class="exercise-item" onclick="toggleExercise(this)" data-calories="120" data-time="10">
-          <div class="exercise-checkbox"></div>
-          <div class="exercise-info">
-            <div class="exercise-name">Agachamento livre</div>
-            <div class="exercise-details">4 séries × 8 reps • ~120 kcal</div>
-          </div>
-        </li>
-        <li class="exercise-item" onclick="toggleExercise(this)" data-calories="110" data-time="9">
-          <div class="exercise-checkbox"></div>
-          <div class="exercise-info">
-            <div class="exercise-name">Leg press</div>
-            <div class="exercise-details">4 séries × 10 reps • ~110 kcal</div>
-          </div>
-        </li>
-        <li class="exercise-item" onclick="toggleExercise(this)" data-calories="70" data-time="7">
-          <div class="exercise-checkbox"></div>
-          <div class="exercise-info">
-            <div class="exercise-name">Extensão de joelho</div>
-            <div class="exercise-details">3 séries × 12 reps • ~70 kcal</div>
-          </div>
-        </li>
-        <li class="exercise-item" onclick="toggleExercise(this)" data-calories="100" data-time="8">
-          <div class="exercise-checkbox"></div>
-          <div class="exercise-info">
-            <div class="exercise-name">Panturrilha em pé</div>
-            <div class="exercise-details">4 séries × 15 reps • ~100 kcal</div>
-          </div>
-        </li>
-      </ul>
-      <div class="progress-bar-container">
-        <div class="progress-bar-label">
-          <span class="label">PROGRESSO PERNAS</span>
-          <span class="percentage" id="academia-pernas-percent">0%</span>
-        </div>
-        <div class="progress-bar-track">
-          <div class="progress-bar-fill" id="academia-pernas-bar" style="width:0%"></div>
-        </div>
+      <div class="toggle">
+        <div class="toggle-circle"></div>
       </div>
     </div>
+
+    <div class="divider"></div>
+
+    <button class="btn btn-outline" onclick="if(confirm('Deseja limpar todos os dados salvos?')){localStorage.clear();location.reload();}">Limpar Todos os Dados</button>
   </div>
 
   <footer>
-    <div class="footer-logo">KYKLE</div>
-    <p>© 2025 NEURAL PERFORMANCE SYSTEM</p>
+    <div class="logo">KYKLE</div>
+    <p>© 2025 KYKLE — Sistema Elite de Performance</p>
   </footer>
-</div>
-
-<!-- SUPPORT FAB -->
-<button class="support-fab" onclick="openSupport()">💬</button>
-
-<!-- MODAL -->
-<div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeSupport()">
-  <div class="modal">
-    <div class="modal-header">
-      <h3 class="modal-title">◢ SUPORTE NEURAL</h3>
-      <button class="modal-close" onclick="closeSupport()">×</button>
-    </div>
-    <div class="modal-body">
-      <div class="support-tabs">
-        <button class="tab-btn active" onclick="switchTab('faq',this)">FAQ</button>
-        <button class="tab-btn" onclick="switchTab('chat',this)">CHAT</button>
-      </div>
-
-      <div class="support-panel active" id="panel-faq">
-        <div class="faq-item">
-          <div class="faq-q" onclick="toggleFaq(this)">
-            <span>Como identificar meu biótipo?</span>
-            <span class="faq-arrow">▼</span>
-          </div>
-          <div class="faq-a">
-            <p>Ectomorfo: estrutura magra. Mesomorfo: atlético. Endomorfo: estrutura larga. Consulte especialista para análise precisa.</p>
-          </div>
-        </div>
-        <div class="faq-item">
-          <div class="faq-q" onclick="toggleFaq(this)">
-            <span>Frequência semanal recomendada?</span>
-            <span class="faq-arrow">▼</span>
-          </div>
-          <div class="faq-a">
-            <p>Iniciantes: 3-4x. Intermediários: 4-5x. Avançados: 5-6x com 1 dia recuperação.</p>
-          </div>
-        </div>
-        <div class="faq-item">
-          <div class="faq-q" onclick="toggleFaq(this)">
-            <span>Como usar as demonstrações visuais?</span>
-            <span class="faq-arrow">▼</span>
-          </div>
-          <div class="faq-a">
-            <p>Os bonecos animados mostram a movimentação básica. Mantenha a postura, controle a velocidade, e sinta o músculo trabalhar.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="support-panel" id="panel-chat">
-        <div class="chat-msgs" id="chatMsgs"></div>
-        <div class="quick-qs">
-          <button onclick="sendQuick('Como ganhar massa?')">Massa</button>
-          <button onclick="sendQuick('Queimar gordura?')">Queima</button>
-          <button onclick="sendQuick('Creatina?')">Creatina</button>
-        </div>
-        <div class="chat-input-row">
-          <input type="text" id="chatInput" placeholder="Digite sua questão..." onkeydown="if(event.key==='Enter')sendChat()"/>
-          <button onclick="sendChat()">▶</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+</main>
 
 <script>
+// Menu
+function toggleMenu(){
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sidebarOverlay');
+  const icon = document.getElementById('menuIcon');
+  
+  sidebar.classList.toggle('open');
+  overlay.classList.toggle('open');
+  icon.classList.toggle('active');
+}
+
+function closeMenu(){
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebarOverlay').classList.remove('open');
+  document.getElementById('menuIcon').classList.remove('active');
+}
+
 // Navigation
-function goPage(id,el){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.getElementById('page-'+id).classList.add('active');
-  document.querySelectorAll('.nav-menu a').forEach(a=>a.classList.remove('active'));
-  if(el) el.classList.add('active');
-  window.scrollTo(0,0);
-}
-
-// Timer
-let timerTotal=90,timerLeft=90,timerRunning=false,timerInterval=null,timerLabel='DESCANSO';
-const circumference=2*Math.PI*160;
-document.getElementById('timerCircle').style.strokeDasharray=circumference;
-
-function updateTimer(){
-  const m=Math.floor(timerLeft/60),s=timerLeft%60;
-  document.getElementById('timerTime').textContent=(m<10?'0':'')+m+':'+(s<10?'0':'')+s;
-  document.getElementById('timerLabel').textContent=timerLabel;
-  const pct=timerLeft/timerTotal;
-  document.getElementById('timerCircle').style.strokeDashoffset=circumference*(1-pct);
-}
-function timerStart(){
-  if(timerRunning)return;
-  timerRunning=true;
-  document.getElementById('btnPlay').classList.add('active');
-  timerInterval=setInterval(()=>{
-    timerLeft--;
-    if(timerLeft<=0){timerLeft=0;updateTimer();clearInterval(timerInterval);timerRunning=false;}
-    updateTimer();
-  },1000);
-}
-function timerPause(){
-  timerRunning=false;
-  clearInterval(timerInterval);
-  document.getElementById('btnPlay').classList.remove('active');
-}
-function timerReset(){
-  timerRunning=false;
-  clearInterval(timerInterval);
-  timerLeft=timerTotal;
-  document.getElementById('btnPlay').classList.remove('active');
-  updateTimer();
-}
-function setPreset(sec,lbl){
-  timerRunning=false;
-  clearInterval(timerInterval);
-  timerTotal=sec;timerLeft=sec;timerLabel=lbl;
-  document.getElementById('btnPlay').classList.remove('active');
-  updateTimer();
-}
-updateTimer();
-
-// Workouts
-const workouts=[
-  {cat:'peito',name:'Peito Completo',icon:'🏋️',diff:'AVANÇADO',time:'45 min',cal:'320 kcal',exercises:['Supino plano — 4×8','Supino inclinado — 3×10','Flexão halteres — 3×12','Cross-over — 3×15']},
-  {cat:'costas',name:'Costas & Dorsal',icon:'🔽',diff:'AVANÇADO',time:'50 min',cal:'380 kcal',exercises:['Pull-up — 4×8','Remada cabo — 4×10','Lat pull-down — 3×12','Remada inclinada — 3×10']},
-  {cat:'pernas',name:'Dia de Pernas',icon:'🦵',diff:'INTENSO',time:'55 min',cal:'450 kcal',exercises:['Agachamento — 4×8','Leg press — 4×10','Extensão joelho — 3×12','Panturrilha — 4×15']},
-  {cat:'ombros',name:'Ombros Deltoides',icon:'⬆️',diff:'MÉDIO',time:'40 min',cal:'270 kcal',exercises:['Press militar — 4×8','Elevação lateral — 3×12','Elevação frontal — 3×12','Face pull — 3×15']},
-  {cat:'abdominal',name:'Core Intenso',icon:'🔻',diff:'AVANÇADO',time:'30 min',cal:'210 kcal',exercises:['Prancha — 4×60s','Crunches — 4×25','Leg raises — 3×15','Russian twist — 3×30']},
-];
-
-function renderWorkouts(filter='todos'){
-  const grid=document.getElementById('workoutGrid');
-  grid.innerHTML='';
-  workouts.filter(w=>filter==='todos'||w.cat===filter).forEach(w=>{
-    const ex=w.exercises.map((e,i)=>`<li><span class="num">${i+1}</span>${e}</li>`).join('');
-    grid.innerHTML+=`
-      <div class="workout-card">
-        <div class="wc-header">
-          <div class="wc-icon">${w.icon}</div>
-          <div class="wc-badge">${w.diff}</div>
-        </div>
-        <div class="wc-body">
-          <h3 class="wc-title">${w.name}</h3>
-          <div class="wc-meta">
-            <span>⏱ ${w.time}</span>
-            <span>🔥 ${w.cal}</span>
-          </div>
-          <ul class="wc-exercises">${ex}</ul>
-        </div>
-      </div>`;
-  });
-}
-renderWorkouts();
-
-function filterWorkouts(cat,btn){
-  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  renderWorkouts(cat);
-}
-
-// Support
-function openSupport(){
-  document.getElementById('modalOverlay').classList.add('open');
-  if(document.getElementById('chatMsgs').children.length===0){
-    addMsg('Sistema neural KYKLE online. Como posso auxiliar?','bot');
+function navigate(page, linkEl){
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + page).classList.add('active');
+  
+  if(linkEl){
+    document.querySelectorAll('.sidebar nav a').forEach(a => a.classList.remove('active'));
+    linkEl.classList.add('active');
   }
+  
+  closeMenu();
+  window.scrollTo({top:0, behavior:'smooth'});
+  
+  // Save current page state
+  saveAppState();
 }
-function closeSupport(){
-  document.getElementById('modalOverlay').classList.remove('open');
-}
-function switchTab(tab,btn){
-  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+
+// Tabs
+function switchTab(tab, btn){
+  const parent = btn.closest('.page');
+  parent.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-  document.querySelectorAll('.support-panel').forEach(p=>p.classList.remove('active'));
-  document.getElementById('panel-'+tab).classList.add('active');
-}
-function toggleFaq(el){
-  const a=el.nextElementSibling;
-  const arr=el.querySelector('.faq-arrow');
-  a.classList.toggle('open');
-  arr.classList.toggle('open');
-}
-
-// Chat
-const responses={
-  "ganhar massa":["💪 PROTOCOLO HIPERTROFIA:","• Proteína 1.8-2.2g/kg","• Treino progressivo","• Sono 7-8h","• Superávit 200-400 kcal"].join("\n"),
-  "queimar gordura":["🔥 PROTOCOLO QUEIMA:","• HIIT 3x semana","• Deficit 300-500 kcal","• Proteína alta","• Hidratação"].join("\n"),
-  "creatina":["💊 DADOS CREATINA:","• 3-5g diários","• Aumenta força","• Altamente estudada","• Hidrate-se"].join("\n"),
-  default:"Consulte profissional para protocolos específicos."
-};
-
-function sendChat(){
-  const input=document.getElementById('chatInput');
-  const msg=input.value.trim();
-  if(!msg)return;
-  input.value='';
-  addMsg(msg,'user');
-  setTimeout(()=>{
-    const key=Object.keys(responses).find(k=>msg.toLowerCase().includes(k));
-    addMsg(responses[key]||responses.default,'bot');
-  },600);
-}
-function sendQuick(q){
-  document.getElementById('chatInput').value=q;
-  sendChat();
-}
-function addMsg(text,type){
-  const div=document.createElement('div');
-  div.className='chat-msg '+type;
-  div.innerHTML=text.replace(/\n/g,'<br>');
-  document.getElementById('chatMsgs').appendChild(div);
-  document.getElementById('chatMsgs').scrollTop=999999;
+  parent.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  parent.querySelector('#tab-' + tab).classList.add('active');
+  
+  // Save tab state
+  saveAppState();
 }
 
 // Theme Toggle
 function toggleTheme(){
-  document.body.classList.toggle('light-mode');
-  const btn = document.getElementById('themeBtn');
-  if(document.body.classList.contains('light-mode')){
-    btn.textContent = '☀️';
-    localStorage.setItem('theme', 'light');
-  } else {
-    btn.textContent = '🌙';
-    localStorage.setItem('theme', 'dark');
+  document.body.classList.toggle('light');
+  document.getElementById('themeToggle').classList.toggle('active');
+  
+  const isLight = document.body.classList.contains('light');
+  localStorage.setItem('theme', isLight ? 'light' : 'dark');
+  
+  saveAppState();
+}
+
+// STATE MANAGEMENT SYSTEM
+function saveAppState(){
+  const state = {
+    currentPage: document.querySelector('.page.active')?.id || 'page-home',
+    activeTabs: {},
+    scrollPosition: window.scrollY,
+    timestamp: Date.now()
+  };
+  
+  // Save active tabs for each page
+  document.querySelectorAll('.page').forEach(page => {
+    const activeTab = page.querySelector('.tab-btn.active');
+    if(activeTab){
+      const tabId = activeTab.textContent.trim();
+      state.activeTabs[page.id] = tabId;
+    }
+  });
+  
+  localStorage.setItem('appState', JSON.stringify(state));
+}
+
+function restoreAppState(){
+  const savedState = localStorage.getItem('appState');
+  if(!savedState) return;
+  
+  try {
+    const state = JSON.parse(savedState);
+    
+    // Restore active page
+    if(state.currentPage){
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      const pageToActivate = document.getElementById(state.currentPage);
+      if(pageToActivate){
+        pageToActivate.classList.add('active');
+        
+        // Update sidebar active link
+        const pageName = state.currentPage.replace('page-', '');
+        document.querySelectorAll('.sidebar nav a').forEach(link => {
+          link.classList.remove('active');
+          if(link.getAttribute('onclick')?.includes(`'${pageName}'`)){
+            link.classList.add('active');
+          }
+        });
+      }
+    }
+    
+    // Restore active tabs
+    if(state.activeTabs){
+      Object.keys(state.activeTabs).forEach(pageId => {
+        const page = document.getElementById(pageId);
+        if(page){
+          const tabText = state.activeTabs[pageId];
+          const tabs = page.querySelectorAll('.tab-btn');
+          tabs.forEach(tab => {
+            if(tab.textContent.trim() === tabText){
+              tab.click();
+            }
+          });
+        }
+      });
+    }
+    
+    // Restore scroll position (with delay to ensure page is rendered)
+    if(state.scrollPosition){
+      setTimeout(() => {
+        window.scrollTo(0, state.scrollPosition);
+      }, 100);
+    }
+    
+  } catch(e){
+    console.error('Error restoring app state:', e);
   }
 }
 
-// Load saved theme
-window.addEventListener('DOMContentLoaded', ()=>{
+// Save state on form changes
+function setupAutoSave(){
+  // Save on input changes
+  document.querySelectorAll('input, select, textarea').forEach(input => {
+    input.addEventListener('change', saveAppState);
+    input.addEventListener('input', debounce(saveAppState, 500));
+  });
+  
+  // Save on scroll (debounced)
+  window.addEventListener('scroll', debounce(saveAppState, 1000));
+  
+  // Save before page unload
+  window.addEventListener('beforeunload', saveAppState);
+}
+
+// Debounce helper
+function debounce(func, wait){
+  let timeout;
+  return function executedFunction(...args){
+    const later = () => {
+      clearTimeout(timeout);
+      func(...args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
+}
+
+// Treino Personalizado - CORRIGIDO
+function gerarTreino(){
+  const altura = document.getElementById('altura').value;
+  const peso = document.getElementById('peso').value;
+  const biotipo = document.getElementById('biotipo').value;
+  const objetivo = document.getElementById('objetivo').value;
+  
+  if(!altura || !peso || !biotipo || !objetivo){
+    alert('Por favor, preencha todos os campos!');
+    return;
+  }
+  
+  const imc = (peso / ((altura/100) ** 2)).toFixed(1);
+  
+  let programa = '';
+  let recomendacao = '';
+  
+  if(biotipo === 'ectomorfo' && objetivo === 'hipertrofia'){
+    programa = `
+      <div class="card">
+        <h3 class="card-title">Dia A — Peito & Tríceps</h3>
+        <ul class="card-list">
+          <li>Supino plano — 4 séries × 8-10 reps</li>
+          <li>Supino inclinado — 4 séries × 10 reps</li>
+          <li>Crucifixo halteres — 3 séries × 12 reps</li>
+          <li>Tríceps testa — 3 séries × 10 reps</li>
+          <li>Tríceps corda — 3 séries × 12 reps</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 class="card-title">Dia B — Costas & Bíceps</h3>
+        <ul class="card-list">
+          <li>Pull-up — 4 séries × 8 reps</li>
+          <li>Remada curvada — 4 séries × 10 reps</li>
+          <li>Lat pull-down — 3 séries × 12 reps</li>
+          <li>Rosca direta — 3 séries × 10 reps</li>
+          <li>Rosca martelo — 3 séries × 12 reps</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 class="card-title">Dia C — Pernas & Ombros</h3>
+        <ul class="card-list">
+          <li>Agachamento livre — 4 séries × 8 reps</li>
+          <li>Leg press 45° — 4 séries × 12 reps</li>
+          <li>Press militar — 4 séries × 10 reps</li>
+          <li>Elevação lateral — 3 séries × 12 reps</li>
+          <li>Panturrilha em pé — 4 séries × 15 reps</li>
+        </ul>
+      </div>
+    `;
+    recomendacao = 'Progressão linear de carga. Superávit calórico de 400-500 kcal. Descanso 2-3 minutos entre séries. Foco em hipertrofia com volume médio-alto.';
+  } else if(biotipo === 'mesomorfo'){
+    programa = `
+      <div class="card">
+        <h3 class="card-title">Push (Empurrar)</h3>
+        <ul class="card-list">
+          <li>Supino plano — 4 × 8</li>
+          <li>Press militar — 4 × 10</li>
+          <li>Mergulho paralelas — 3 × 12</li>
+          <li>Elevação lateral — 3 × 15</li>
+          <li>Tríceps francês — 3 × 12</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 class="card-title">Pull (Puxar)</h3>
+        <ul class="card-list">
+          <li>Pull-up — 4 × 8</li>
+          <li>Remada cabo — 4 × 10</li>
+          <li>Face pull — 3 × 15</li>
+          <li>Rosca 21s — 3 × 21</li>
+          <li>Shrugs — 3 × 12</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 class="card-title">Legs (Pernas)</h3>
+        <ul class="card-list">
+          <li>Agachamento — 5 × 5</li>
+          <li>Leg press — 3 × 12</li>
+          <li>Stiff — 3 × 10</li>
+          <li>Leg curl — 3 × 12</li>
+          <li>Panturrilha — 4 × 15</li>
+        </ul>
+      </div>
+    `;
+    recomendacao = 'Sistema Push/Pull/Legs otimizado. Dieta balanceada com leve superávit se ganho de massa, manutenção se definição. Alta frequência muscular.';
+  } else {
+    programa = `
+      <div class="card">
+        <h3 class="card-title">HIIT + Musculação</h3>
+        <ul class="card-list">
+          <li>Burpees — 4 × 15</li>
+          <li>Agachamento — 4 × 15</li>
+          <li>Supino — 3 × 12</li>
+          <li>Remada — 3 × 12</li>
+          <li>Mountain climbers — 3 × 30s</li>
+          <li>Prancha — 3 × 45s</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 class="card-title">Cardio Intensivo</h3>
+        <ul class="card-list">
+          <li>HIIT Esteira — 20 min (1:2 ratio)</li>
+          <li>Bike steady state — 30 min</li>
+          <li>Rowing intervals — 15 min</li>
+        </ul>
+      </div>
+    `;
+    recomendacao = 'Cardio 5x/semana. Deficit calórico de 400-600 kcal. Proteína alta (2g/kg). Treino resistido 3-4x mantém massa magra durante perda de gordura.';
+  }
+  
+  const resultado = `
+    <div class="result-box">
+      <h3 class="result-title">Seu Programa Personalizado</h3>
+      <ul>
+        <li><strong>Altura:</strong> ${altura} cm</li>
+        <li><strong>Peso:</strong> ${peso} kg</li>
+        <li><strong>IMC:</strong> ${imc}</li>
+        <li><strong>Biotipo:</strong> ${biotipo.charAt(0).toUpperCase() + biotipo.slice(1)}</li>
+        <li><strong>Objetivo:</strong> ${objetivo.charAt(0).toUpperCase() + objetivo.slice(1)}</li>
+      </ul>
+    </div>
+    ${programa}
+    <div class="card">
+      <h3 class="card-title">Orientações Premium</h3>
+      <p style="color:var(--text-dim); line-height:1.8; padding:10px 0;">${recomendacao}</p>
+    </div>
+  `;
+  
+  document.getElementById('resultado').innerHTML = resultado;
+  document.getElementById('current-program').innerHTML = programa;
+  
+  localStorage.setItem('programa', programa);
+}
+
+// Load saved data
+window.addEventListener('DOMContentLoaded', () => {
+  // Restore theme
   const savedTheme = localStorage.getItem('theme');
   if(savedTheme === 'light'){
-    document.body.classList.add('light-mode');
-    document.getElementById('themeBtn').textContent = '☀️';
+    document.body.classList.add('light');
+    document.getElementById('themeToggle').classList.add('active');
   }
-  loadProgress();
+  
+  // Restore saved program
+  const savedProgram = localStorage.getItem('programa');
+  if(savedProgram){
+    document.getElementById('current-program').innerHTML = savedProgram;
+  }
+  
+  // Restore complete app state
+  restoreAppState();
+  
+  // Setup auto-save functionality
+  setupAutoSave();
+  
+  // Show welcome message on first visit
+  const firstVisit = !localStorage.getItem('appState');
+  if(firstVisit){
+    console.log('✨ Bem-vindo ao KYKLE! Seu progresso será salvo automaticamente.');
+  }
 });
-
-// Progress Tracking
-function switchProgressTab(tab, btn){
-  document.querySelectorAll('.progress-tab-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  document.querySelectorAll('.progress-content').forEach(p=>p.classList.remove('active'));
-  document.getElementById('progress-'+tab).classList.add('active');
-}
-
-function toggleExercise(element){
-  element.classList.toggle('completed');
-  const workoutId = element.closest('.exercise-checklist').dataset.workout;
-  updateProgress(workoutId);
-  saveProgress();
-}
-
-function updateProgress(workoutId){
-  const checklist = document.querySelector(`[data-workout="${workoutId}"]`);
-  const items = checklist.querySelectorAll('.exercise-item');
-  const completed = checklist.querySelectorAll('.exercise-item.completed');
-  const total = items.length;
-  const completedCount = completed.length;
-  const percentage = Math.round((completedCount / total) * 100);
-  
-  // Update progress bar
-  const barId = workoutId.replace('casa-', 'casa-').replace('academia-', 'academia-');
-  document.getElementById(barId + '-percent').textContent = percentage + '%';
-  document.getElementById(barId + '-bar').style.width = percentage + '%';
-  
-  // Calculate calories and time
-  let totalCalories = 0;
-  let totalTime = 0;
-  completed.forEach(item => {
-    totalCalories += parseInt(item.dataset.calories);
-    totalTime += parseInt(item.dataset.time);
-  });
-  
-  // Update date if completed
-  if(completedCount === total && total > 0){
-    const dateId = workoutId.replace('-a', '-dia-a').replace('-b', '-dia-b') + '-date';
-    const dateEl = document.getElementById(dateId);
-    if(dateEl){
-      const now = new Date();
-      dateEl.textContent = `CONCLUÍDO ${now.toLocaleDateString('pt-BR')} ${now.toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'})}`;
-    }
-  }
-  
-  // Update overall stats
-  updateOverallStats();
-}
-
-function updateOverallStats(){
-  // Casa stats
-  const casaLists = document.querySelectorAll('#progress-casa .exercise-checklist');
-  let casaCompletedWorkouts = 0;
-  let casaTotalWorkouts = casaLists.length;
-  let casaExercises = 0;
-  let casaCalories = 0;
-  let casaTime = 0;
-  
-  casaLists.forEach(list => {
-    const items = list.querySelectorAll('.exercise-item');
-    const completed = list.querySelectorAll('.exercise-item.completed');
-    if(completed.length === items.length && items.length > 0) casaCompletedWorkouts++;
-    casaExercises += completed.length;
-    completed.forEach(item => {
-      casaCalories += parseInt(item.dataset.calories);
-      casaTime += parseInt(item.dataset.time);
-    });
-  });
-  
-  document.getElementById('casa-completed').textContent = casaCompletedWorkouts;
-  document.getElementById('casa-total').textContent = casaTotalWorkouts;
-  document.getElementById('casa-exercises').textContent = casaExercises;
-  document.getElementById('casa-calories').textContent = casaCalories;
-  document.getElementById('casa-time').textContent = casaTime;
-  
-  // Academia stats
-  const academiaLists = document.querySelectorAll('#progress-academia .exercise-checklist');
-  let academiaCompletedWorkouts = 0;
-  let academiaTotalWorkouts = academiaLists.length;
-  let academiaExercises = 0;
-  let academiaCalories = 0;
-  let academiaTime = 0;
-  
-  academiaLists.forEach(list => {
-    const items = list.querySelectorAll('.exercise-item');
-    const completed = list.querySelectorAll('.exercise-item.completed');
-    if(completed.length === items.length && items.length > 0) academiaCompletedWorkouts++;
-    academiaExercises += completed.length;
-    completed.forEach(item => {
-      academiaCalories += parseInt(item.dataset.calories);
-      academiaTime += parseInt(item.dataset.time);
-    });
-  });
-  
-  document.getElementById('academia-completed').textContent = academiaCompletedWorkouts;
-  document.getElementById('academia-total').textContent = academiaTotalWorkouts;
-  document.getElementById('academia-exercises').textContent = academiaExercises;
-  document.getElementById('academia-calories').textContent = academiaCalories;
-  document.getElementById('academia-time').textContent = academiaTime;
-}
-
-function saveProgress(){
-  const allCompleted = [];
-  document.querySelectorAll('.exercise-item.completed').forEach(item => {
-    const workout = item.closest('.exercise-checklist').dataset.workout;
-    const name = item.querySelector('.exercise-name').textContent;
-    allCompleted.push({workout, name});
-  });
-  localStorage.setItem('workoutProgress', JSON.stringify(allCompleted));
-  
-  // Save completion dates
-  const dates = {};
-  document.querySelectorAll('[id$="-date"]').forEach(el => {
-    if(el.textContent !== 'NÃO REALIZADO'){
-      dates[el.id] = el.textContent;
-    }
-  });
-  localStorage.setItem('workoutDates', JSON.stringify(dates));
-}
-
-function loadProgress(){
-  const saved = localStorage.getItem('workoutProgress');
-  if(!saved) return;
-  
-  const completed = JSON.parse(saved);
-  completed.forEach(({workout, name}) => {
-    const list = document.querySelector(`[data-workout="${workout}"]`);
-    if(!list) return;
-    const items = list.querySelectorAll('.exercise-item');
-    items.forEach(item => {
-      if(item.querySelector('.exercise-name').textContent === name){
-        item.classList.add('completed');
-      }
-    });
-    updateProgress(workout);
-  });
-  
-  // Load dates
-  const dates = localStorage.getItem('workoutDates');
-  if(dates){
-    const parsedDates = JSON.parse(dates);
-    Object.keys(parsedDates).forEach(id => {
-      const el = document.getElementById(id);
-      if(el) el.textContent = parsedDates[id];
-    });
-  }
-  
-  updateOverallStats();
-}
-
 </script>
 </body>
 </html>
